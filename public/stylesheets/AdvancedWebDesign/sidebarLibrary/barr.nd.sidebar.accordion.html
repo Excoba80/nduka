@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/AdvancedWebDesign/barr.nd.css  ">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+<div class="nd-sidebar nd-bar-block nd-light-grey nd-card" style="width:160px;">
+  <a href="#" class="nd-bar-item nd-button">Link 1</a>
+  <button class="nd-button nd-block nd-left-align" onclick="myAccFunc()">
+  Accordion <i class="fa fa-caret-down"></i>
+  </button>
+  <div id="demoAcc" class="nd-hide nd-white nd-card">
+    <a href="#" class="nd-bar-item nd-button">Link</a>
+    <a href="#" class=" nd-bar-item nd-button  ">Link</a>
+  </div>
+
+  <div class="nd-dropdown-click">
+    <button class="nd-button" onclick="myDropFunc()">
+      Dropdown <i class="fa fa-caret-down"></i>
+    </button>
+    <div id="demoDrop" class="nd-dropdown-content nd-bar-block nd-white nd-card">
+      <a href="#" class=" nd-bar-item nd-button ">Link</a>
+      <a href="#" class=" nd-bar-item nd-button ">Link</a>
+    </div>
+  </div>
+  <a href="#" class="nd-bar-item nd-button  ">Link 2</a>
+  <a href="#" class="nd-bar-item nd-button  ">Link 3</a>
+</div>
+
+<div class="nd-container" style="margin-left:160px">
+<h2>Sidebar Accordion</h2>
+<p>In this example, we have added an accordion and a dropdown menu inside the side navigation.</p>
+<p>Click on both to understand how they differ from each other. The accordion will push down the content, while the dropdown lays over the content.</p>
+</div>
+
+<script>
+function myAccFunc() {
+  var x = document.getElementById("demoAcc");
+  if (x.className.indexOf("nd-show") == -1) {
+    x.className += " nd-show";
+    x.previousElementSibling.className += " nd-green";
+  } else { 
+    x.className = x.className.replace(" nd-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace(" nd-green", "");
+  }
+}
+
+function myDropFunc() {
+  var x = document.getElementById("demoDrop");
+  if (x.className.indexOf("nd-show") == -1) {
+    x.className += " nd-show";
+    x.previousElementSibling.className += " nd-green";
+  } else { 
+    x.className = x.className.replace(" nd-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace(" nd-green", "");
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/AdvancedWebDesign/barr.nd.css  ">
+<body>
+
+<div class="nd-container">
+  <h2>Active Tabs</h2>
+  <p>To highlight the current tab/page the user is on, add a color class, and use JavaScript to update the active link.In the example below, we have added a "tablink" class to each link. That way, it is easy to get all links that is associated with tabs, and give the current tab link a "w3-red" class, to highlight it:</p>
+
+  <div class="nd-bar nd-black">
+    <button class="nd-bar-item nd-button tablink nd-red" onclick="openCity(event,'London')">London</button>
+    <button class="nd-bar-item nd-button tablink" onclick="openCity(event,'Paris')">Paris</button>
+    <button class="nd-bar-item nd-button tablink" onclick="openCity(event,'Tokyo')">Tokyo</button>
+  </div>
+  
+  <div id="London" class="nd-container nd-border city">
+    <h2>London</h2>
+    <p>London is the capital city of England.</p>
+  </div>
+
+  <div id="Paris" class="nd-container nd-border city" style="display:none">
+    <h2>Paris</h2>
+    <p>Paris is the capital of France.</p> 
+  </div>
+
+  <div id="Tokyo" class="nd-container nd-border city" style="display:none">
+    <h2>Tokyo</h2>
+    <p>Tokyo is the capital of Japan.</p>
+  </div>
+</div>
+
+<script>
+function openCity(evt, cityName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("city");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" nd-red", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " nd-red";
+}
+</script>
+
+</body>
+</html>

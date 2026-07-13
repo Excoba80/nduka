@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href=" /AdvancedWebDesign/barr.nd.css   ">
+<body>
+
+<div class="nd-container">
+  <h2> Fade In Animated Modal</h2>
+  
+  <p>  You can also fade in the modal's background color by setting the w3-animate-opacity class on the w3-modal element:     </p>
+
+  <button onclick="document.getElementById('id01').style.display='block'" class="nd-button nd-black">Fade In Modal</button>
+
+  <div id="id01" class="nd-modal nd-animate-opacity">
+    <div class="nd-modal-content nd-card-4">
+      <header class="nd-container nd-teal"> 
+        <span onclick="document.getElementById('id01').style.display='none'" 
+        class="nd-button nd-large nd-display-topright">&times;</span>
+        <h2>Modal Header</h2>
+      </header>
+      <div class="nd-container">
+        <p>Some text..</p>
+        <p>Some text..</p>
+      </div>
+      <footer class="nd-container nd-teal">
+        <p>Modal Footer</p>
+      </footer>
+    </div>
+  </div>
+</div>
+            
+</body>
+</html>

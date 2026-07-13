@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="  /AdvancedWebDesign/barr.nd.css  ">
+<body>
+
+<div class="nd-sidebar nd-bar-block nd-dark-grey nd-animate-left" style="display:none" id="mySidebar">
+  <button class="nd-bar-item nd-button nd-large"
+  onclick="nd_close()">Close &times;</button>
+  <a href="#" class="nd-bar-item nd-button">Link 1</a>
+  <a href="#" class=" nd-bar-item nd-button  ">Link 2</a>
+  <a href="#" class="nd-bar-item nd-button   ">Link 3</a>
+</div>
+
+<div>
+  <button class="nd-button nd-white nd-xxlarge" onclick="nd_open()">&#9776;</button>
+  <div class="nd-container">
+    <h1>Animated Sidebar</h1>
+    <p>Click on the "hamburger menu" to slide in the side navigation.</p>
+    <p>W3.CSS provide the following animation classes if you want to experiment for yourself:</p>
+    <p>w3-animate-left, w3-animate-top, w3-animate-bottom, w3-animate-right, w3-animate-opacity, w3-animate-zoom</p>
+  </div>
+</div>
+
+<script>
+function nd_open() {
+    document.getElementById("mySidebar").style.display = "block";
+}
+function nd_close() {
+    document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+     
+</body>
+</html>

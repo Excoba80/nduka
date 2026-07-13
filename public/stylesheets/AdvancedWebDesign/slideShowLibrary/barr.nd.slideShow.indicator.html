@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href=" /AdvancedWebDesign/barr.nd.css  ">
+<style>
+.mySlides {display:none}
+</style>
+<body>
+
+<div class="nd-container">
+  <h2>Slideshow Indicators</h2>
+  <p>An example of using buttons to indicate how many slides there are in the slideshow, and which slide the user is currently viewing.</p>
+</div>
+
+<div class="nd-content" style="max-width:800px">
+  <img class="mySlides" src="/AdvancedWebDesign/w3-images/img_nature_wide.jpg" style="width:100%">
+  <img class="mySlides" src="/AdvancedWebDesign/w3-images/img_snow_wide.jpg" style="width:100%">
+  <img class="mySlides" src="/AdvancedWebDesign/w3-images/img_mountains_wide.jpg" style="width:100%">
+</div>
+
+<div class="nd-center">
+  <div class="nd-section">
+    <button class="nd-button nd-light-grey" onclick="plusDivs(-1)">❮ Prev</button>
+    <button class="nd-button nd-light-grey" onclick="plusDivs(1)">Next ❯</button>
+  </div>
+  <button class="nd-button demo" onclick="currentDiv(1)">1</button> 
+  <button class="nd-button demo" onclick="currentDiv(2)">2</button> 
+  <button class="nd-button demo" onclick="currentDiv(3)">3</button> 
+</div>
+
+<script>
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function currentDiv(n) {
+  showDivs(slideIndex = n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  if (n > x.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" nd-red", "");
+  }
+  x[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " nd-red";
+}
+</script>
+
+</body>
+</html>

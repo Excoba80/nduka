@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="   /AdvancedWebDesign/barr.nd.css     ">
+<body>
+<div class="nd-container">
+
+<h2>Accordions</h2>
+<p>An accordion with lists:</p>
+
+<button onclick="myFunction('Demo1')" class="nd-button nd-block nd-black nd-left-align">
+Accordion 1</button>
+<div id="Demo1" class="nd-hide nd-border">
+  <ul class="nd-ul">
+    <li>Jill</li>
+    <li>Eve</li>
+    <li>Adam</li>
+  </ul>  
+</div>
+
+</div>
+<script>
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("nd-show") == -1) {
+    x.className += " nd-show";
+  } else { 
+    x.className = x.className.replace(" nd-show", "");
+  }
+}
+</script>
+
+</body>
+</html>

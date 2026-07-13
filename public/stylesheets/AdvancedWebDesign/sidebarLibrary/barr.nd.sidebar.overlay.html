@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="  /AdvancedWebDesign/barr.nd.css   ">
+<body>
+
+<!-- Sidebar -->
+<div class="nd-sidebar nd-bar-block" style="display:none;z-index:5" id="mySidebar">
+  <button class="nd-bar-item nd-button nd-xxlarge" onclick="nd_close()">Close &times;</button>
+  <a href="#" class="nd-bar-item nd-button">Link 1</a>
+  <a href="#" class="nd-bar-item nd-button   ">Link 2</a>
+  <a href="#" class="nd-bar-item nd-button  ">Link 3</a>
+</div>
+
+<!-- Page Content -->
+<div class="nd-overlay" onclick="nd_close()" style="cursor:pointer" id="myOverlay"></div>
+
+<div>
+  <button class="nd-button nd-white nd-xxlarge" onclick="nd_open()">&#9776;</button>
+  <div class="nd-container">
+    <h1>Sidebar Overlay</h1>
+    <p>The w3-overlay class can be used to create an overlay effect, when opening the sidebar. The w3-overlay class adds a black background with a 50% opacity to the "page content" - this effect will "highlight" the side navigation</p>
+    <p>Click on the "hamburger menu" to see the effect.</p>
+  </div>
+</div>
+     
+<script>
+function nd_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
+}
+
+function nd_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
+}
+</script>
+          
+</body>
+</html>

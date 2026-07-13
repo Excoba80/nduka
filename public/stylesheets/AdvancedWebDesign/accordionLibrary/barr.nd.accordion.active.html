@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="  /AdvancedWebDesign/barr.nd.css    ">
+<body>
+<div class="nd-container">
+
+<h2>Active Accordions</h2>
+<p>Use JavaScript to highlight accordions that are open (clicked on)<br> <br>
+
+In this example we add the w3-red class to an active accordion (when the button is clicked on and the content is opened).</p>
+
+<button onclick="myFunction('Demo1')" class="nd-button nd-block nd-black nd-left-align">Open Section 1</button>
+<div id="Demo1" class="nd-hide nd-container">
+    <p>Some text..</p>
+</div>
+
+<button onclick="myFunction('Demo2')" class="nd-button nd-block nd-black nd-left-align">Open Section 2</button>
+<div id="Demo2" class="nd-hide nd-container">
+    <p>Some other text..</p>
+</div>
+
+</div>
+<script>
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("nd-show") == -1) {
+    x.className += " nd-show";
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace("nd-black", "nd-red");
+  } else { 
+    x.className = x.className.replace(" nd-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace("nd-red", "nd-black");
+  }
+}
+</script>
+
+</body>
+</html>

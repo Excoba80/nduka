@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="  /AdvancedWebDesign/barr.nd.css  ">
+<body>
+
+<div class = "nd-container">
+<h2 class="nd-center"> Multiple Slideshows on the Same Page </h2>
+
+<p> To operate multiple slideshows on one page, you must class the members of each slideshow group with different classes: </p>
+
+</div>
+
+<div class="nd-content nd-display-container">
+  <img class="mySlides1" src="/AdvancedWebDesign/w3-images/img_snowtops.jpg" style="width:100%">
+  <img class="mySlides1" src="/AdvancedWebDesign/w3-images/img_lights.jpg" style="width:100%">
+  <img class="mySlides1" src="/AdvancedWebDesign/w3-images/img_mountains.jpg" style="width:100%">
+  <img class="mySlides1" src="/AdvancedWebDesign/w3-images/img_forest.jpg" style="width:100%">
+  <button class="nd-button nd-black nd-display-left" onclick="plusDivs(-1, 0)">&#10094;</button>
+  <button class="nd-button nd-black nd-display-right" onclick="plusDivs(1, 0)">&#10095;</button>
+</div>
+
+<div class="nd-content nd-display-container">
+  <img class="mySlides2" src="/AdvancedWebDesign/w3-images/img_la.jpg" style="width:100%">
+  <img class="mySlides2" src="/AdvancedWebDesign/w3-images/img_ny.jpg" style="width:100%">
+  <img class="mySlides2" src="/AdvancedWebDesign/w3-images/img_chicago.jpg" style="width:100%">
+  <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1, 1)">&#10094;</button>
+  <button class="nd-button nd-black nd-display-right" onclick="plusDivs(1, 1)">&#10095;</button>
+</div>
+
+<script>
+var slideIndex = [1,1];
+var slideId = ["mySlides1", "mySlides2"]
+showDivs(1, 0);
+showDivs(1, 1);
+
+function plusDivs(n, no) {
+  showDivs(slideIndex[no] += n, no);
+}
+
+function showDivs(n, no) {
+  var i;
+  var x = document.getElementsByClassName(slideId[no]);
+  if (n > x.length) {slideIndex[no] = 1}
+  if (n < 1) {slideIndex[no] = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  x[slideIndex[no]-1].style.display = "block";  
+}
+</script>
+
+</body>
+</html>

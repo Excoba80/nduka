@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href=" /AdvancedWebDesign/barr.nd.css  ">
+<body>
+
+<!-- Sidebar -->
+<div class="nd-sidebar nd-bar-block" style="display:none" id="mySidebar">
+  <button onclick="nd_close()" class="nd-bar-item nd-button nd-large">Close &times;</button>
+  <a href="#" class="nd-bar-item nd-button">Link 1</a>
+  <a href="#" class=" nd-bar-item nd-button  ">Link 2</a>
+  <a href="#" class=" nd-bar-item nd-button   ">Link 3</a>
+</div>
+
+<!-- Page Content -->
+<div class="nd-teal">
+  <button class="nd-button nd-teal nd-xlarge" onclick="nd_open()">☰</button>
+  <div class="nd-container">
+    <h1>My Page</h1>
+  </div>
+</div>
+
+<img src="/AdvancedWebDesign/w3-images/img_car.jpg" alt="Car" style="width:100%">
+
+<div class="nd-container">
+<p>In this example, the sidebar is hidden (style="display:none")</p>
+<p>It is shown when you click on the menu icon in the top left corner.</p>
+<p>When it is opened, it hides all the page content  (overlays the page content). (style.width="100%").</p>
+</div>
+
+<script>
+function nd_open() {
+  document.getElementById("mySidebar").style.width = "100%";
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function nd_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+     
+</body>
+</html> 

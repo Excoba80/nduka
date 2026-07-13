@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="  /AdvancedWebDesign/barr.nd.css    ">
+<body>
+
+<div class="nd-container">
+  <h2>Clickable Dropdown</h2>
+  <p>
+  The <b>w3-dropdown-click</b> class creates a clickable dropdown element.<br>
+With this class, the dropdown is opened by JavaScript:<br><br>
+  Click on the button to open the dropdown menu.</p>
+  <div class="nd-dropdown-click">
+    <button onclick="myFunction()" class="nd-button nd-black">Click Me!</button>
+    <div id="Demo" class="nd-dropdown-content nd-bar-block nd-border">
+      <a href="#" class="nd-bar-item nd-button">Link 1</a>
+      <a href="#" class="nd-bar-item nd-button">Link 2</a>
+      <a href="#" class="nd-bar-item nd-button">Link 3</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("Demo");
+  if (x.className.indexOf("nd-show") == -1) {
+    x.className += " nd-show";
+  } else { 
+    x.className = x.className.replace(" nd-show", "");
+  }
+}
+</script>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href=" /AdvancedWebDesign/barr.nd.css   ">
+<body>
+
+<div class="nd-container">
+  <h2> Modal As a Card  </h2>
+  <p>To display the modal as a card, add the w3-card-* class to the w3-modal-content container to display the modal as a card.</p>
+  <button onclick="document.getElementById('id01').style.display='block'" class="nd-button nd-black">Open Modal</button>
+
+  <div id="id01" class="nd-modal">
+    <div class="nd-modal-content nd-card-4">
+      <header class="nd-container nd-teal"> 
+        <span onclick="document.getElementById('id01').style.display='none'" 
+        class="nd-button nd-display-topright">&times;</span>
+        <h2>Modal Header</h2>
+      </header>
+      <div class="nd-container">
+        <p>Some text..</p>
+        <p>Some text..</p>
+      </div>
+      <footer class="nd-container nd-teal">
+        <p>Modal Footer</p>
+      </footer>
+    </div>
+  </div>
+</div>
+          
+</body>
+</html>

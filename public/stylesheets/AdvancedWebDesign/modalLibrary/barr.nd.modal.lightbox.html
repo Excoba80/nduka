@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href=" /AdvancedWebDesign/barr.nd.css ">
+<style>
+.mySlides {display:none}
+</style>
+<body>
+
+<div class="nd-container">
+
+<h2>  Advanced: Lightbox (Modal Image Gallery)  </h2>
+<p>In this example we combine JavaScript from Slideshows and Modals to create a Lightbox (Modal Image Gallery):</p>
+
+<p>This example shows how to add an image slideshow inside a modal, to create a "lightbox": </p>
+
+<div class="nd-row-padding" style="margin:0 -16px">
+  <div class="nd-col s4">
+    <img src="/AdvancedWebDesign/w3-images/img_nature_wide.jpg" style="width:100%;cursor:pointer"
+    onclick="openModal();currentDiv(1)" class="nd-hover-shadow">
+  </div>
+  <div class="nd-col s4">
+    <img src="/AdvancedWebDesign/w3-images/img_snow_wide.jpg" style="width:100%;cursor:pointer"
+    onclick="openModal();currentDiv(2)" class="nd-hover-shadow">
+  </div>
+  <div class="nd-col s4">
+    <img src="/AdvancedWebDesign/w3-images/img_mountains_wide.jpg" style="width:100%;cursor:pointer"
+    onclick="openModal();currentDiv(3)" class="nd-hover-shadow">
+  </div>
+</div>
+
+<div id="myModal" class="nd-modal nd-black">
+ <span class="nd-text-white nd-xxlarge nd-hover-text-grey nd-container nd-display-topright" onclick="closeModal()" style="cursor:pointer">×</span>
+ <div class="nd-modal-content">
+
+  <div class="nd-content" style="max-width:1200px">
+   <img class='mySlides' src = "/AdvancedWebDesign/w3-images/img_nature_wide.jpg" style="width:100%">
+   <img class="mySlides" src = "/AdvancedWebDesign/w3-images/img_snow_wide.jpg" style="width:100%">
+   <img class="mySlides" src = "/AdvancedWebDesign/w3-images/img_mountains_wide.jpg" style="width:100%">
+   
+   <div class="nd-row nd-black nd-center">
+    <div class="nd-display-container">
+     <p id="caption"></p>
+     <span class="nd-display-left nd-btn" onclick="plusDivs(-1)">❮</span>
+     <span class="nd-display-right nd-btn" onclick="plusDivs(1)">❯</span>
+    </div>
+    <div class="nd-col s4">
+     <img class="demo nd-opacity nd-hover-opacity-off" src="/AdvancedWebDesign/w3-images/img_nature_wide.jpg" style="width:100%" onclick="currentDiv(1)" alt="Nature and sunrise">
+    </div>
+    <div class="nd-col s4">
+     <img class="demo nd-opacity nd-hover-opacity-off" src="/AdvancedWebDesign/w3-images/img_snow_wide.jpg" style="width:100%" onclick="currentDiv(2)" alt="French Alps">
+    </div>
+    <div class="nd-col s4">
+     <img class="demo nd-opacity nd-hover-opacity-off" src="/AdvancedWebDesign/w3-images/img_mountains_wide.jpg" style="width:100%" onclick="currentDiv(3)" alt="Mountains and fjords">
+    </div>
+   </div> <!-- End row -->
+  </div> <!-- End w3-content -->
+  
+ </div> <!-- End modal content -->
+</div> <!-- End modal -->
+
+</div>
+
+<script>
+function openModal() {
+  document.getElementById('myModal').style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById('myModal').style.display = "none";
+}
+
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function currentDiv(n) {
+  showDivs(slideIndex = n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  var captionText = document.getElementById("caption");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" nd-opacity-off", "");
+  }
+  x[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " nd-opacity-off";
+  captionText.innerHTML = dots[slideIndex-1].alt;
+}
+</script>
+    
+</body>
+</html>

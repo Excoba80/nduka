@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href=" /AdvancedWebDesign/barr.nd.css   ">
+<body>
+
+<div class="nd-container">
+  <h2> Create A Modal</h2>
+  <p>  <b>The w3-modal</b> class defines a container for a modal. <br> <br>
+
+The <b>w3-modal-content</b> class defines the modal content.
+
+Modal content can be any HTML element (divs, headings, paragraphs, images, etc.).     </p>
+  <button onclick="document.getElementById('id01').style.display='block'" class="nd-button nd-black">Open Modal</button>
+
+  <div id="id01" class="nd-modal">
+    <div class="nd-modal-content">
+      <div class="nd-container">
+        <span onclick="document.getElementById('id01').style.display='none'" class="nd-button nd-display-topright">&times;</span>
+        <p>Some text. Some text. Some text.</p>
+        <p>Some text. Some text. Some text.</p>
+      </div>
+    </div>
+  </div>
+</div>
+            
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href=" /AdvancedWebDesign/barr.nd.css   ">
+<body>
+
+<div class="nd-container">
+  <h2>W3.CSS Animated Modal</h2>
+  <p>Zoom in the modal with the w3-animate-zoom class, or slide in the modal from a specific direction using the w3-animate-top, w3-animate-bottom, w3-animate-left or w3-animate-right class:</p>
+  <button onclick="document.getElementById('id01').style.display='block'" class="nd-button nd-black">Open Animated Modal</button>
+
+  <div id="id01" class="nd-modal">
+    <div class="nd-modal-content nd-animate-top nd-card-4">
+      <header class="nd-container nd-teal"> 
+        <span onclick="document.getElementById('id01').style.display='none'" 
+        class="nd-button nd-display-topright">&times;</span>
+        <h2>Modal Header</h2>
+      </header>
+      <div class="nd-container">
+        <p>Some text..</p>
+        <p>Some text..</p>
+      </div>
+      <footer class="nd-container nd-teal">
+        <p>Modal Footer</p>
+      </footer>
+    </div>
+  </div>
+</div>
+          
+</body>
+</html>
