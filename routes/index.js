@@ -1,11 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.render("home/index", {
-        title: "NDUKA",
-        message: "Welcome to NDUKA"
-    });
-});
+const homeController = require("../controllers/homeController");
+
+router.get("/", homeController.index);
 
 module.exports = router;
