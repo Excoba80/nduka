@@ -19,4 +19,11 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 
+// Catch 404
+app.use((req, res, next) => {
+    const err = new Error("Page Not Found");
+    err.status = 404;
+    next(err);
+});
+
 module.exports = app;
