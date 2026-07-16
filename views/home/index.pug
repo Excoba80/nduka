@@ -4,5 +4,7 @@ html
         title= title
 
     body
-        h1= title
-        p= message
+        h1 Users
+
+        each user in users
+            p= user.name
