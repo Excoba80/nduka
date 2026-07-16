@@ -1,6 +1,8 @@
+const config = require("../config/app");
+
 exports.index = async (req, res) => {
     res.render("home/index", {
-        title: "NDUKA",
-        message: "Welcome to NDUKA"
+        title: config.appName,
+        message: "Welcome to NDUKA FROM CONFIG"
     });
 };
