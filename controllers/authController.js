@@ -1,18 +1,19 @@
 
-const { validationResult } = require("express-validator");
+const AuthService = require("../services/authService");
 
-exports.register = (req, res) => {
+exports.register = async (req, res, next) => {
 
-    const errors = validationResult(req);
+    try {
 
-    if (!errors.isEmpty()) {
+        const user = await AuthService.register(req.body);
 
-        return res.status(400).json({
-            errors: errors.array()
-        });
+        res.status(201).json(user);
+
+    } catch (err) {
+
+        next(err);
 
     }
 
-    res.send("Registration Successful");
-
 };
+
