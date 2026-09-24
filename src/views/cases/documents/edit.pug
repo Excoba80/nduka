@@ -1,0 +1,222 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.mb-1
+                    i.bi.bi-pencil-square.me-2
+                    | Edit Case Document
+
+                p.text-muted.mb-0
+                    | #{caseRecord.case_reference} — #{caseRecord.case_title}
+
+            div.mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href=`/cases/${caseRecord.id}/documents`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Documents
+
+
+        //- Document Information
+        .card.shadow-sm.mb-4
+
+            .card-header.bg-white.py-3
+
+                h5.mb-0
+                    i.bi.bi-file-earmark-text.me-2
+                    | Document Information
+
+            .card-body
+
+                .row.g-3
+
+                    .col-md-6
+
+                        .text-muted.small
+                            | Original Filename
+
+                        .fw-semibold
+                            | #{document.original_filename}
+
+
+                    .col-md-3
+
+                        .text-muted.small
+                            | File Type
+
+                        div
+                            | #{document.mime_type}
+
+
+                    .col-md-3
+
+                        .text-muted.small
+                            | File Size
+
+                        - const sizeInMb = (Number(document.file_size) / (1024 * 1024)).toFixed(2)
+
+                        div
+                            | #{sizeInMb} MB
+
+
+                    .col-12
+
+                        .text-muted.small
+                            | SHA-256
+
+                        code.d-block.mt-1
+                            | #{document.file_hash || 'Not available'}
+
+
+        //- Edit Form
+        .card.shadow-sm
+
+            .card-header.bg-white.py-3
+
+                h5.mb-0
+                    i.bi.bi-pencil.me-2
+                    | Update Document Metadata
+
+
+            .card-body
+
+                if error
+
+                    .alert.alert-danger
+                        i.bi.bi-exclamation-triangle.me-2
+                        | #{error}
+
+
+                form(
+                    method="POST"
+                    action=`/cases/${caseRecord.id}/documents/${document.id}`
+                )
+
+                    input(
+                        type="hidden"
+                        name="_csrf"
+                        value=csrfToken
+                    )
+
+
+                    .mb-3
+
+                        label.form-label(
+                            for="document_type_id"
+                        )
+                            | Document Type
+
+                        select.form-select(
+                            id="document_type_id"
+                            name="document_type_id"
+                            required
+                        )
+
+                            option(
+                                value=""
+                                disabled
+                                selected=!document.document_type_id
+                            )
+                                | Select document type
+
+                            each documentType in documentTypes
+
+                                option(
+                                    value=documentType.id
+                                    selected=Number(document.document_type_id) === Number(documentType.id)
+                                )
+                                    | #{documentType.name}
+
+
+                    .mb-3
+
+                        label.form-label(
+                            for="case_investigation_service_id"
+                        )
+                            | Investigation Service
+
+                        select.form-select(
+                            id="case_investigation_service_id"
+                            name="case_investigation_service_id"
+                        )
+
+                            option(
+                                value=""
+                                selected=!document.case_investigation_service_id
+                            )
+                                | General Case Document
+
+                            each service in investigationServices
+
+                                option(
+                                    value=service.id
+                                    selected=Number(document.case_investigation_service_id) === Number(service.id)
+                                )
+                                    | #{service.investigation_type_name}
+
+
+                    .mb-3
+
+                        label.form-label(
+                            for="expiry_date"
+                        )
+                            | Expiry Date
+
+                        input.form-control(
+                            type="date"
+                            id="expiry_date"
+                            name="expiry_date"
+                            value=document.expiry_date ? new Date(document.expiry_date).toISOString().slice(0, 10) : ''
+                        )
+
+                        .form-text
+                            | Required for document types that require an expiry date.
+
+
+                    .form-check.mb-4
+
+                        if Number(document.is_private) === 1
+                            input.form-check-input(
+                                type="checkbox"
+                                id="is_private"
+                                name="is_private"
+                                value="1"
+                                checked
+                            )
+                        else
+                            input.form-check-input(
+                                type="checkbox"
+                                id="is_private"
+                                name="is_private"
+                                value="1"
+                            )
+
+                        label.form-check-label(
+                            for="is_private"
+                        )
+                            | Mark document as private
+
+                        .form-text
+                            | Private documents should only be accessible to appropriately authorized users.
+
+
+                    .d-flex.flex-column.flex-sm-row.gap-2
+
+                        button.btn.btn-primary(
+                            type="submit"
+                        )
+                            i.bi.bi-check-circle.me-2
+                            | Save Changes
+
+                        a.btn.btn-outline-secondary(
+                            href=`/cases/${caseRecord.id}/documents`
+                        )
+                            | Cancel

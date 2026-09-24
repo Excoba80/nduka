@@ -1,0 +1,73 @@
+extends ../layouts/main
+
+block content
+
+    .row.justify-content-center.align-items-center.min-vh-100
+
+        .col-12.col-sm-10.col-md-7.col-lg-5.col-xl-4
+
+            .card.shadow.border-0.rounded-4
+
+                .card-body.p-5
+
+                    .text-center.mb-5
+
+                        i.bi.bi-shield-lock.display-4.text-primary
+
+                        h1.mt-3.mb-1.fw-bold.nduka-brand
+                            | NDUKA
+
+                        p.text-muted.mb-4
+                            | Sign In
+
+                    if error
+                        .alert.alert-danger(role="alert")
+                            i.bi.bi-exclamation-triangle-fill.me-2
+                            | #{error}
+
+                    form(
+                        action="/login"
+                        method="POST"
+                        novalidate
+                    )
+
+                        input(
+                            type="hidden"
+                            name="_csrf"
+                            value=csrfToken
+                        )
+
+                        .mb-3
+
+                            label.form-label(for="username")
+                                | Username
+
+                            input.form-control(
+                                id="username"
+                                name="username"
+                                type="text"
+                                placeholder="Enter your username"
+                                autocomplete="username"
+                                required
+                                autofocus
+                            )
+
+                        .mb-4
+
+                            label.form-label(for="password")
+                                | Password
+
+                            input.form-control(
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            )
+
+                        .d-grid
+
+                            button.btn.btn-primary.btn-lg(type="submit")
+                                i.bi.bi-box-arrow-in-right.me-2
+                                | Sign In

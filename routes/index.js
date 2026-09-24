@@ -1,8 +1,24 @@
-const express = require("express");
+'use strict';
+
+const express = require('express');
+
+const homeController =
+    require('../controllers/homeController');
+
 const router = express.Router();
 
-const homeController = require("../controllers/homeController");
 
-router.get("/", homeController.index);
+/*
+ * Public Home Page
+ *
+ * This route is intentionally public.
+ * Visitors do not need an authenticated
+ * NDUKA account to learn about the service.
+ */
+router.get(
+    '/',
+    homeController.index
+);
+
 
 module.exports = router;

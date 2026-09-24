@@ -1,0 +1,38 @@
+extends ../layouts/layout.pug
+
+block content
+
+    section
+        .public-container
+
+            .section-heading
+
+                span.eyebrow
+                    | Request Received
+
+                h1
+                    | Your Investigation Request has been submitted.
+
+                p
+                    | Thank you. Your request has been received and
+                    | will be reviewed by the NDUKA team.
+
+
+            .success-card
+
+                h2
+                    | Request Reference
+
+                p.request-reference
+                    | #{requestReference}
+
+                p
+                    | Please keep this reference for your records.
+
+
+                .hero-actions
+
+                    a.btn.btn-primary(
+                        href="/"
+                    )
+                        | Return Home

@@ -5,3 +5,63 @@ npm-debug.log
 npm-debug.log*
 yarn-error.log*
 *:Zone.Identifier*:Zone.Identifier
+
+# NDUKA local/runtime data
+storage/
+old_db/
+
+# Local backup artifacts
+*.bak
+*.backup*
+*.backup_*
+
+# Root-level one-off development scripts
+/add_check_service_navigation.py
+/add_check_service_style.py
+/add_initialize_payment_controller.py
+/add_payment_initialization_route.py
+/add_payment_initialization_service.py
+/add_payment_summary.py
+/add_public_payment_intent_controller.py
+/add_public_payment_intent_service.py
+/change_check_service_to_status.py
+/export_initialize_payment_controller.py
+/export_payment_initialization_service.py
+/fix_public_status_spacing.py
+/stage_a_payment_summary.py
+/style_check_status_button.py
+/update_public_status_fees.py
+/update_public_status_services.py
+
+# Root-level historical/accidental files
+/app(old).js
+/brevoSetUp.com
+/initiatePublicInvestigationRequestPayment
+/public.css
+
+# Additional local backup/archive artifacts
+*.save
+*.save.*
+*.bak-*
+*.backup-*
+
+# Backup directories under source tree
+src/controllers/backsUp/
+src/services/backsUp/
+
+# Additional development/test artifacts
+/PY
+/validators/auth.validator.js
+/scripts/test-*.js
+/views/reserve/
+
+# Timestamped/local backup copies
+*.bak_*
+*.bak2
+*.bak3
+*.save*
+*.backup_*
+*.backup-*
+
+# Specific historical Pug backup
+/src/views/cases/show.pug.before-notes

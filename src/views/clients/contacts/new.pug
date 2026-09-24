@@ -1,0 +1,309 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.fw-bold.mb-1
+                    | Add Client Contact
+
+                p.text-muted.mb-0
+                    | Add a contact associated with this client.
+
+            .mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href=`/clients/${clientId}/contacts`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Contacts
+
+
+        //- Form Card
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-body.p-4
+
+                if error
+
+                    .alert.alert-danger(
+                        role="alert"
+                    )
+                        i.bi.bi-exclamation-triangle.me-2
+                        | #{error}
+
+
+                form(
+                    method="POST"
+                    action=`/clients/${clientId}/contacts`
+                )
+
+                    input(
+                        type="hidden"
+                        name="_csrf"
+                        value=csrfToken
+                    )
+
+
+                    //- Contact Information
+                    h5.fw-semibold.mb-3
+                        | Contact Information
+
+
+                    .row.g-3
+
+                        .col-md-2
+
+                            label.form-label(
+                                for="title"
+                            )
+                                | Title
+
+                            select.form-select(
+                                id="title"
+                                name="title"
+                            )
+
+                                option(
+                                    value=""
+                                    selected=!formData || !formData.title
+                                )
+                                    | Select
+
+                                option(
+                                    value="Mr."
+                                    selected=formData && formData.title === 'Mr.'
+                                )
+                                    | Mr.
+
+                                option(
+                                    value="Mrs."
+                                    selected=formData && formData.title === 'Mrs.'
+                                )
+                                    | Mrs.
+
+                                option(
+                                    value="Ms."
+                                    selected=formData && formData.title === 'Ms.'
+                                )
+                                    | Ms.
+
+                                option(
+                                    value="Dr."
+                                    selected=formData && formData.title === 'Dr.'
+                                )
+                                    | Dr.
+
+                                option(
+                                    value="Chief"
+                                    selected=formData && formData.title === 'Chief'
+                                )
+                                    | Chief
+
+                                option(
+                                    value="Prof."
+                                    selected=formData && formData.title === 'Prof.'
+                                )
+                                    | Prof.
+
+
+                        .col-md-4
+
+                            label.form-label(
+                                for="first_name"
+                            )
+                                | First Name
+                                span.text-danger
+                                    | *
+
+                            input.form-control(
+                                type="text"
+                                id="first_name"
+                                name="first_name"
+                                value=formData && formData.first_name || ''
+                                maxlength="100"
+                                required
+                            )
+
+
+                        .col-md-3
+
+                            label.form-label(
+                                for="middle_name"
+                            )
+                                | Middle Name
+
+                            input.form-control(
+                                type="text"
+                                id="middle_name"
+                                name="middle_name"
+                                value=formData && formData.middle_name || ''
+                                maxlength="100"
+                            )
+
+
+                        .col-md-3
+
+                            label.form-label(
+                                for="last_name"
+                            )
+                                | Last Name
+                                span.text-danger
+                                    | *
+
+                            input.form-control(
+                                type="text"
+                                id="last_name"
+                                name="last_name"
+                                value=formData && formData.last_name || ''
+                                maxlength="100"
+                                required
+                            )
+
+
+                        .col-md-6
+
+                            label.form-label(
+                                for="position"
+                            )
+                                | Position
+
+                            input.form-control(
+                                type="text"
+                                id="position"
+                                name="position"
+                                value=formData && formData.position || ''
+                                maxlength="150"
+                                placeholder="e.g. Managing Director"
+                            )
+
+
+                        .col-md-6
+
+                            label.form-label(
+                                for="phone"
+                            )
+                                | Phone
+                                span.text-danger
+                                    | *
+
+                            input.form-control(
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                value=formData && formData.phone || ''
+                                maxlength="20"
+                                required
+                            )
+
+
+                        .col-md-6
+
+                            label.form-label(
+                                for="email"
+                            )
+                                | Email
+
+                            input.form-control(
+                                type="email"
+                                id="email"
+                                name="email"
+                                value=formData && formData.email || ''
+                                maxlength="255"
+                            )
+
+
+                    hr.my-4
+
+
+                    //- Contact Status
+                    h5.fw-semibold.mb-3
+                        | Contact Status
+
+
+                    //- Primary Contact
+                    .mb-4
+
+                        label.form-label.d-block
+                            | Primary Contact
+
+                        .d-flex.gap-4
+
+                            .form-check
+
+                                input.form-check-input(
+                                    type="radio"
+                                    id="is_primary_no"
+                                    name="is_primary"
+                                    value="0"
+                                    checked=!formData || !formData.is_primary || (
+                                        formData.is_primary !== '1' &&
+                                        formData.is_primary !== 1 &&
+                                        formData.is_primary !== true
+                                    )
+                                )
+
+                                label.form-check-label(
+                                    for="is_primary_no"
+                                )
+                                    | No
+
+
+                            .form-check
+
+                                input.form-check-input(
+                                    type="radio"
+                                    id="is_primary_yes"
+                                    name="is_primary"
+                                    value="1"
+                                    checked=formData && (
+                                        formData.is_primary === '1' ||
+                                        formData.is_primary === 1 ||
+                                        formData.is_primary === true
+                                    )
+                                )
+
+                                label.form-check-label(
+                                    for="is_primary_yes"
+                                )
+                                    | Yes
+
+                        .form-text
+                            | Select Yes if this person should be the primary contact for this client.
+
+
+                    //- Remarks
+                    .mb-4
+
+                        label.form-label(
+                            for="remarks"
+                        )
+                            | Remarks
+
+                        textarea.form-control(
+                            id="remarks"
+                            name="remarks"
+                            rows="4"
+                            maxlength="5000"
+                            placeholder="Optional notes about this contact."
+                        )= formData && formData.remarks || ''
+
+
+                    //- Actions
+                    .d-flex.justify-content-end.gap-2
+
+                        a.btn.btn-outline-secondary(
+                            href=`/clients/${clientId}/contacts`
+                        )
+                            | Cancel
+
+                        button.btn.btn-primary(
+                            type="submit"
+                        )
+                            i.bi.bi-person-plus.me-2
+                            | Add Contact

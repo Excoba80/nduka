@@ -1,0 +1,171 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.mb-1
+                    i.bi.bi-file-earmark-check.me-2
+                    | Investigation Report
+
+                p.text-muted.mb-0
+                    | Approved report for your investigation
+
+            div.mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href=`/my-investigations/${report.case_id}`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Investigation
+
+
+        //- Report Information
+        .card.shadow-sm.mb-4
+
+            .card-header.bg-white.py-3
+
+                h5.mb-0
+                    i.bi.bi-info-circle.me-2
+                    | Report Information
+
+            .card-body
+
+                .row.g-4
+
+                    .col-md-6
+
+                        .text-muted.small.mb-1
+                            | Case Reference
+
+                        .fw-semibold
+                            | #{report.case_reference}
+
+
+                    .col-md-6
+
+                        .text-muted.small.mb-1
+                            | Request Reference
+
+                        if report.request_reference
+                            .fw-semibold
+                                | #{report.request_reference}
+                        else
+                            .text-muted
+                                | —
+
+
+                    .col-md-6
+
+                        .text-muted.small.mb-1
+                            | Report Number
+
+                        .fw-semibold
+                            | #{report.report_number}
+
+
+                    .col-md-6
+
+                        .text-muted.small.mb-1
+                            | Report Type
+
+                        .fw-semibold
+                            | #{report.report_type}
+
+
+                    .col-md-6
+
+                        .text-muted.small.mb-1
+                            | Report Title
+
+                        .fw-semibold
+                            | #{report.report_title}
+
+
+                    .col-md-6
+
+                        .text-muted.small.mb-1
+                            | Approved
+
+                        if report.approved_at
+                            .fw-semibold
+                                | #{new Date(report.approved_at).toLocaleString('en-NG')}
+                        else
+                            .text-muted
+                                | —
+
+
+        .alert.alert-success
+
+            i.bi.bi-check-circle.me-2
+
+            | This report has been approved and is available for your review.
+
+
+        //- Executive Summary
+        if report.executive_summary
+
+            .card.shadow-sm.mb-4
+
+                .card-header.bg-white.py-3
+
+                    h5.mb-0
+                        | Executive Summary
+
+                .card-body
+
+                    p.mb-0(style="white-space: pre-wrap")
+                        | #{report.executive_summary}
+
+
+        //- Findings
+        if report.findings
+
+            .card.shadow-sm.mb-4
+
+                .card-header.bg-white.py-3
+
+                    h5.mb-0
+                        | Findings
+
+                .card-body
+
+                    p.mb-0(style="white-space: pre-wrap")
+                        | #{report.findings}
+
+
+        //- Conclusion
+        if report.conclusion
+
+            .card.shadow-sm.mb-4
+
+                .card-header.bg-white.py-3
+
+                    h5.mb-0
+                        | Conclusion
+
+                .card-body
+
+                    p.mb-0(style="white-space: pre-wrap")
+                        | #{report.conclusion}
+
+
+        //- Recommendations
+        if report.recommendations
+
+            .card.shadow-sm.mb-4
+
+                .card-header.bg-white.py-3
+
+                    h5.mb-0
+                        | Recommendations
+
+                .card-body
+
+                    p.mb-0(style="white-space: pre-wrap")
+                        | #{report.recommendations}

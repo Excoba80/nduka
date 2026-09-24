@@ -1,0 +1,146 @@
+extends layouts/layout.pug
+
+block content
+
+    section.page-hero
+        .public-container
+            span.eyebrow
+                | Contact NDUKA
+            h1
+                | We are here to help.
+            p
+                | Contact NDUKA if you have questions about our
+                | investigation services, the investigation request
+                | process, or an existing request.
+
+
+    section.intro-section
+        .public-container
+
+            .section-heading
+                span.eyebrow
+                    | Get in Touch
+                h2
+                    | Contact NDUKA directly.
+                p
+                    | You can reach NDUKA through the contact channels
+                    | below. For an investigation request, you can also
+                    | use the formal request process to provide the
+                    | information required for review.
+
+            .feature-grid
+
+                article.feature-card
+                    h3
+                        | Phone
+                    p
+                        | Speak with NDUKA using our contact number.
+                    p
+                        strong
+                            | 07076451442
+
+                article.feature-card
+                    h3
+                        | Email
+                    p
+                        | Send an enquiry or request-related message to
+                        | our public email address.
+                    p
+                        a(
+                            href="mailto:ndukaverify@gmail.com"
+                        )
+                            | ndukaverify@gmail.com
+
+                article.feature-card
+                    h3
+                        | Investigation Requests
+                    p
+                        | If you are ready to request an investigation,
+                        | use the formal NDUKA investigation request
+                        | process so that the relevant information can be
+                        | submitted and reviewed in an organised manner.
+
+
+    section.services-preview
+        .public-container
+
+            .section-heading
+                span.eyebrow
+                    | Before You Contact Us
+                h2
+                    | Choose the route that fits your need.
+                p
+                    | Different NDUKA services are available for different
+                    | information needs.
+
+            .feature-grid
+
+                article.feature-card
+                    h3
+                        | New Investigation
+                    p
+                        | If you have not yet submitted a request, you
+                        | can review the available services and begin a
+                        | new investigation request.
+                    a.btn.btn-primary(
+                        href="/start-investigation"
+                    )
+                        | Start an Investigation
+
+                article.feature-card
+                    h3
+                        | Existing Request
+                    p
+                        | If you have already submitted an investigation
+                        | request, use your request reference to check
+                        | its current status.
+                    a.btn.btn-secondary(
+                        href="/investigation-request-status"
+                    )
+                        | Check Status
+
+                article.feature-card
+                    h3
+                        | Explore Services
+                    p
+                        | Review the current investigation services before
+                        | deciding which areas are relevant to your request.
+                    a.btn.btn-secondary(
+                        href="/services"
+                    )
+                        | View Services
+
+
+    section.communication-section
+        .public-container
+
+            .section-heading
+                span.eyebrow
+                    | Important Information
+                h2
+                    | Protect sensitive information.
+                p
+                    | Please avoid sending sensitive personal information
+                    | through a general enquiry unless it is specifically
+                    | requested as part of the appropriate NDUKA process.
+                    | Use the formal investigation request process when
+                    | submitting particulars required for an investigation.
+
+
+    section.cta-section
+        .public-container
+            .cta-content
+                div
+                    span.eyebrow
+                        | NDUKA
+                    h2
+                        | Ready to begin an investigation?
+                    p
+                        | Review the available services and submit your
+                        | request when you are ready.
+
+                div
+                    a.btn.btn-primary(
+                        href="/start-investigation"
+                    )
+                        | Start an Investigation

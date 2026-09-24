@@ -1,0 +1,471 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.mb-1
+                    i.bi.bi-search.me-2
+                    | Investigation Progress
+
+                p.text-muted.mb-0
+                    | #{investigation.case.case_reference}
+
+            div.mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href="/my-investigations"
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to My Investigations
+
+
+        //- Case Summary
+        .card.shadow-sm.mb-4
+
+            .card-header.bg-white.py-3
+
+                .d-flex.justify-content-between.align-items-center
+
+                    h5.mb-0
+                        i.bi.bi-info-circle.me-2
+                        | Case Information
+
+                    if investigation.case.status_name
+
+                        if investigation.case.status_is_terminal
+                            span.badge.bg-secondary
+                                | #{investigation.case.status_name}
+                        else
+                            span.badge.bg-primary
+                                | #{investigation.case.status_name}
+
+            .card-body
+
+                .row.g-4
+
+                    .col-md-4
+
+                        .text-muted.small.mb-1
+                            | Case Reference
+
+                        .fw-semibold
+                            | #{investigation.case.case_reference}
+
+
+                    .col-md-4
+
+                        .text-muted.small.mb-1
+                            | Request Reference
+
+                        if investigation.case.request_reference
+                            .fw-semibold
+                                | #{investigation.case.request_reference}
+                        else
+                            .text-muted
+                                | Not available
+
+
+                    .col-md-4
+
+                        .text-muted.small.mb-1
+                            | Opened
+
+                        if investigation.case.opened_at
+                            .fw-semibold
+                                | #{new Date(investigation.case.opened_at).toLocaleDateString('en-NG')}
+                        else
+                            .text-muted
+                                | —
+
+
+                    if investigation.case.status_description
+
+                        .col-12
+
+                            .text-muted.small.mb-1
+                                | Current Status
+
+                            .p-3.bg-light.rounded
+                                | #{investigation.case.status_description}
+
+
+        //- Investigation Progress
+        .card.shadow-sm.mb-4
+
+            .card-header.bg-white.py-3
+
+                h5.mb-0
+                    i.bi.bi-bar-chart-steps.me-2
+                    | Investigation Progress
+
+            .card-body
+
+                .row.g-3
+
+                    //- Open
+                    .col-12
+
+                        .d-flex.align-items-start.gap-3
+
+                            .flex-shrink-0
+
+                                if investigation.case.status_display_order >= 1
+                                    span.badge.rounded-pill.bg-primary
+                                        i.bi.bi-check-lg
+
+                                else
+                                    span.badge.rounded-pill.bg-light.text-dark.border
+                                        | 1
+
+                            div
+
+                                .fw-semibold
+                                    | Case Opened
+
+                                .small.text-muted
+                                    | Your investigation case has been opened and registered.
+
+
+                    //- Investigation
+                    .col-12
+
+                        .d-flex.align-items-start.gap-3
+
+                            .flex-shrink-0
+
+                                if investigation.case.status_display_order >= 2
+                                    span.badge.rounded-pill.bg-primary
+                                        if investigation.case.status_code === 'INVESTIGATION'
+                                            i.bi.bi-arrow-right
+                                        else
+                                            i.bi.bi-check-lg
+
+                                else
+                                    span.badge.rounded-pill.bg-light.text-dark.border
+                                        | 2
+
+                            div
+
+                                .fw-semibold
+                                    | Investigation in Progress
+
+                                .small.text-muted
+                                    | Investigation services are being processed.
+
+
+                    //- Review
+                    .col-12
+
+                        .d-flex.align-items-start.gap-3
+
+                            .flex-shrink-0
+
+                                if investigation.case.status_display_order >= 3
+                                    span.badge.rounded-pill.bg-primary
+                                        if investigation.case.status_code === 'UNDER_REVIEW'
+                                            i.bi.bi-arrow-right
+                                        else
+                                            i.bi.bi-check-lg
+
+                                else
+                                    span.badge.rounded-pill.bg-light.text-dark.border
+                                        | 3
+
+                            div
+
+                                .fw-semibold
+                                    | Under Review
+
+                                .small.text-muted
+                                    | Completed investigation work is being reviewed.
+
+
+                    //- On Hold
+                    if investigation.case.status_code === 'ON_HOLD'
+
+                        .col-12
+
+                            .d-flex.align-items-start.gap-3
+
+                                .flex-shrink-0
+                                    span.badge.rounded-pill.bg-warning.text-dark
+                                        i.bi.bi-pause-fill
+
+                                div
+
+                                    .fw-semibold
+                                        | Temporarily On Hold
+
+                                    .small.text-muted
+                                        | Processing of this investigation is temporarily on hold.
+
+
+                    //- Completed
+                    .col-12
+
+                        .d-flex.align-items-start.gap-3
+
+                            .flex-shrink-0
+
+                                if investigation.case.status_code === 'CLOSED'
+                                    span.badge.rounded-pill.bg-success
+                                        i.bi.bi-check-lg
+                                else
+                                    span.badge.rounded-pill.bg-light.text-dark.border
+                                        | 4
+
+                            div
+
+                                .fw-semibold
+                                    | Completed
+
+                                .small.text-muted
+                                    | The investigation case has been completed.
+
+
+                    //- Cancelled
+                    if investigation.case.status_code === 'CANCELLED'
+
+                        .col-12
+
+                            .d-flex.align-items-start.gap-3
+
+                                .flex-shrink-0
+                                    span.badge.rounded-pill.bg-secondary
+                                        i.bi.bi-x-lg
+
+                                div
+
+                                    .fw-semibold
+                                        | Cancelled
+
+                                    .small.text-muted
+                                        | This investigation case has been cancelled.
+
+
+        //- Investigation Services
+        .card.shadow-sm.mb-4
+
+            .card-header.bg-white.py-3
+
+                .d-flex.justify-content-between.align-items-center
+
+                    h5.mb-0
+                        i.bi.bi-list-check.me-2
+                        | Investigation Services
+
+                    if investigation.services && investigation.services.length
+                        span.badge.bg-secondary
+                            | #{investigation.services.length} #{investigation.services.length === 1 ? 'Service' : 'Services'}
+
+            .card-body
+
+                if investigation.services && investigation.services.length
+
+                    .row.g-3
+
+                        each service in investigation.services
+
+                            .col-12
+
+                                .border.rounded.p-3
+
+                                    .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.gap-3
+
+                                        div
+
+                                            .fw-semibold
+                                                | #{service.investigation_type_name}
+
+                                            if service.investigation_type_description
+                                                .small.text-muted.mt-1
+                                                    | #{service.investigation_type_description}
+
+                                        div
+
+                                            if service.service_status_code === 'COMPLETED'
+                                                span.badge.bg-success
+                                                    | #{service.service_status_name}
+
+                                            else if service.service_status_code === 'IN_PROGRESS'
+                                                span.badge.bg-primary
+                                                    | #{service.service_status_name}
+
+                                            else if service.service_status_code === 'ON_HOLD'
+                                                span.badge.bg-warning.text-dark
+                                                    | #{service.service_status_name}
+
+                                            else if service.service_status_code === 'CANCELLED'
+                                                span.badge.bg-secondary
+                                                    | #{service.service_status_name}
+
+                                            else
+                                                span.badge.bg-light.text-dark.border
+                                                    | #{service.service_status_name}
+
+                                    if service.started_at || service.completed_at
+
+                                        .row.g-3.mt-2
+
+                                            if service.started_at
+                                                .col-md-6
+
+                                                    .text-muted.small
+                                                        | Started
+
+                                                    .small
+                                                        | #{new Date(service.started_at).toLocaleDateString('en-NG')}
+
+                                            if service.completed_at
+                                                .col-md-6
+
+                                                    .text-muted.small
+                                                        | Completed
+
+                                                    .small
+                                                        | #{new Date(service.completed_at).toLocaleDateString('en-NG')}
+
+                else
+
+                    .text-center.py-4
+
+                        i.bi.bi-list-check.fs-2.text-muted
+
+                        p.text-muted.mb-0.mt-2
+                            | No investigation services are currently associated with this case.
+
+
+        //- Payment
+        if investigation.payment
+
+            .card.shadow-sm.mb-4
+
+                .card-header.bg-white.py-3
+
+                    h5.mb-0
+                        i.bi.bi-credit-card.me-2
+                        | Payment
+
+                .card-body
+
+                    .row.g-4
+
+                        .col-md-4
+
+                            .text-muted.small.mb-1
+                                | Payment Reference
+
+                            .fw-semibold
+                                | #{investigation.payment.paymentReference}
+
+
+                        .col-md-4
+
+                            .text-muted.small.mb-1
+                                | Amount
+
+                            .fw-semibold
+                                | #{investigation.payment.currency} #{Number(investigation.payment.amount || 0).toLocaleString('en-NG')}
+
+
+                        .col-md-4
+
+                            .text-muted.small.mb-1
+                                | Status
+
+                            if investigation.payment.status === 'SUCCESSFUL'
+                                span.badge.bg-success
+                                    | Payment Successful
+                            else if investigation.payment.status === 'INITIATED'
+                                span.badge.bg-primary
+                                    | Payment Initiated
+                            else if investigation.payment.status === 'FAILED'
+                                span.badge.bg-danger
+                                    | Payment Failed
+                            else if investigation.payment.status === 'CANCELLED'
+                                span.badge.bg-secondary
+                                    | Payment Cancelled
+                            else
+                                span.badge.bg-light.text-dark.border
+                                    | #{investigation.payment.status}
+
+
+        //- Reports
+        .card.shadow-sm.mb-4
+
+            .card-header.bg-white.py-3
+
+                h5.mb-0
+                    i.bi.bi-file-earmark-check.me-2
+                    | Investigation Reports
+
+            .card-body
+
+                if investigation.reports && investigation.reports.length
+
+                    .table-responsive
+
+                        table.table.table-hover.align-middle.mb-0
+
+                            thead.table-light
+
+                                tr
+                                    th Report Number
+                                    th Report Type
+                                    th Title
+                                    th Approved
+                                    th Status
+                                    th.text-end Action
+
+                            tbody
+
+                                each report in investigation.reports
+
+                                    tr
+
+                                        td
+                                            .fw-semibold
+                                                | #{report.report_number}
+
+                                        td
+                                            | #{report.report_type}
+
+                                        td
+                                            | #{report.report_title}
+
+                                        td
+
+                                            if report.approved_at
+                                                | #{new Date(report.approved_at).toLocaleDateString('en-NG')}
+                                            else
+                                                span.text-muted
+                                                    | —
+
+                                        td
+                                            span.badge.bg-success
+                                                | Approved
+
+                                        td.text-end
+
+                                            a.btn.btn-sm.btn-outline-primary(
+                                                href=`/my-investigations/${investigation.case.id}/reports/${report.id}`
+                                            )
+                                                i.bi.bi-file-earmark-text.me-1
+                                                | View Report
+
+                else
+
+                    .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.gap-3
+
+                        div
+
+                            .fw-semibold
+                                | No approved report available yet.
+
+                            .small.text-muted
+                                | An approved investigation report will appear here when it becomes available.

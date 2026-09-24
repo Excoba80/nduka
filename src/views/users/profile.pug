@@ -1,0 +1,156 @@
+extends ../layouts/main
+
+block content
+    .container-fluid
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+            div
+                h1.h3.fw-bold.mb-1
+                    | My Profile
+                p.text-muted.mb-0
+                    | View your NDUKA account information.
+
+            .mt-3.mt-md-0.d-flex.flex-wrap.gap-2
+                a.btn.btn-outline-primary(href="/change-password")
+                    i.bi.bi-key.me-2
+                    | Change Password
+
+        .row.g-4
+            .col-12.col-lg-8
+                .card.shadow-sm.border-0.rounded-4
+                    .card-body.p-4
+                        .d-flex.align-items-center.mb-4
+                            .bg-primary.bg-opacity-10.rounded-circle.p-3.me-3
+                                i.bi.bi-person-circle.fs-2.text-primary
+
+                            div
+                                h4.fw-bold.mb-1
+                                    | #{user.first_name}#{user.middle_name ? ' ' + user.middle_name : ''} #{user.last_name}
+                                p.text-muted.mb-0
+                                    | @#{user.username}
+
+                        hr
+
+                        .row.g-4
+                            .col-12.col-md-6
+                                small.text-muted.d-block
+                                    | First Name
+                                .fw-semibold
+                                    | #{user.first_name}
+
+                            .col-12.col-md-6
+                                small.text-muted.d-block
+                                    | Last Name
+                                .fw-semibold
+                                    | #{user.last_name}
+
+                            if user.middle_name
+                                .col-12.col-md-6
+                                    small.text-muted.d-block
+                                        | Middle Name
+                                    .fw-semibold
+                                        | #{user.middle_name}
+
+                            .col-12.col-md-6
+                                small.text-muted.d-block
+                                    | Username
+                                .fw-semibold
+                                    | #{user.username}
+
+                            .col-12.col-md-6
+                                small.text-muted.d-block
+                                    | Email
+                                .fw-semibold
+                                    | #{user.email || 'Not provided'}
+
+                            .col-12.col-md-6
+                                small.text-muted.d-block
+                                    | Phone
+                                .fw-semibold
+                                    | #{user.phone || 'Not provided'}
+
+            .col-12.col-lg-4
+                .card.shadow-sm.border-0.rounded-4.mb-4
+                    .card-body.p-4
+                        h5.fw-bold.mb-3
+                            | Account Status
+
+                        if user.status === 'active'
+                            span.badge.text-bg-success.fs-6
+                                | #{user.status_display_name}
+                        else if user.status === 'suspended'
+                            span.badge.text-bg-warning.fs-6
+                                | #{user.status_display_name}
+                        else
+                            span.badge.text-bg-secondary.fs-6
+                                | #{user.status_display_name}
+
+                .card.shadow-sm.border-0.rounded-4
+                    .card-body.p-4
+                        h5.fw-bold.mb-3
+                            | Roles
+
+                        if user.roles
+                            each role in user.roles.split(', ')
+                                span.badge.text-bg-secondary.me-1.mb-1
+                                    | #{role}
+                        else
+                            p.text-muted.mb-0
+                                | No role assigned.
+
+        .card.shadow-sm.border-0.rounded-4.mt-4
+            .card-body.p-4
+                h5.fw-bold.mb-3
+                    | Verification
+
+                .row.g-4
+                    .col-12.col-md-6
+                        small.text-muted.d-block
+                            | Email Verification
+
+                        if user.is_email_verified
+                            span.badge.text-bg-success
+                                | Verified
+                        else
+                            span.badge.text-bg-secondary
+                                | Not verified
+
+                    .col-12.col-md-6
+                        small.text-muted.d-block
+                            | Phone Verification
+
+                        if user.is_phone_verified
+                            span.badge.text-bg-success
+                                | Verified
+                        else
+                            span.badge.text-bg-secondary
+                                | Not verified
+
+        .card.shadow-sm.border-0.rounded-4.mt-4
+            .card-body.p-4
+                h5.fw-bold.mb-3
+                    | Account Information
+
+                .row.g-4
+                    .col-12.col-md-6
+                        small.text-muted.d-block
+                            | Account ID
+                        .fw-semibold
+                            | #{user.id}
+
+                    .col-12.col-md-6
+                        small.text-muted.d-block
+                            | Created
+                        .fw-semibold
+                            | #{user.created_at}
+
+                    .col-12.col-md-6
+                        small.text-muted.d-block
+                            | Last Updated
+                        .fw-semibold
+                            | #{user.updated_at}
+
+                    .col-12.col-md-6
+                        small.text-muted.d-block
+                            | Last Login
+                        .fw-semibold
+                            | #{user.last_login_at || 'Not available'}

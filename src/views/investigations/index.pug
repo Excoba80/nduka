@@ -1,0 +1,318 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid.py-4
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.mb-1
+                    i.bi.bi-search.me-2
+                    | Investigations
+
+                p.text-muted.mb-0
+                    | Structured investigations designed to help clients make informed decisions through verified information.
+
+            .mt-3.mt-md-0.d-flex.flex-wrap.gap-2
+
+                if hasPermission('view_investigation_request')
+
+                    a.btn.btn-outline-primary(
+                        href="/investigation-requests"
+                    )
+                        i.bi.bi-inbox.me-2
+                        | Manage Investigation Requests
+
+                if hasPermission('view_investigation_type')
+
+                    a.btn.btn-outline-primary(
+                        href="/investigations/types"
+                    )
+                        i.bi.bi-list-check.me-2
+                        | Manage Investigation Types
+
+
+        //- Investigation Workspace Introduction
+        .card.shadow-sm.mb-4
+
+            .card-body
+
+                .row.align-items-center
+
+                    .col-lg-8
+
+                        h4.card-title
+                            | NDUKA Investigation Workspace
+
+                        p.card-text
+                            | NDUKA was designed to help clients verify important information before making significant decisions, beginning with premarital and marriage-related investigations.
+
+                        p.card-text.mb-0
+                            | An investigation Case can contain one or more investigation services. The investigation types below are currently available in NDUKA.
+
+                    .col-lg-4.text-lg-end.mt-3.mt-lg-0
+
+                        .display-6.text-primary
+                            | #{investigationTypes ? investigationTypes.length : 0}
+
+                        div.text-muted
+                            | Active Investigation Types
+
+
+        //- Investigation Types
+        .card.shadow-sm.mb-4
+
+            .card-header
+
+                .d-flex.justify-content-between.align-items-center
+
+                    h5.mb-0
+                        i.bi.bi-list-check.me-2
+                        | Investigation Types
+
+                    span.badge.bg-primary
+                        | #{investigationTypes ? investigationTypes.length : 0}
+
+
+            .card-body.p-0
+
+                if investigationTypes && investigationTypes.length > 0
+
+                    .table-responsive
+
+                        table.table.table-hover.align-middle.mb-0
+
+                            thead.table-light
+
+                                tr
+                                    th(scope="col") #
+                                    th(scope="col") Investigation Type
+                                    th(scope="col") Description
+                                    th(scope="col").text-center Status
+
+                            tbody
+
+                                each investigationType, index in investigationTypes
+
+                                    tr
+
+                                        td
+                                            | #{index + 1}
+
+                                        td
+
+                                            .fw-semibold
+                                                | #{investigationType.name}
+
+                                            small.text-muted.d-block
+                                                | #{investigationType.code}
+
+                                        td
+                                            | #{investigationType.description}
+
+                                        td.text-center
+
+                                            span.badge.bg-success
+                                                | Active
+
+                else
+
+                    .text-center.py-5
+
+                        i.bi.bi-search.display-4.text-muted
+
+                        h5.mt-3
+                            | No Investigation Types
+
+                        p.text-muted.mb-0
+                            | There are currently no active investigation types configured in NDUKA.
+
+
+        //- Investigation Services
+        .card.shadow-sm.mb-4
+
+            .card-header
+
+                .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center
+
+                    div
+                        h5.mb-1
+                            i.bi.bi-activity.me-2
+                            | Investigation Services
+
+                        small.text-muted
+                            | Investigation services currently attached to Cases.
+
+                    span.badge.bg-primary.mt-2.mt-md-0
+                        | #{investigationServices ? investigationServices.length : 0}
+
+
+            .card-body.p-0
+
+                if investigationServices && investigationServices.length > 0
+
+                    .table-responsive
+
+                        table.table.table-hover.align-middle.mb-0
+
+                            thead.table-light
+
+                                tr
+                                    th(scope="col") Case
+                                    th(scope="col") Client
+                                    th(scope="col") Case Title
+                                    th(scope="col") Investigator
+                                    th(scope="col").text-center Service Status
+                                    th(scope="col").text-center Case Status
+                                    th(scope="col") Started
+                                    th(scope="col") Completed
+
+                            tbody
+
+                                each service in investigationServices
+
+                                    tr
+
+                                        td
+
+                                            a.fw-semibold(
+                                                href=`/cases/${service.case_id}`
+                                            )
+                                                | #{service.case_reference}
+
+                                        td
+
+                                            .fw-semibold
+                                                | #{service.client_name}
+
+                                            small.text-muted.d-block
+                                                | #{service.client_code}
+
+                                        td
+
+                                            .fw-semibold
+                                                | #{service.case_title}
+
+                                            small.text-muted.d-block
+                                                | #{service.investigation_type_name}
+
+
+
+                                        td
+
+                                            if service.case_assignee_username
+
+                                                .fw-semibold
+                                                    | #{service.case_assignee_first_name || ''} #{service.case_assignee_last_name || ''}
+
+                                                small.text-muted.d-block
+                                                    | #{service.case_assignee_username}
+
+                                            else
+
+                                                span.text-muted
+                                                    | Unassigned
+
+                                        td.text-center
+
+                                            if service.service_status_is_terminal
+
+                                                span.badge.bg-success
+                                                    | #{service.service_status_name}
+
+                                            else if service.service_status_code === 'IN_PROGRESS'
+
+                                                span.badge.bg-primary
+                                                    | #{service.service_status_name}
+
+                                            else
+
+                                                span.badge.bg-secondary
+                                                    | #{service.service_status_name}
+
+                                        td.text-center
+
+                                            if service.case_status_is_terminal
+
+                                                span.badge.bg-success
+                                                    | #{service.case_status_name}
+
+                                            else
+
+                                                span.badge.bg-secondary
+                                                    | #{service.case_status_name}
+
+                                        td
+
+                                            if service.started_at
+
+                                                | #{new Date(service.started_at).toLocaleDateString()}
+
+                                            else
+
+                                                span.text-muted
+                                                    | —
+
+                                        td
+
+                                            if service.completed_at
+
+                                                | #{new Date(service.completed_at).toLocaleDateString()}
+
+                                            else
+
+                                                span.text-muted
+                                                    | —
+
+
+                else
+
+                    .text-center.py-5
+
+                        i.bi.bi-activity.display-4.text-muted
+
+                        h5.mt-3
+                            | No Investigation Services
+
+                        p.text-muted.mb-0
+                            | There are currently no investigation services attached to the Cases visible to you.
+
+
+        //- How Investigations Work
+        .card.shadow-sm.mt-4
+
+            .card-body
+
+                h5
+                    i.bi.bi-diagram-3.me-2
+                    | How Investigations Work in NDUKA
+
+                .row.g-4.mt-1
+
+                    .col-md-4
+
+                        h6
+                            i.bi.bi-folder2-open.me-2
+                            | 1. Create a Case
+
+                        p.text-muted.small.mb-0
+                            | A Case represents the overall investigation matter for a client.
+
+                    .col-md-4
+
+                        h6
+                            i.bi.bi-search.me-2
+                            | 2. Add Investigation Services
+
+                        p.text-muted.small.mb-0
+                            | One or more investigation types can be added to the Case according to the scope of the investigation.
+
+                    .col-md-4
+
+                        h6
+                            i.bi.bi-check2-circle.me-2
+                            | 3. Conduct and Report
+
+                        p.text-muted.small.mb-0
+                            | Each service can be assigned, progressed, completed and supported by Case Notes, Documents and Reports.

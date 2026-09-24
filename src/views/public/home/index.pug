@@ -1,0 +1,272 @@
+extends ../layouts/layout.pug
+
+block content
+
+    section.hero
+        .public-container.hero-grid
+
+            .hero-content
+                span.eyebrow
+                    | Marriage Intelligence & Verification
+
+                h1
+                    | Know what you need to know
+                    | before you say “I do.”
+
+                p.hero-text
+                    | NDUKA helps you make informed relationship
+                    | decisions through discreet, structured and
+                    | professionally managed verification services.
+
+                .hero-actions
+                    a.btn.btn-primary(
+                        href="/start-investigation"
+                    )
+                        | Start an Investigation
+
+                    a.btn.btn-secondary(
+                        href="/services"
+                    )
+                        | Explore Services
+
+                p.hero-note
+                    | Confidential. Structured. Evidence-focused.
+
+                p.hero-status-prompt
+                    | Already submitted an investigation request?
+                    |
+                    a.check-status-btn(
+                        href="/investigation-request-status"
+                    )
+                        | Check Status
+
+
+            .hero-card
+                .hero-card-label
+                    | NDUKA Verification
+
+                h2
+                    | Verify before marriage.
+
+                p
+                    | Important decisions deserve more than assumptions.
+                    | NDUKA helps you investigate relevant information
+                    | through a structured verification process.
+
+                ul
+                    li Identity and personal information
+                    li Marital status
+                    li Address and residence
+                    li Employment and education
+                    li Litigation and background information
+                    li References and online presence
+
+
+    section.intro-section
+        .public-container
+
+            .section-heading
+                span.eyebrow
+                    | Why NDUKA
+
+                h2
+                    | Better information leads to better decisions.
+
+                p
+                    | Marriage is a major life decision. NDUKA gives
+                    | you a professional framework for seeking and
+                    | assessing relevant information before making
+                    | that decision.
+
+            .feature-grid
+
+                article.feature-card
+                    h3
+                        | Structured
+
+                    p
+                        | Investigations are organised into defined
+                        | verification services rather than informal
+                        | searches.
+
+                article.feature-card
+                    h3
+                        | Discreet
+
+                    p
+                        | Sensitive verification requests are handled
+                        | through a controlled and confidential process.
+
+                article.feature-card
+                    h3
+                        | Evidence-focused
+
+                    p
+                        | Findings are documented and presented in a
+                        | structured manner for informed consideration.
+
+
+    section.services-preview
+        .public-container
+
+            .section-heading
+                span.eyebrow
+                    | Investigation Services
+
+                h2
+                    | What can NDUKA verify?
+
+                p
+                    | Choose the areas of information that matter to
+                    | your decision.
+
+            .service-preview-grid
+
+                if investigationTypes && investigationTypes.length
+                    each investigationType in investigationTypes
+                        article.service-preview
+                            h3= investigationType.name
+
+                            if investigationType.description
+                                p= investigationType.description
+
+                            else
+                                p
+                                    | Professional verification service
+                                    | provided through the NDUKA investigation
+                                    | process.
+
+                else
+                    article.service-preview
+                        h3 Investigation Services
+
+                        p
+                            | NDUKA investigation services are currently
+                            | being prepared. Please check back shortly.
+
+            .section-action
+                a.btn.btn-secondary(
+                    href="/services"
+                )
+                    | View All Services
+
+
+    section.communication-section
+        .public-container
+
+            .section-heading
+                span.eyebrow
+                    | Stay Connected
+
+                h2
+                    | Your request does not end when you click Submit.
+
+                p
+                    | NDUKA uses the contact details you provide to
+                    | maintain communication with you throughout the
+                    | investigation request process.
+
+            .feature-grid
+
+                article.feature-card
+                    h3
+                        | Email Communication
+
+                    p
+                        | Your email address may be used to confirm
+                        | receipt of your request and communicate
+                        | important information about its progress.
+
+                    ul
+                        li Request confirmation
+                        li Acceptance or rejection notices
+                        li Payment readiness notifications
+                        li Important request updates
+
+                article.feature-card
+                    h3
+                        | Phone Communication
+
+                    p
+                        | Your phone number provides an additional
+                        | communication channel for important
+                        | notifications and updates relating to your
+                        | investigation request.
+
+                article.feature-card
+                    h3
+                        | Client Account Activation
+
+                    p
+                        | Where a client account is created for you,
+                        | your email may be used to send an account
+                        | activation link so that you can securely
+                        | access your client area.
+
+            .communication-note
+                p
+                    strong
+                        | Please provide contact details you can access.
+                    |
+                    | Accurate contact information helps NDUKA keep you
+                    | informed and helps you receive important
+                    | information relating to your request.
+
+
+    section.process-section
+        .public-container
+
+            .section-heading
+                span.eyebrow
+                    | The NDUKA Process
+
+                h2
+                    | A clear process from request to report.
+
+                p
+                    | From submitting your request to receiving
+                    | important updates, NDUKA keeps you connected
+                    | throughout the process.
+
+            .process-grid
+
+                article.process-step
+                    span.step-number 01
+                    h3 Tell Us What You Need
+                    p
+                        | Select the verification services relevant
+                        | to your situation and provide the requested
+                        | information.
+
+                article.process-step
+                    span.step-number 02
+                    h3 Investigation
+                    p
+                        | Your request is managed through NDUKA's
+                        | structured investigation workflow, with
+                        | important updates communicated to you.
+
+                article.process-step
+                    span.step-number 03
+                    h3 Review Findings
+                    p
+                        | Relevant findings are documented and
+                        | presented in a structured report.
+
+
+    section.cta-section
+        .public-container.cta-content
+            div
+                span.eyebrow
+                    | Take the next step
+
+                h2
+                    | Don't rely only on what you have been told.
+
+                p
+                    | Make your decision with better information.
+
+            a.btn.btn-primary(
+                href="/start-investigation"
+            )
+                | Start an Investigation

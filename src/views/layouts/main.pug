@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+    head
+        include ../partials/head
+
+    body.d-flex.flex-column.min-vh-100
+
+        //- Optional Navigation Bar
+        if showNavbar !== false
+            include ../partials/navbar
+
+        //- Flash / Notification Messages
+        include ../partials/flash
+
+        //- Main Content Area
+        main.flex-grow-1.py-4
+            .container
+                block content
+
+        //- Optional Footer
+        if showFooter !== false
+            include ../partials/footer
+
+        //- Common JavaScript Files
+        include ../partials/scripts

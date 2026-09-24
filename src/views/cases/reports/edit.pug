@@ -1,0 +1,192 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.mb-1
+                    i.bi.bi-file-earmark-text.me-2
+                    | Edit Case Report
+
+                p.text-muted.mb-0
+                    | #{caseRecord.case_reference} — #{caseRecord.case_title}
+
+            div.mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href=`/cases/${caseRecord.id}/reports`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Case Reports
+
+
+        .row.justify-content-center
+
+            .col-12.col-xl-9
+
+                .card.shadow-sm
+
+                    .card-header.bg-white.py-3
+
+                        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.gap-2
+
+                            h5.mb-0
+                                i.bi.bi-pencil-square.me-2
+                                | Edit Report
+
+                            if report.report_status_code === 'DRAFT'
+                                span.badge.bg-secondary
+                                    | #{report.report_status_name}
+                            else if report.report_status_code === 'REJECTED'
+                                span.badge.bg-danger
+                                    | #{report.report_status_name}
+                            else
+                                span.badge.bg-secondary
+                                    | #{report.report_status_name}
+
+                    .card-body
+
+                        if error
+
+                            .alert.alert-danger
+
+                                i.bi.bi-exclamation-triangle.me-2
+                                | #{error}
+
+
+                        .alert.alert-info
+
+                            i.bi.bi-info-circle.me-2
+                            | Report #{report.report_number} can be edited because it is currently #{report.report_status_name}.
+
+                        form(
+                            method="POST"
+                            action=`/cases/${caseRecord.id}/reports/${report.id}`
+                        )
+
+                            input(
+                                type="hidden"
+                                name="_csrf"
+                                value=csrfToken
+                            )
+
+
+                            .row.g-3
+
+                                .col-12.col-md-4
+
+                                    label.form-label.fw-semibold(
+                                        for="report_type"
+                                    )
+                                        | Report Type
+
+                                    input.form-control(
+                                        type="text"
+                                        id="report_type"
+                                        name="report_type"
+                                        maxlength="30"
+                                        value=report.report_type || 'FINAL'
+                                        placeholder="FINAL"
+                                    )
+
+                                    .form-text
+                                        | Maximum 30 characters.
+
+
+                                .col-12.col-md-8
+
+                                    label.form-label.fw-semibold(
+                                        for="report_title"
+                                    )
+                                        | Report Title
+
+                                    input.form-control(
+                                        type="text"
+                                        id="report_title"
+                                        name="report_title"
+                                        maxlength="255"
+                                        required
+                                        value=report.report_title || ''
+                                        placeholder="Enter the Case Report title"
+                                    )
+
+                                    .form-text
+                                        | Maximum 255 characters.
+
+
+                            .mb-3.mt-3
+
+                                label.form-label.fw-semibold(
+                                    for="executive_summary"
+                                )
+                                    | Executive Summary
+
+                                textarea.form-control(
+                                    id="executive_summary"
+                                    name="executive_summary"
+                                    rows="6"
+                                    placeholder="Provide a concise summary of the investigation and its key conclusions..."
+                                )= report.executive_summary || ''
+
+
+                            .mb-3
+
+                                label.form-label.fw-semibold(
+                                    for="findings"
+                                )
+                                    | Findings
+
+                                textarea.form-control(
+                                    id="findings"
+                                    name="findings"
+                                    rows="10"
+                                    placeholder="Document the investigation findings..."
+                                )= report.findings || ''
+
+
+                            .mb-3
+
+                                label.form-label.fw-semibold(
+                                    for="conclusion"
+                                )
+                                    | Conclusion
+
+                                textarea.form-control(
+                                    id="conclusion"
+                                    name="conclusion"
+                                    rows="6"
+                                    placeholder="State the conclusion reached from the investigation..."
+                                )= report.conclusion || ''
+
+
+                            .mb-4
+
+                                label.form-label.fw-semibold(
+                                    for="recommendations"
+                                )
+                                    | Recommendations
+
+                                textarea.form-control(
+                                    id="recommendations"
+                                    name="recommendations"
+                                    rows="6"
+                                    placeholder="Provide any recommendations arising from the investigation..."
+                                )= report.recommendations || ''
+
+
+                            .d-flex.flex-column.flex-sm-row.justify-content-between.gap-2
+
+                                a.btn.btn-outline-secondary(
+                                    href=`/cases/${caseRecord.id}/reports`
+                                )
+                                    | Cancel
+
+                                button.btn.btn-primary(
+                                    type="submit"
+                                )
+                                    i.bi.bi-save.me-2
+                                    | Update Report

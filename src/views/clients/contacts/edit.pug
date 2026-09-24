@@ -1,0 +1,296 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.fw-bold.mb-1
+                    | Edit Client Contact
+
+                p.text-muted.mb-0
+                    | Update the contact information.
+
+            .mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href=`/clients/${clientId}/contacts`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Contacts
+
+
+        //- Form Card
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-body.p-4
+
+                if error
+
+                    .alert.alert-danger(
+                        role="alert"
+                    )
+                        i.bi.bi-exclamation-triangle.me-2
+                        | #{error}
+
+
+                form(
+                    method="POST"
+                    action=`/clients/${clientId}/contacts/${contact.id}`
+                )
+
+                    input(
+                        type="hidden"
+                        name="_csrf"
+                        value=csrfToken
+                    )
+
+
+                    //- Contact Information
+                    h5.fw-semibold.mb-3
+                        | Contact Information
+
+
+                    .row.g-3
+
+                        .col-md-2
+
+                            label.form-label(
+                                for="title"
+                            )
+                                | Title
+
+                            select.form-select(
+                                id="title"
+                                name="title"
+                            )
+
+                                option(
+                                    value=""
+                                    selected=!contact.title
+                                )
+                                    | Select
+
+                                option(
+                                    value="Mr."
+                                    selected=contact.title === 'Mr.'
+                                )
+                                    | Mr.
+
+                                option(
+                                    value="Mrs."
+                                    selected=contact.title === 'Mrs.'
+                                )
+                                    | Mrs.
+
+                                option(
+                                    value="Ms."
+                                    selected=contact.title === 'Ms.'
+                                )
+                                    | Ms.
+
+                                option(
+                                    value="Dr."
+                                    selected=contact.title === 'Dr.'
+                                )
+                                    | Dr.
+
+                                option(
+                                    value="Chief"
+                                    selected=contact.title === 'Chief'
+                                )
+                                    | Chief
+
+                                option(
+                                    value="Prof."
+                                    selected=contact.title === 'Prof.'
+                                )
+                                    | Prof.
+
+
+                        .col-md-4
+
+                            label.form-label(
+                                for="first_name"
+                            )
+                                | First Name
+                                span.text-danger
+                                    | *
+
+                            input.form-control(
+                                type="text"
+                                id="first_name"
+                                name="first_name"
+                                value=contact.first_name || ''
+                                maxlength="100"
+                                required
+                            )
+
+
+                        .col-md-3
+
+                            label.form-label(
+                                for="middle_name"
+                            )
+                                | Middle Name
+
+                            input.form-control(
+                                type="text"
+                                id="middle_name"
+                                name="middle_name"
+                                value=contact.middle_name || ''
+                                maxlength="100"
+                            )
+
+
+                        .col-md-3
+
+                            label.form-label(
+                                for="last_name"
+                            )
+                                | Last Name
+                                span.text-danger
+                                    | *
+
+                            input.form-control(
+                                type="text"
+                                id="last_name"
+                                name="last_name"
+                                value=contact.last_name || ''
+                                maxlength="100"
+                                required
+                            )
+
+
+                        .col-md-6
+
+                            label.form-label(
+                                for="position"
+                            )
+                                | Position
+
+                            input.form-control(
+                                type="text"
+                                id="position"
+                                name="position"
+                                value=contact.position || ''
+                                maxlength="150"
+                                placeholder="e.g. Managing Director"
+                            )
+
+
+                        .col-md-6
+
+                            label.form-label(
+                                for="phone"
+                            )
+                                | Phone
+                                span.text-danger
+                                    | *
+
+                            input.form-control(
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                value=contact.phone || ''
+                                maxlength="20"
+                                required
+                            )
+
+
+                        .col-md-6
+
+                            label.form-label(
+                                for="email"
+                            )
+                                | Email
+
+                            input.form-control(
+                                type="email"
+                                id="email"
+                                name="email"
+                                value=contact.email || ''
+                                maxlength="255"
+                            )
+
+
+                    hr.my-4
+
+
+                    //- Contact Status
+                    h5.fw-semibold.mb-3
+                        | Contact Status
+
+
+                    .form-check.mb-4
+
+                        input.form-check-input(
+                            type="checkbox"
+                            id="is_primary"
+                            name="is_primary"
+                            value="1"
+                            checked=contact.is_primary === 1 || contact.is_primary === true
+                        )
+
+                        label.form-check-label(
+                            for="is_primary"
+                        )
+                            | Primary contact
+
+                        .form-text
+                            | A client can have only one primary contact.
+
+
+                    .form-check.mb-4
+
+                        input.form-check-input(
+                            type="checkbox"
+                            id="is_active"
+                            name="is_active"
+                            value="1"
+                            checked=contact.is_active === 1 || contact.is_active === true
+                        )
+
+                        label.form-check-label(
+                            for="is_active"
+                        )
+                            | Active contact
+
+                        .form-text
+                            | Inactive contacts remain in the system but are no longer active.
+
+
+                    //- Remarks
+                    .mb-4
+
+                        label.form-label(
+                            for="remarks"
+                        )
+                            | Remarks
+
+                        textarea.form-control(
+                            id="remarks"
+                            name="remarks"
+                            rows="4"
+                            maxlength="5000"
+                            placeholder="Optional notes about this contact."
+                        )= contact.remarks || ''
+
+
+                    //- Actions
+                    .d-flex.justify-content-end.gap-2
+
+                        a.btn.btn-outline-secondary(
+                            href=`/clients/${clientId}/contacts`
+                        )
+                            | Cancel
+
+                        button.btn.btn-primary(
+                            type="submit"
+                        )
+                            i.bi.bi-check-lg.me-2
+                            | Save Changes

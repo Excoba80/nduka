@@ -1,0 +1,78 @@
+//- ======================================================
+//- Global Flash Messages
+//- ======================================================
+
+if success
+    if typeof success === 'string'
+
+        .container.mt-3
+
+            .alert.alert-success.alert-dismissible.fade.show(
+                role="alert"
+            )
+
+                i.bi.bi-check-circle-fill.me-2
+                | #{success}
+
+                button.btn-close(
+                    type="button"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                )
+
+
+if warning
+    if typeof warning === 'string'
+
+        .container.mt-3
+
+            .alert.alert-warning.alert-dismissible.fade.show(
+                role="alert"
+            )
+
+                i.bi.bi-exclamation-triangle-fill.me-2
+                | #{warning}
+
+                button.btn-close(
+                    type="button"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                )
+
+
+if error
+    if typeof error === 'string'
+
+        .container.mt-3
+
+            .alert.alert-danger.alert-dismissible.fade.show(
+                role="alert"
+            )
+
+                i.bi.bi-x-circle-fill.me-2
+                | #{error}
+
+                button.btn-close(
+                    type="button"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                )
+
+
+if info
+    if typeof info === 'string'
+
+        .container.mt-3
+
+            .alert.alert-info.alert-dismissible.fade.show(
+                role="alert"
+            )
+
+                i.bi.bi-info-circle-fill.me-2
+                | #{info}
+
+                button.btn-close(
+                    type="button"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                )

@@ -1,0 +1,343 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    | Edit Client
+
+                p.text-muted.mb-0
+                    | Update the client's information and records.
+
+            .mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary.me-2(
+                    href=`/clients/${client.id}`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Client
+
+                a.btn.btn-outline-secondary(
+                    href="/clients"
+                )
+                    i.bi.bi-list.me-2
+                    | All Clients
+
+
+        //- Validation Error
+        if error
+
+            .alert.alert-danger.alert-dismissible.fade.show(
+                role="alert"
+            )
+
+                i.bi.bi-exclamation-triangle-fill.me-2
+                | #{error}
+
+                button.btn-close(
+                    type="button"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                )
+
+
+        //- Client Form
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-header.bg-white.border-0.pt-4.px-4
+
+                h5.fw-bold.mb-1
+                    i.bi.bi-pencil-square.me-2.text-primary
+                    | Client Information
+
+                p.text-muted.mb-0
+                    | Update the client's details below.
+
+            .card-body.p-4
+
+                form(
+                    action=`/clients/${client.id}`
+                    method="POST"
+                )
+
+                    input(
+                        type="hidden"
+                        name="_csrf"
+                        value=csrfToken
+                    )
+
+
+                    //- Client Identifier
+                    .row.g-3.mb-4
+
+                        .col-12.col-md-6
+
+                            label.form-label
+                                | Client Code
+
+                            .form-control.bg-light
+                                | #{client.client_code}
+
+                            .form-text
+                                | The client code is permanent and cannot be changed.
+
+
+                    //- Basic Information
+                    h6.fw-bold.mb-3
+                        | Basic Information
+
+                    .row.g-3
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="client_type_id"
+                            )
+                                | Client Type
+                                span.text-danger
+                                    |  *
+
+                            select.form-select(
+                                id="client_type_id"
+                                name="client_type_id"
+                                required
+                            )
+
+                                option(
+                                    value=""
+                                    selected=!client.client_type_id
+                                )
+                                    | Select client type
+
+                                each clientType in clientTypes
+
+                                    option(
+                                        value=clientType.id
+                                        selected=String(client.client_type_id || '') === String(clientType.id)
+                                    )
+                                        | #{clientType.display_name}
+
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="name"
+                            )
+                                | Client Name
+                                span.text-danger
+                                    |  *
+
+                            input.form-control(
+                                type="text"
+                                id="name"
+                                name="name"
+                                value=client.name || ''
+                                required
+                                maxlength="255"
+                                autocomplete="organization"
+                            )
+
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="registration_number"
+                            )
+                                | Registration Number
+
+                            input.form-control(
+                                type="text"
+                                id="registration_number"
+                                name="registration_number"
+                                value=client.registration_number || ''
+                                maxlength="100"
+                            )
+
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="tax_number"
+                            )
+                                | Tax Number
+
+                            input.form-control(
+                                type="text"
+                                id="tax_number"
+                                name="tax_number"
+                                value=client.tax_number || ''
+                                maxlength="100"
+                            )
+
+
+                        .col-12
+
+                            label.form-label(
+                                for="website"
+                            )
+                                | Website
+
+                            input.form-control(
+                                type="text"
+                                id="website"
+                                name="website"
+                                value=client.website || ''
+                                maxlength="255"
+                                placeholder="https://example.com"
+                            )
+
+
+                    //- Address
+                    hr.my-4
+
+                    h6.fw-bold.mb-3
+                        | Address
+
+                    .row.g-3
+
+                        .col-12
+
+                            label.form-label(
+                                for="address_line_1"
+                            )
+                                | Address Line 1
+
+                            input.form-control(
+                                type="text"
+                                id="address_line_1"
+                                name="address_line_1"
+                                value=client.address_line_1 || ''
+                                maxlength="255"
+                                autocomplete="street-address"
+                            )
+
+
+                        .col-12
+
+                            label.form-label(
+                                for="address_line_2"
+                            )
+                                | Address Line 2
+
+                            input.form-control(
+                                type="text"
+                                id="address_line_2"
+                                name="address_line_2"
+                                value=client.address_line_2 || ''
+                                maxlength="255"
+                            )
+
+
+                        .col-12.col-md-4
+
+                            label.form-label(
+                                for="city"
+                            )
+                                | City
+
+                            input.form-control(
+                                type="text"
+                                id="city"
+                                name="city"
+                                value=client.city || ''
+                                maxlength="100"
+                                autocomplete="address-level2"
+                            )
+
+
+                        .col-12.col-md-4
+
+                            label.form-label(
+                                for="state"
+                            )
+                                | State
+
+                            input.form-control(
+                                type="text"
+                                id="state"
+                                name="state"
+                                value=client.state || ''
+                                maxlength="100"
+                                autocomplete="address-level1"
+                            )
+
+
+                        .col-12.col-md-4
+
+                            label.form-label(
+                                for="country"
+                            )
+                                | Country
+
+                            input.form-control(
+                                type="text"
+                                id="country"
+                                name="country"
+                                value=client.country || ''
+                                maxlength="100"
+                                autocomplete="country-name"
+                            )
+
+
+                        .col-12.col-md-4
+
+                            label.form-label(
+                                for="postal_code"
+                            )
+                                | Postal Code
+
+                            input.form-control(
+                                type="text"
+                                id="postal_code"
+                                name="postal_code"
+                                value=client.postal_code || ''
+                                maxlength="20"
+                                autocomplete="postal-code"
+                            )
+
+
+                    //- Remarks
+                    hr.my-4
+
+                    h6.fw-bold.mb-3
+                        | Additional Information
+
+                    .row
+
+                        .col-12
+
+                            label.form-label(
+                                for="remarks"
+                            )
+                                | Remarks
+
+                            textarea.form-control(
+                                id="remarks"
+                                name="remarks"
+                                rows="5"
+                                maxlength="2000"
+                                placeholder="Enter any relevant remarks about this client."
+                            )= client.remarks || ''
+
+
+                    //- Form Actions
+                    hr.my-4
+
+                    .d-flex.flex-column.flex-sm-row.justify-content-between.gap-2
+
+                        a.btn.btn-outline-secondary(
+                            href=`/clients/${client.id}`
+                        )
+                            i.bi.bi-x-lg.me-2
+                            | Cancel
+
+                        button.btn.btn-primary(
+                            type="submit"
+                        )
+                            i.bi.bi-check-lg.me-2
+                            | Save Changes

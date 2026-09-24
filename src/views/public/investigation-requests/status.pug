@@ -1,0 +1,391 @@
+extends ../layouts/layout.pug
+
+block content
+    section
+        .public-container
+
+            .section-heading
+                span.eyebrow
+                    | Investigation Request
+
+                h1
+                    | Check Your Request Status
+
+                p
+                    | Enter the Investigation Request Reference you received
+                    | after submitting your request.
+
+
+            .status-card
+
+                form(
+                    method="POST"
+                    action="/investigation-request-status"
+                )
+
+                    input(
+                        type="hidden"
+                        name="_csrf"
+                        value=csrfToken
+                    )
+
+                    .form-group
+
+                        label.form-label(
+                            for="request_reference"
+                        )
+                            | Investigation Request Reference
+
+                        input.form-control(
+                            type="text"
+                            id="request_reference"
+                            name="request_reference"
+                            value=requestReference
+                            placeholder="REQ-XXXXXXXXXXXX"
+                            maxlength="30"
+                            autocomplete="off"
+                            required
+                        )
+
+                        p.form-text
+                            | Enter the reference exactly as it appears
+                            | in your submission confirmation.
+
+
+                    if error
+
+                        .alert.alert-danger(
+                            role="alert"
+                        )
+                            | #{error}
+
+
+                    .hero-actions
+
+                        button.btn.btn-primary(
+                            type="submit"
+                        )
+                            | Check Status
+
+                        a.btn.btn-outline-secondary(
+                            href="/"
+                        )
+                            | Return Home
+
+
+            if request
+
+                .status-card.status-result
+
+                    span.eyebrow
+                        | Request Status
+
+                    h2
+                        | #{request.requestReference}
+
+
+                    if request.status === 'PENDING'
+
+                        .alert.alert-warning(
+                            role="status"
+                        )
+
+                            h3
+                                | Your request is under review.
+
+                            p
+                                | Your Investigation Request has been received
+                                | and is currently being reviewed by the
+                                | NDUKA team.
+
+                            if request.createdAt
+
+                                p.mb-0
+                                    strong
+                                        | Submitted:
+                                    | #{request.createdAt}
+
+
+                    else if request.status === 'ACCEPTED'
+
+                        .alert.alert-success(
+                            role="status"
+                        )
+
+                            h3
+                                | Your request has been accepted.
+
+                            p
+                                | Your Investigation Request has been
+                                | accepted by the NDUKA team.
+
+                            p
+                                | Please proceed to the next step to
+                                | arrange payment before your investigation
+                                | can proceed.
+
+                            if request.reviewedAt
+
+                                p.mb-0
+                                    strong
+                                        | Reviewed:
+                                    |  #{request.reviewedAt}
+
+
+                        if request.services && request.services.length
+
+                            .payment-summary
+
+                                h3
+                                    | Investigation Services
+
+                                .payment-summary-list
+
+                                    each service in request.services
+
+                                        .payment-summary-row
+
+                                            span
+                                                | #{service.serviceName}
+
+                                            span
+                                                |  ₦#{Number(service.servicePrice || 0).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+
+
+                                .payment-summary-total
+
+                                    strong
+                                        | Total Payable
+
+                                    strong
+                                        |  ₦#{Number(request.paymentTotal || 0).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+
+
+                        .payment-status-heading
+                            h3
+                                | Payment Status
+
+                        //-
+                            Payment state:
+                            The visitor may proceed only when a payment
+                            transaction has been prepared and is still PENDING.
+
+                            The Proceed to Pay action records the visitor's
+                            real intent by transitioning the payment to
+                            INITIATED. It does not process a gateway payment.
+                        if !request.payment
+
+                            .alert.alert-info(
+                                role="status"
+                            )
+
+                                p.mb-0
+                                    | Your request has been accepted. Payment
+                                    | is currently being prepared.
+
+
+                        else if request.payment.status === 'PENDING'
+
+                            .alert.alert-warning(
+                                role="status"
+                            )
+
+                                h3
+                                    | Payment is ready.
+
+                                p
+                                    | Your payment transaction has been
+                                    | prepared. You can now proceed to payment.
+
+                                p
+                                    strong
+                                        | Payment Reference:
+                                    |  #{request.payment.paymentReference}
+
+                                p.mb-3
+                                    strong
+                                        | Amount:
+                                    |  ₦#{Number(request.payment.amount || 0).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+
+
+                            form(
+                                method="POST"
+                                action="/investigation-request-payment"
+                                id="investigation-request-payment-form"
+                            )
+
+                                input(
+                                    type="hidden"
+                                    name="_csrf"
+                                    value=csrfToken
+                                )
+
+                                input(
+                                    type="hidden"
+                                    name="request_reference"
+                                    value=request.requestReference
+                                )
+
+                                .hero-actions
+
+                                    button.btn.btn-primary(
+                                        type="submit"
+                                    )
+                                        | Proceed to Pay
+
+
+                        else if request.payment.status === 'INITIATED'
+
+                            .alert.alert-info(
+                                role="status"
+                            )
+
+                                h3
+                                    | Payment has been initiated.
+
+                                p
+                                    | Your request has been marked as ready
+                                    | for payment. The payment process can
+                                    | now continue through the available
+                                    | payment channel.
+
+                                p.mb-0
+                                    strong
+                                        | Payment Reference:
+                                    |  #{request.payment.paymentReference}
+
+
+                        else if request.payment.status === 'SUCCESSFUL'
+
+                            .alert.alert-success(
+                                role="status"
+                            )
+
+                                h3
+                                    | Payment successful.
+
+                                p
+                                    | Your payment has been successfully
+                                    | confirmed.
+
+                                p.mb-0
+                                    strong
+                                        | Payment Reference:
+                                    |  #{request.payment.paymentReference}
+
+
+                        else if request.payment.status === 'FAILED'
+
+                            .alert.alert-danger(
+                                role="status"
+                            )
+
+                                h3
+                                    | Payment was not completed.
+
+                                p
+                                    | The current payment attempt was not
+                                    | successful. Please contact the NDUKA
+                                    | team for the next step.
+
+                                p.mb-0
+                                    strong
+                                        | Payment Reference:
+                                    |  #{request.payment.paymentReference}
+
+
+                        else if request.payment.status === 'CANCELLED'
+
+                            .alert.alert-secondary(
+                                role="status"
+                            )
+
+                                h3
+                                    | Payment was cancelled.
+
+                                p
+                                    | The current payment attempt has been
+                                    | cancelled. Please contact the NDUKA
+                                    | team for the next step.
+
+                                p.mb-0
+                                    strong
+                                        | Payment Reference:
+                                    |  #{request.payment.paymentReference}
+
+
+                        else
+
+                            .alert.alert-secondary(
+                                role="status"
+                            )
+
+                                p.mb-0
+                                    | The current payment status is
+                                    | #{request.payment.status}.
+
+
+                    else if request.status === 'REJECTED'
+
+                        .alert.alert-danger(
+                            role="status"
+                        )
+
+                            h3
+                                | Your request was not approved.
+
+                            p
+                                | Your Investigation Request was reviewed
+                                | but was not approved by the NDUKA team.
+
+
+                            if request.rejectionReason
+
+                                .alert.alert-secondary(
+                                    role="note"
+                                )
+
+                                    h4.h6
+                                        | Reason for rejection
+
+                                    p.mb-0
+                                        | #{request.rejectionReason}
+
+
+                            if request.reviewedAt
+
+                                p.mb-0
+                                    strong
+                                        | Reviewed:
+                                    | #{request.reviewedAt}
+
+
+                    else
+
+                        .alert.alert-secondary(
+                            role="status"
+                        )
+
+                            p.mb-0
+                                | The current status of this request is
+                                | #{request.status}.
+
+
+                    .hero-actions
+
+                        if request.status === 'REJECTED'
+
+                            a.btn.btn-primary(
+                                href="/start-investigation"
+                            )
+                                | Submit a New Investigation Request
+
+                        a.btn.btn-primary(
+                            href="/investigation-request-status"
+                        )
+                            | Check Another Request
+
+                        a.btn.btn-outline-secondary(
+                            href="/"
+                        )
+                            | Return Home

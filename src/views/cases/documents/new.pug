@@ -1,0 +1,185 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.mb-1
+                    i.bi.bi-file-earmark-plus.me-2
+                    | Upload Case Document
+
+                p.text-muted.mb-0
+                    | #{caseRecord.case_reference} — #{caseRecord.case_title}
+
+            div.mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href=`/cases/${caseRecord.id}/documents`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Case Documents
+
+
+        .row.justify-content-center
+
+            .col-12.col-xl-8
+
+                .card.shadow-sm
+
+                    .card-header.bg-white.py-3
+
+                        h5.mb-0
+                            i.bi.bi-upload.me-2
+                            | Upload Document
+
+                    .card-body
+
+                        if error
+
+                            .alert.alert-danger
+
+                                i.bi.bi-exclamation-triangle.me-2
+                                | #{error}
+
+
+                        form(
+                            method="POST"
+                            action=`/cases/${caseRecord.id}/documents`
+                            enctype="multipart/form-data"
+                        )
+
+                            input(
+                                type="hidden"
+                                name="_csrf"
+                                value=csrfToken
+                            )
+
+
+                            .mb-3
+
+                                label.form-label.fw-semibold(
+                                    for="document_type_id"
+                                )
+                                    | Document Type
+
+                                select.form-select(
+                                    id="document_type_id"
+                                    name="document_type_id"
+                                    required
+                                )
+
+                                    option(value="")
+                                        | Select document type
+
+                                    if documentTypes && documentTypes.length > 0
+
+                                        each documentType in documentTypes
+
+                                            option(
+                                                value=documentType.id
+                                            )
+                                                | #{documentType.name}
+
+                                .form-text
+                                    | Select the category that best describes this document.
+
+
+                            .mb-3
+
+                                label.form-label.fw-semibold(
+                                    for="case_investigation_service_id"
+                                )
+                                    | Investigation Service
+
+                                select.form-select(
+                                    id="case_investigation_service_id"
+                                    name="case_investigation_service_id"
+                                )
+
+                                    option(value="")
+                                        | General Case Document
+
+                                    if investigationServices && investigationServices.length > 0
+
+                                        each service in investigationServices
+
+                                            option(
+                                                value=service.id
+                                            )
+                                                | #{service.investigation_type_name} — #{service.service_status_name}
+
+                                .form-text
+                                    | Optionally associate this document with a specific investigation service.
+
+
+                            .mb-3
+
+                                label.form-label.fw-semibold(
+                                    for="document"
+                                )
+                                    | Document File
+
+                                input.form-control(
+                                    type="file"
+                                    id="document"
+                                    name="document"
+                                    required
+                                    accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.xls,.xlsx"
+                                )
+
+                                .form-text
+                                    | Maximum file size: 10 MB. Allowed: PDF, JPG, JPEG, PNG, WEBP, DOC, DOCX, XLS and XLSX.
+
+
+                            .mb-3
+
+                                label.form-label.fw-semibold(
+                                    for="expiry_date"
+                                )
+                                    | Expiry Date
+
+                                input.form-control(
+                                    type="date"
+                                    id="expiry_date"
+                                    name="expiry_date"
+                                )
+
+                                .form-text
+                                    | Required for document types that require an expiry date.
+
+
+                            .form-check.mb-4
+
+                                input.form-check-input(
+                                    type="checkbox"
+                                    id="is_private"
+                                    name="is_private"
+                                    value="1"
+                                )
+
+                                label.form-check-label.fw-semibold(
+                                    for="is_private"
+                                )
+                                    i.bi.bi-lock-fill.me-1
+                                    | Private Document
+
+                                .form-text
+                                    | Private documents are restricted to authorized Case users.
+
+
+                            .d-flex.flex-column.flex-sm-row.justify-content-between.gap-2
+
+                                a.btn.btn-outline-secondary(
+                                    href=`/cases/${caseRecord.id}/documents`
+                                )
+                                    | Cancel
+
+                                button.btn.btn-primary(
+                                    type="submit"
+                                )
+                                    i.bi.bi-cloud-arrow-up.me-2
+                                    | Upload Document

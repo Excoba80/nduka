@@ -1,0 +1,200 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid.py-4
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    i.bi.bi-list-check.me-2
+                    | Investigation Types
+
+                p.text-muted.mb-0
+                    | Manage the investigation types available for Case Investigation Services.
+
+            .mt-3.mt-md-0
+
+                a.btn.btn-primary(
+                    href="/investigations/types/new"
+                )
+                    i.bi.bi-plus-lg.me-2
+                    | New Investigation Type
+
+
+        //- Investigation Types
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-header.bg-white.border-0.pt-4.px-4
+
+                .d-flex.justify-content-between.align-items-center
+
+                    div
+                        h5.fw-bold.mb-1
+                            | Investigation Types
+
+                        p.text-muted.mb-0
+                            | Configuration records used when adding investigation services to Cases.
+
+                    span.badge.bg-primary
+                        | #{investigationTypes ? investigationTypes.length : 0}
+
+
+            .card-body.p-0
+
+                if investigationTypes && investigationTypes.length > 0
+
+                    .table-responsive
+
+                        table.table.table-hover.align-middle.mb-0
+
+                            thead.table-light
+
+                                tr
+                                    th(scope="col") #
+                                    th(scope="col") Code
+                                    th(scope="col") Investigation Type
+                                    th(scope="col").text-end Service Price
+                                    th(scope="col") Description
+                                    th(scope="col").text-center Order
+                                    th(scope="col").text-center Status
+                                    th(scope="col").text-end Actions
+
+                            tbody
+
+                                each investigationType, index in investigationTypes
+
+                                    tr
+
+                                        td
+                                            | #{index + 1}
+
+                                        td
+                                            code
+                                                | #{investigationType.code}
+
+                                        td
+
+                                            .fw-semibold
+                                                | #{investigationType.name}
+
+                                        td.text-end
+                                            | ₦#{Number(investigationType.service_price || 0).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+
+                                        td
+
+                                            if investigationType.description
+
+                                                | #{investigationType.description}
+
+                                            else
+
+                                                span.text-muted
+                                                    | —
+
+                                        td.text-center
+                                            | #{investigationType.display_order}
+
+                                        td.text-center
+
+                                            if investigationType.is_active
+
+                                                span.badge.bg-success
+                                                    | Active
+
+                                            else
+
+                                                span.badge.bg-secondary
+                                                    | Inactive
+
+                                        td.text-end
+
+                                            if hasPermission('view_investigation_type_field')
+
+                                                a.btn.btn-sm.btn-outline-info.me-1(
+                                                    href=`/investigations/types/${investigationType.id}/fields`
+                                                )
+                                                    i.bi.bi-ui-checks-grid.me-1
+                                                    | Manage Fields
+
+                                            a.btn.btn-sm.btn-outline-primary.me-1(
+                                                href=`/investigations/types/${investigationType.id}/edit`
+                                            )
+                                                i.bi.bi-pencil-square.me-1
+                                                | Edit
+
+                                            if investigationType.is_active
+
+                                                form.d-inline(
+                                                    action=`/investigations/types/${investigationType.id}/toggle`
+                                                    method="POST"
+                                                )
+
+                                                    input(
+                                                        type="hidden"
+                                                        name="_csrf"
+                                                        value=csrfToken
+                                                    )
+
+                                                    button.btn.btn-sm.btn-outline-warning(
+                                                        type="submit"
+                                                    )
+                                                        i.bi.bi-pause-circle.me-1
+                                                        | Deactivate
+
+                                            else
+
+                                                form.d-inline(
+                                                    action=`/investigations/types/${investigationType.id}/toggle`
+                                                    method="POST"
+                                                )
+
+                                                    input(
+                                                        type="hidden"
+                                                        name="_csrf"
+                                                        value=csrfToken
+                                                    )
+
+                                                    button.btn.btn-sm.btn-outline-success(
+                                                        type="submit"
+                                                    )
+                                                        i.bi.bi-play-circle.me-1
+                                                        | Activate
+
+                                            form.d-inline(
+                                                action=`/investigations/types/${investigationType.id}/delete`
+                                                method="POST"
+												data-confirm-delete="Delete this Investigation Type? This action cannot be undone."
+                                            )
+
+                                                input(
+                                                    type="hidden"
+                                                    name="_csrf"
+                                                    value=csrfToken
+                                                )
+
+                                                button.btn.btn-sm.btn-outline-danger(
+                                                    type="submit"
+
+                                                )
+                                                    i.bi.bi-trash.me-1
+                                                    | Delete
+
+                else
+
+                    .text-center.py-5
+
+                        i.bi.bi-search.display-4.text-muted
+
+                        h5.mt-3
+                            | No Investigation Types
+
+                        p.text-muted.mb-3
+                            | No Investigation Types have been configured yet.
+
+                        a.btn.btn-primary(
+                            href="/investigations/types/new"
+                        )
+                            i.bi.bi-plus-lg.me-2
+                            | Create Investigation Type

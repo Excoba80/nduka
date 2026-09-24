@@ -1,0 +1,127 @@
+/*
+========================================================
+NDUKA Design System v1.0
+========================================================
+*/
+
+:root {
+
+    /* Primary Brand */
+
+    --nduka-primary: #1E40AF;
+    --nduka-primary-dark: #1E3A8A;
+    --nduka-primary-light: #DBEAFE;
+
+    /* Success */
+
+    --nduka-success: #15803D;
+
+    /* Warning */
+
+    --nduka-warning: #D97706;
+
+    /* Danger */
+
+    --nduka-danger: #B91C1C;
+
+    /* Neutral */
+
+    --nduka-background: #F5F7FA;
+
+    --nduka-card: #FFFFFF;
+
+    --nduka-border: #E5E7EB;
+
+    --nduka-text: #1F2937;
+
+}
+
+
+
+
+body {
+
+    background: var(--nduka-background);
+
+    color: var(--nduka-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+
+
+
+.btn-primary {
+
+    background: var(--nduka-primary);
+
+    border-color: var(--nduka-primary);
+
+}
+
+.btn-primary:hover {
+
+    background: var(--nduka-primary-dark);
+
+    border-color: var(--nduka-primary-dark);
+
+}
+
+
+
+.card {
+
+    border-radius: 16px;
+
+    border: none;
+
+}
+
+
+
+
+a {
+
+    color: var(--nduka-primary);
+
+}
+
+a:hover {
+
+    color: var(--nduka-primary-dark);
+
+}
+
+
+
+.nduka-brand {
+
+    color: var(--nduka-primary);
+
+    font-weight: 700;
+
+}
+
+
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #ffffff;
+}
+
+
+
+
+
+.required-asterisk {
+    color: #dc3545;
+}
+
+.alert-danger {
+    color: #dc3545;
+}

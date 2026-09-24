@@ -1,0 +1,60 @@
+extends ../layouts/layout.pug
+
+block content
+
+    section
+        .public-container
+
+            .section-heading
+
+                span.eyebrow
+                    | Payment Initiated
+
+                h1
+                    | Your payment request has been initiated.
+
+                p
+                    | Your intention to proceed with payment has been
+                    | recorded successfully.
+
+
+            .success-card
+
+                h2
+                    | Payment Reference
+
+                p.request-reference
+                    | #{payment.paymentReference}
+
+                p
+                    strong
+                        | Investigation Request:
+                    |  #{payment.requestReference}
+
+                p
+                    strong
+                        | Amount:
+                    |  #{new Intl.NumberFormat('en-NG', { style: 'currency', currency: payment.currency || 'NGN' }).format(Number(payment.amount || 0))}
+
+
+                .alert.alert-info(
+                    role="status"
+                )
+                    p.mb-0
+                        | Payment has not yet been completed. Your payment
+                        | reference has been recorded and will be used to
+                        | identify this payment attempt when payment
+                        | processing is connected.
+
+
+                .hero-actions
+
+                    a.btn.btn-primary(
+                        href="/investigation-request-status"
+                    )
+                        | Check Request Status
+
+                    a.btn.btn-outline-secondary(
+                        href="/"
+                    )
+                        | Return Home

@@ -1,0 +1,434 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    | Client Details
+
+                p.text-muted.mb-0
+                    | View client information and associated contacts.
+
+            .mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary.me-2(
+                    href="/clients"
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Clients
+
+                if sessionUser && sessionUser.roles && (sessionUser.roles.includes('super_admin') || sessionUser.roles.includes('administrator'))
+                    a.btn.btn-primary(
+                        href=`/clients/${client.id}/edit`
+                    )
+                        i.bi.bi-pencil.me-2
+                        | Edit Client
+
+
+        //- Client Overview
+        .card.shadow-sm.border-0.rounded-4.mb-4
+
+            .card-body.p-4
+
+                .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-start
+
+                    div
+
+                        .d-flex.align-items-center.mb-3
+
+                            .rounded-circle.bg-primary.bg-opacity-10.p-3.me-3
+                                i.bi.bi-building.fs-3.text-primary
+
+                            div
+                                h2.h4.fw-bold.mb-1
+                                    | #{client.name}
+
+                                div.text-muted
+                                    | #{client.client_code}
+
+                    div.mt-3.mt-md-0
+
+                        if client.client_type_display
+                            span.badge.text-bg-secondary.fs-6
+                                | #{client.client_type_display}
+
+                        else if client.client_type
+                            span.badge.text-bg-secondary.fs-6
+                                | #{client.client_type}
+
+
+        //- Client Information
+        .row.g-4
+
+            .col-12.col-lg-8
+
+                .card.shadow-sm.border-0.rounded-4.h-100
+
+                    .card-header.bg-white.border-0.pt-4.px-4
+
+                        h5.fw-bold.mb-0
+                            i.bi.bi-building.me-2.text-primary
+                            | Client Information
+
+                    .card-body.p-4
+
+                        .row.g-4
+
+                            .col-12.col-md-6
+
+                                small.text-muted.d-block.mb-1
+                                    | Client Name
+
+                                .fw-semibold
+                                    | #{client.name}
+
+
+                            .col-12.col-md-6
+
+                                small.text-muted.d-block.mb-1
+                                    | Client Code
+
+                                .fw-semibold
+                                    | #{client.client_code}
+
+
+                            .col-12.col-md-6
+
+                                small.text-muted.d-block.mb-1
+                                    | Client Type
+
+                                if client.client_type_display
+                                    .fw-semibold
+                                        | #{client.client_type_display}
+
+                                else if client.client_type
+                                    .fw-semibold
+                                        | #{client.client_type}
+
+                                else
+                                    span.text-muted
+                                        | Not specified
+
+
+                            .col-12.col-md-6
+
+                                small.text-muted.d-block.mb-1
+                                    | Registration Number
+
+                                if client.registration_number
+                                    .fw-semibold
+                                        | #{client.registration_number}
+
+                                else
+                                    span.text-muted
+                                        | Not provided
+
+
+                            .col-12.col-md-6
+
+                                small.text-muted.d-block.mb-1
+                                    | Tax Number
+
+                                if client.tax_number
+                                    .fw-semibold
+                                        | #{client.tax_number}
+
+                                else
+                                    span.text-muted
+                                        | Not provided
+
+
+                            .col-12.col-md-6
+
+                                small.text-muted.d-block.mb-1
+                                    | Website
+
+                                if client.website
+                                    a(
+                                        href=client.website
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    )
+                                        | #{client.website}
+
+                                else
+                                    span.text-muted
+                                        | Not provided
+
+
+                            .col-12
+
+                                small.text-muted.d-block.mb-1
+                                    | Address
+
+                                if client.address_line_1 || client.address_line_2 || client.city || client.state || client.country || client.postal_code
+
+                                    address.mb-0
+
+                                        if client.address_line_1
+                                            div
+                                                | #{client.address_line_1}
+
+                                        if client.address_line_2
+                                            div
+                                                | #{client.address_line_2}
+
+                                        if client.city
+                                            | #{client.city}
+
+                                        if client.city && (client.state || client.country)
+                                            | ,
+
+                                        if client.state
+                                            | #{client.state}
+
+                                        if client.state && client.country
+                                            | ,
+
+                                        if client.country
+                                            | #{client.country}
+
+                                        if client.postal_code
+                                            |  #{client.postal_code}
+
+                                else
+                                    span.text-muted
+                                        | Not provided
+
+
+                            .col-12
+
+                                small.text-muted.d-block.mb-1
+                                    | Remarks
+
+                                if client.remarks
+                                    .p-3.bg-light.rounded-3
+                                        | #{client.remarks}
+
+                                else
+                                    span.text-muted
+                                        | No remarks provided.
+
+
+            .col-12.col-lg-4
+
+                .card.shadow-sm.border-0.rounded-4.mb-4
+
+                    .card-header.bg-white.border-0.pt-4.px-4
+
+                        h5.fw-bold.mb-0
+                            i.bi.bi-info-circle.me-2.text-primary
+                            | Record Information
+
+                    .card-body.p-4
+
+                        .mb-3
+
+                            small.text-muted.d-block.mb-1
+                                | Created
+
+                            if client.created_at
+                                .fw-semibold
+                                    | #{new Date(client.created_at).toLocaleString('en-GB')}
+
+                            else
+                                span.text-muted
+                                    | Not available
+
+
+                        .mb-0
+
+                            small.text-muted.d-block.mb-1
+                                | Last Updated
+
+                            if client.updated_at
+                                .fw-semibold
+                                    | #{new Date(client.updated_at).toLocaleString('en-GB')}
+
+                            else
+                                span.text-muted
+                                    | Not available
+
+
+                //- Contacts Summary
+                .card.shadow-sm.border-0.rounded-4
+
+                    .card-header.bg-white.border-0.pt-4.px-4
+
+                        .d-flex.justify-content-between.align-items-center
+
+                            h5.fw-bold.mb-0
+                                i.bi.bi-person-lines-fill.me-2.text-primary
+                                | Contacts
+
+                            if sessionUser && sessionUser.permissions && sessionUser.permissions.includes('view_client_contact')
+
+                                a.btn.btn-sm.btn-outline-primary(
+                                    href=`/clients/${client.id}/contacts`
+                                    title="Manage client contacts"
+                                )
+                                    i.bi.bi-people.me-1
+                                    | Manage
+
+                    .card-body.p-4
+
+                        .d-flex.align-items-center
+
+                            .rounded-circle.bg-primary.bg-opacity-10.p-2.me-3
+                                i.bi.bi-people.text-primary
+
+                            div
+                                .fw-bold
+                                    | #{client.contacts ? client.contacts.length : 0}
+
+                                small.text-muted
+                                    | Contact(s)
+
+
+        //- Client Contacts
+        .card.shadow-sm.border-0.rounded-4.mt-4
+
+            .card-header.bg-white.border-0.pt-4.px-4
+
+                .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center
+
+                    div
+
+                        h5.fw-bold.mb-1
+                            i.bi.bi-person-lines-fill.me-2.text-primary
+                            | Client Contacts
+
+                        p.text-muted.mb-0
+                            | People associated with this client.
+
+                    if sessionUser && sessionUser.permissions && sessionUser.permissions.includes('view_client_contact')
+
+                        .mt-3.mt-md-0
+
+                            a.btn.btn-sm.btn-outline-primary(
+                                href=`/clients/${client.id}/contacts`
+                            )
+                                i.bi.bi-people.me-1
+                                | Manage Contacts
+
+                            if sessionUser.permissions.includes('create_client_contact')
+
+                                a.btn.btn-sm.btn-primary.ms-2(
+                                    href=`/clients/${client.id}/contacts/new`
+                                )
+                                    i.bi.bi-person-plus.me-1
+                                    | Add Contact
+
+            .card-body.p-0
+
+                .table-responsive
+
+                    table.table.table-hover.align-middle.mb-0
+
+                        thead.table-light
+
+                            tr
+
+                                th.ps-4(scope="col")
+                                    | Contact
+
+                                th(scope="col")
+                                    | Position
+
+                                th(scope="col")
+                                    | Phone
+
+                                th(scope="col")
+                                    | Email
+
+                                th(scope="col")
+                                    | Status
+
+                        tbody
+
+                            if client.contacts && client.contacts.length
+
+                                each contact in client.contacts
+
+                                    tr
+
+                                        td.ps-4
+
+                                            .fw-semibold
+
+                                                if contact.title
+                                                    | #{contact.title}
+
+                                                | #{contact.first_name}
+
+                                                if contact.middle_name
+                                                    |  #{contact.middle_name}
+
+                                                if contact.last_name
+                                                    |  #{contact.last_name}
+
+                                            if contact.is_primary
+                                                span.badge.text-bg-primary.ms-2
+                                                    | Primary
+
+
+                                        td
+
+                                            if contact.position
+                                                | #{contact.position}
+
+                                            else
+                                                span.text-muted
+                                                    | Not specified
+
+
+                                        td
+
+                                            if contact.phone
+                                                | #{contact.phone}
+
+                                            else
+                                                span.text-muted
+                                                    | Not provided
+
+
+                                        td
+
+                                            if contact.email
+                                                | #{contact.email}
+
+                                            else
+                                                span.text-muted
+                                                    | Not provided
+
+
+                                        td
+
+                                            if contact.is_active
+                                                span.badge.text-bg-success
+                                                    | Active
+
+                                            else
+                                                span.badge.text-bg-secondary
+                                                    | Inactive
+
+                            else
+
+                                tr
+
+                                    td.text-center.py-5(
+                                        colspan="5"
+                                    )
+
+                                        i.bi.bi-person-x.display-5.text-muted
+
+                                        h5.mt-3.mb-1
+                                            | No Contacts Found
+
+                                        p.text-muted.mb-0
+                                            | No contacts have been added for this client yet.

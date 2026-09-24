@@ -1,0 +1,179 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid.py-4
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    i.bi.bi-pencil-square.me-2
+                    | Edit Investigation Type
+
+                p.text-muted.mb-0
+                    | Update the configuration of this Investigation Type.
+
+            .mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href="/investigations/types"
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Investigation Types
+
+
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-header.bg-white.border-0.pt-4.px-4
+
+                h5.fw-bold.mb-1
+                    i.bi.bi-search.me-2.text-primary
+                    | Investigation Type Information
+
+                p.text-muted.mb-0
+                    | Update the Investigation Type details below.
+
+            .card-body.p-4
+
+                form(
+                    action=`/investigations/types/${investigationType.id}`
+                    method="POST"
+                )
+
+                    input(
+                        type="hidden"
+                        name="_csrf"
+                        value=csrfToken
+                    )
+
+
+                    .row.g-3
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="code"
+                            )
+                                | Code
+                                span.text-danger
+                                    |  *
+
+                            input.form-control(
+                                type="text"
+                                id="code"
+                                name="code"
+                                value=investigationType.code || ''
+                                required
+                                maxlength="50"
+                                autocomplete="off"
+                            )
+
+                            .form-text
+                                | The code must remain unique.
+
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="name"
+                            )
+                                | Name
+                                span.text-danger
+                                    |  *
+
+                            input.form-control(
+                                type="text"
+                                id="name"
+                                name="name"
+                                value=investigationType.name || ''
+                                required
+                                maxlength="255"
+                            )
+
+
+                        .col-12
+
+                            label.form-label(
+                                for="description"
+                            )
+                                | Description
+
+                            textarea.form-control(
+                                id="description"
+                                name="description"
+                                rows="4"
+                                maxlength="1000"
+                            )= investigationType.description || ''
+
+
+                        .col-12.col-md-4
+
+                            label.form-label(
+                                for="service_price"
+                            )
+                                | Service Price (NGN)
+                                span.text-danger
+                                    |  *
+
+                            input.form-control(
+                                type="number"
+                                id="service_price"
+                                name="service_price"
+                                min="0.01"
+                                step="0.01"
+                                value=investigationType.service_price
+                                required
+                            )
+
+                            .form-text
+                                | Current price charged for this Investigation Service.
+
+
+                        .col-12.col-md-4
+
+                            label.form-label(
+                                for="display_order"
+                            )
+                                | Display Order
+
+                            input.form-control(
+                                type="number"
+                                id="display_order"
+                                name="display_order"
+                                min="0"
+                                value=investigationType.display_order
+                            )
+
+                            .form-text
+                                | Lower numbers appear first.
+
+
+                    hr.my-4
+
+                    .d-flex.justify-content-between.align-items-center
+
+                        div
+
+                            if investigationType.is_active
+
+                                span.badge.bg-success
+                                    | Active
+
+                            else
+
+                                span.badge.bg-secondary
+                                    | Inactive
+
+                        .d-flex.gap-2
+
+                            a.btn.btn-outline-secondary(
+                                href="/investigations/types"
+                            )
+                                | Cancel
+
+                            button.btn.btn-primary(
+                                type="submit"
+                            )
+                                i.bi.bi-check-lg.me-2
+                                | Save Changes

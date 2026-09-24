@@ -1,0 +1,132 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    | User Management
+
+                p.text-muted.mb-0
+                    | Manage NDUKA system users and their access.
+
+            .mt-3.mt-md-0
+                if sessionUser && sessionUser.roles && sessionUser.roles.includes('super_admin')
+                    a.btn.btn-primary(href="/users/new")
+                        i.bi.bi-person-plus.me-2
+                        | Add User
+
+        //- User Table Card
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-body.p-0
+
+                //- Responsive table wrapper
+                .table-responsive
+
+                    table.table.table-hover.align-middle.mb-0
+
+                        thead.table-light
+
+                            tr
+                                th.ps-4(scope="col")
+                                    | #
+
+                                th(scope="col")
+                                    | User
+
+                                th(scope="col")
+                                    | Contact
+
+                                th(scope="col")
+                                    | Role
+
+                                th(scope="col")
+                                    | Status
+
+                                th.pe-4.text-end(scope="col")
+                                    | Actions
+
+                        tbody
+
+                            if users && users.length
+
+                                each user, index in users
+
+                                    tr
+
+                                        td.ps-4
+                                            | #{index + 1}
+
+                                        td
+
+                                            .fw-semibold
+                                                | #{user.first_name} #{user.last_name}
+
+                                            small.text-muted
+                                                | @#{user.username}
+
+                                        td
+
+                                            div
+                                                | #{user.email}
+
+                                            if user.phone
+                                                small.text-muted
+                                                    | #{user.phone}
+
+                                        td
+
+                                            if user.roles
+                                                each role in user.roles.split(', ')
+                                                    span.badge.text-bg-secondary.me-1
+                                                        | #{role}
+                                            else
+                                                span.text-muted
+                                                    | No role
+
+                                        td
+
+                                            if user.status === 'active'
+                                                span.badge.text-bg-success
+                                                    | Active
+
+                                            else if user.status === 'suspended'
+                                                span.badge.text-bg-warning
+                                                    | Suspended
+
+                                            else if user.status === 'disabled'
+                                                span.badge.text-bg-danger
+                                                    | Disabled
+
+                                            else
+                                                span.badge.text-bg-secondary
+                                                    | #{user.status}
+
+                                        td.pe-4.text-end
+
+                                            a.btn.btn-sm.btn-outline-primary(
+                                                href=`/users/${user.id}`
+                                                title="View user"
+                                            )
+                                                i.bi.bi-eye
+
+                            else
+
+                                tr
+
+                                    td.text-center.py-5(
+                                        colspan="6"
+                                    )
+
+                                        i.bi.bi-people.display-5.text-muted
+
+                                        h5.mt-3.mb-1
+                                            | No Users Found
+
+                                        p.text-muted.mb-0
+                                            | There are currently no users to display.

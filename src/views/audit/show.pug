@@ -1,0 +1,162 @@
+
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.fw-bold.mb-1
+                    | Audit Record
+
+                p.text-muted.mb-0
+                    | Detailed information about this system activity record.
+
+            div
+
+                a.btn.btn-outline-secondary(
+                    href="/audit"
+                )
+                    i.bi.bi-arrow-left.me-1
+                    | Back to Audit Logs
+
+
+        //- Audit Record
+        .card.shadow-sm
+
+            .card-header.bg-white
+
+                .d-flex.justify-content-between.align-items-center
+
+                    h5.fw-bold.mb-0
+                        | Audit Event
+
+                    if log.action.endsWith('_FAILED')
+
+                        span.badge.text-bg-danger
+                            = log.action
+
+                    else if log.action.endsWith('_BLOCKED')
+
+                        span.badge.text-bg-warning
+                            = log.action
+
+                    else
+
+                        span.badge.text-bg-secondary
+                            = log.action
+
+
+            .card-body
+
+                .row.g-4
+
+                    //- Record ID
+                    .col-md-6
+
+                        p.text-muted.small.mb-1
+                            | Record ID
+
+                        p.fw-semibold.mb-0
+                            = log.id
+
+
+                    //- Date / Time
+                    .col-md-6
+
+                        p.text-muted.small.mb-1
+                            | Date / Time
+
+                        p.fw-semibold.mb-0
+                            = new Date(log.created_at).toLocaleString('en-GB')
+
+
+                    //- Actor
+                    .col-md-6
+
+                        p.text-muted.small.mb-1
+                            | Actor
+
+                        if log.actor_user_id
+
+                            if log.actor_name
+
+                                p.fw-semibold.mb-0
+                                    = log.actor_name
+
+                            if log.actor_username
+
+                                small.text-muted
+                                    | @
+                                    = log.actor_username
+
+                        else
+
+                            p.text-muted.mb-0
+                                | System / Unauthenticated
+
+
+                    //- Target
+                    .col-md-6
+
+                        p.text-muted.small.mb-1
+                            | Target
+
+                        if log.target_user_id
+
+                            if log.target_name
+
+                                p.fw-semibold.mb-0
+                                    = log.target_name
+
+                            if log.target_username
+
+                                small.text-muted
+                                    | @
+                                    = log.target_username
+
+                        else
+
+                            p.text-muted.mb-0
+                                | —
+
+
+                    //- IP Address
+                    .col-md-6
+
+                        p.text-muted.small.mb-1
+                            | IP Address
+
+                        p.fw-semibold.mb-0
+                            = log.ip_address || '—'
+
+
+                    //- User Agent
+                    .col-12
+
+                        p.text-muted.small.mb-1
+                            | User Agent
+
+                        p.mb-0.text-break
+                            = log.user_agent || '—'
+
+
+                    //- Description
+                    .col-12
+
+                        p.text-muted.small.mb-1
+                            | Description
+
+                        if log.description
+
+                            p.mb-0
+                                = log.description
+
+                        else
+
+                            p.text-muted.mb-0
+                                | —

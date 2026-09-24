@@ -1,0 +1,382 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.fw-bold.mb-1
+                    | Audit Logs
+
+                p.text-muted.mb-0
+                    | Review system security and user activity records.
+
+
+        //- Audit Statistics
+        .row.g-3.mb-4
+
+            //- Total Events
+            .col-sm-6.col-xl-3
+
+                .card.shadow-sm.h-100
+
+                    .card-body
+
+                        .d-flex.justify-content-between.align-items-start
+
+                            div
+
+                                p.text-muted.mb-1.small
+                                    | Total Events
+
+                                h3.fw-bold.mb-0
+                                    = stats.totalEvents
+
+                            i.bi.bi-journal-text.fs-3.text-primary
+
+
+            //- Successful Events
+            .col-sm-6.col-xl-3
+
+                .card.shadow-sm.h-100
+
+                    .card-body
+
+                        .d-flex.justify-content-between.align-items-start
+
+                            div
+
+                                p.text-muted.mb-1.small
+                                    | Successful
+
+                                h3.fw-bold.mb-0
+                                    = stats.successfulEvents
+
+                            i.bi.bi-check-circle.fs-3.text-success
+
+
+            //- Failed Events
+            .col-sm-6.col-xl-3
+
+                .card.shadow-sm.h-100
+
+                    .card-body
+
+                        .d-flex.justify-content-between.align-items-start
+
+                            div
+
+                                p.text-muted.mb-1.small
+                                    | Failed
+
+                                h3.fw-bold.mb-0
+                                    = stats.failedEvents
+
+                            i.bi.bi-x-circle.fs-3.text-danger
+
+
+            //- Blocked Events
+            .col-sm-6.col-xl-3
+
+                .card.shadow-sm.h-100
+
+                    .card-body
+
+                        .d-flex.justify-content-between.align-items-start
+
+                            div
+
+                                p.text-muted.mb-1.small
+                                    | Blocked
+
+                                h3.fw-bold.mb-0
+                                    = stats.blockedEvents
+
+                            i.bi.bi-shield-x.fs-3.text-warning
+
+
+        //- Filters
+        .card.shadow-sm.mb-4
+
+            .card-body
+
+                form(
+                    method="GET"
+                    action="/audit"
+                )
+
+                    .row.g-3.align-items-end
+
+                        .col-md-5.col-lg-4
+
+                            label.form-label.fw-semibold(
+                                for="action"
+                            )
+                                | Action
+
+                            select.form-select(
+                                id="action"
+                                name="action"
+                            )
+
+                                option(
+                                    value=""
+                                    selected=!filters.action
+                                )
+                                    | All actions
+
+                                each availableAction in actions
+
+                                    option(
+                                        value=availableAction
+                                        selected=filters.action === availableAction
+                                    )
+                                        = availableAction
+
+
+                        .col-md-auto
+
+                            button.btn.btn-primary(
+                                type="submit"
+                            )
+                                i.bi.bi-funnel.me-1
+                                | Filter
+
+
+                        if filters.action
+
+                            .col-md-auto
+
+                                a.btn.btn-outline-secondary(
+                                    href="/audit"
+                                )
+                                    i.bi.bi-x-circle.me-1
+                                    | Clear
+
+
+        //- Audit Log Table
+        .card.shadow-sm
+
+            .card-body.p-0
+
+                if logs.length
+
+                    .table-responsive
+
+                        table.table.table-hover.align-middle.mb-0
+
+                            thead.table-light
+
+                                tr
+
+                                    th.ps-3
+                                        | Date / Time
+
+                                    th
+                                        | Action
+
+                                    th
+                                        | Actor
+
+                                    th
+                                        | Target
+
+                                    th
+                                        | Description
+
+                                    th
+                                        | IP Address
+
+                                    th.text-end.pe-3
+                                        |
+
+
+                            tbody
+
+                                each log in logs
+
+                                    tr
+
+                                        td.ps-3.text-nowrap
+
+                                            div.fw-semibold
+                                                = new Date(log.created_at).toLocaleDateString('en-GB')
+
+                                            small.text-muted
+                                                = new Date(log.created_at).toLocaleTimeString('en-GB')
+
+
+                                        td
+
+                                            if log.action.endsWith('_FAILED')
+
+                                                span.badge.text-bg-danger
+                                                    = log.action
+
+                                            else if log.action.endsWith('_BLOCKED')
+
+                                                span.badge.text-bg-warning
+                                                    = log.action
+
+                                            else
+
+                                                span.badge.text-bg-secondary
+                                                    = log.action
+
+
+                                        td
+
+                                            if log.actor_user_id
+
+                                                if log.actor_name
+
+                                                    div.fw-semibold
+                                                        = log.actor_name
+
+                                                if log.actor_username
+
+                                                    small.text-muted
+                                                        | @
+                                                        = log.actor_username
+
+                                            else
+
+                                                span.text-muted
+                                                    | System / Unauthenticated
+
+
+                                        td
+
+                                            if log.target_user_id
+
+                                                if log.target_name
+
+                                                    div.fw-semibold
+                                                        = log.target_name
+
+                                                if log.target_username
+
+                                                    small.text-muted
+                                                        | @
+                                                        = log.target_username
+
+                                            else
+
+                                                span.text-muted
+                                                    | —
+
+
+                                        td
+
+                                            if log.description
+
+                                                = log.description
+
+                                            else
+
+                                                span.text-muted
+                                                    | —
+
+
+                                        td.text-nowrap
+
+                                            = log.ip_address || '—'
+
+
+                                        td.text-end.pe-3
+
+                                            a.btn.btn-sm.btn-outline-primary(
+                                                href=`/audit/${log.id}`
+                                                title="View audit record"
+                                            )
+                                                i.bi.bi-eye.me-1
+                                                | View
+
+
+                else
+
+                    .p-5.text-center
+
+                        i.bi.bi-journal-text.fs-1.text-muted
+
+                        h5.mt-3.mb-1
+                            | No audit records found.
+
+                        p.text-muted.mb-0
+                            | There are no audit events matching your current filter.
+
+
+
+        //- Pagination
+        if pagination.totalPages > 1
+
+            nav.mt-4(
+                aria-label="Audit log pagination"
+            )
+
+                ul.pagination.justify-content-center
+
+                    //- Previous
+                    if pagination.page > 1
+
+                        li.page-item
+
+                            a.page-link(
+                                href=`/audit?page=${pagination.page - 1}${filters.action ? '&action=' + encodeURIComponent(filters.action) : ''}`
+                            )
+                                | Previous
+
+                    else
+
+                        li.page-item.disabled
+
+                            span.page-link
+                                | Previous
+
+
+                    //- Page numbers
+                    - const startPage = Math.max(1, pagination.page - 2)
+
+                    - const endPage = Math.min(pagination.totalPages, pagination.page + 2)
+
+                    - for (let pageNumber = startPage; pageNumber <= endPage; pageNumber++)
+
+                        if pageNumber === pagination.page
+
+                            li.page-item.active(
+                                aria-current="page"
+                            )
+
+                                span.page-link
+                                    = pageNumber
+
+                        else
+
+                            li.page-item
+
+                                a.page-link(
+                                    href=`/audit?page=${pageNumber}${filters.action ? '&action=' + encodeURIComponent(filters.action) : ''}`
+                                )
+                                    = pageNumber
+
+
+                    //- Next
+                    if pagination.page < pagination.totalPages
+
+                        li.page-item
+
+                            a.page-link(
+                                href=`/audit?page=${pagination.page + 1}${filters.action ? '&action=' + encodeURIComponent(filters.action) : ''}`
+                            )
+                                | Next
+
+                    else
+
+                        li.page-item.disabled
+
+                            span.page-link
+                                | Next

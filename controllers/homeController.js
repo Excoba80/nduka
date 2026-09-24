@@ -1,21 +1,40 @@
+'use strict';
+
+const investigationRequestService =
+    require('../src/services/investigation-request.service');
 
 
-const User = require("../models/User");
-
+/**
+ * Public NDUKA Home Page.
+ *
+ * The homepage is intentionally independent
+ * of authentication and internal case data.
+ *
+ * Investigation Services displayed on the page
+ * come from the active Investigation Type catalogue.
+ */
 exports.index = async (req, res, next) => {
 
     try {
 
-        const users = await User.findAll();
+        const investigationTypes =
+            await investigationRequestService
+                .getActiveInvestigationTypes();
 
-        res.render("home/index", {
-            title: "NDUKA",
-            users
-        });
 
-    } catch (err) {
+        return res.render(
+            'public/home/index',
+            {
+                title:
+                    'NDUKA — Marriage Intelligence & Verification',
 
-        next(err);
+                investigationTypes
+            }
+        );
+
+    } catch (error) {
+
+        return next(error);
 
     }
 

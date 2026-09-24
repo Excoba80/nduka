@@ -1,0 +1,121 @@
+extends ../layouts/main
+
+block content
+
+    .row.justify-content-center.align-items-center.min-vh-100
+
+        .col-12.col-sm-10.col-md-7.col-lg-5.col-xl-4
+
+            .card.shadow.border-0.rounded-4
+
+                .card-body.p-5
+
+                    .text-center.mb-5
+
+                        i.bi.bi-person-check.display-4.text-primary
+
+                        h1.mt-3.mb-1.fw-bold.nduka-brand
+                            | NDUKA
+
+                        p.text-muted.mb-4
+                            | Activate Your Client Account
+
+                    if error
+
+                        .alert.alert-danger(
+                            role="alert"
+                        )
+                            i.bi.bi-exclamation-triangle-fill.me-2
+                            | #{error}
+
+                    if activation && activation.valid
+
+                        .mb-4
+
+                            p.mb-1.text-muted
+                                | Welcome
+
+                            h2.h5.fw-bold
+                                | #{activation.firstName} #{activation.lastName}
+
+                            p.text-muted.mb-0
+                                | Username:
+                                | #{' '}
+                                strong
+                                    | #{activation.username}
+
+                        form(
+                            action="/activate"
+                            method="POST"
+                        )
+
+                            input(
+                                type="hidden"
+                                name="_csrf"
+                                value=csrfToken
+                            )
+
+                            input(
+                                type="hidden"
+                                name="token"
+                                value=token
+                            )
+
+                            .mb-3
+
+                                label.form-label(
+                                    for="password"
+                                )
+                                    | Create Password
+
+                                input.form-control(
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    minlength="8"
+                                    autocomplete="new-password"
+                                    required
+                                    autofocus
+                                )
+
+                                p.form-text
+                                    | Your password must be at least
+                                    | 8 characters long.
+
+                            .mb-4
+
+                                label.form-label(
+                                    for="confirm_password"
+                                )
+                                    | Confirm Password
+
+                                input.form-control(
+                                    id="confirm_password"
+                                    name="confirm_password"
+                                    type="password"
+                                    minlength="8"
+                                    autocomplete="new-password"
+                                    required
+                                )
+
+                            .d-grid
+
+                                button.btn.btn-primary.btn-lg(
+                                    type="submit"
+                                )
+                                    i.bi.bi-check-circle.me-2
+                                    | Activate Account
+
+                    else
+
+                        .text-center
+
+                            p.text-muted.mb-4
+                                | This activation link cannot be used.
+                                | Please use the latest activation link
+                                | sent by NDUKA.
+
+                            a.btn.btn-primary(
+                                href="/login"
+                            )
+                                | Return to Sign In

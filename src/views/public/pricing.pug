@@ -1,0 +1,91 @@
+extends layouts/layout.pug
+
+block content
+
+    section.page-hero
+        .public-container
+
+            span.eyebrow
+                | Pricing
+
+            h1
+                | Clear pricing for each investigation service.
+
+            p
+                | Our service prices are based on the current NDUKA
+                | investigation catalogue.
+
+
+    section.pricing-section
+        .public-container
+
+            if investigationTypes && investigationTypes.length
+
+                .pricing-grid
+
+                    each investigationType in investigationTypes
+
+                        article.pricing-card
+
+                            .pricing-card-content
+
+                                h2
+                                    = investigationType.name
+
+                                if investigationType.description
+                                    p
+                                        = investigationType.description
+
+                                else
+                                    p
+                                        | Professional verification service
+                                        | provided through the NDUKA investigation
+                                        | process.
+
+
+                            .pricing-card-footer
+
+                                .pricing-amount
+
+                                    span.price-label
+                                        | Service Price
+
+                                    strong
+                                        = investigationType.formattedPrice
+
+                                a.btn.btn-primary(
+                                    href="/start-investigation"
+                                )
+                                    | Start Investigation
+
+            else
+
+                article.pricing-card
+
+                    h2
+                        | Pricing Currently Unavailable
+
+                    p
+                        | Investigation service pricing is currently being
+                        | prepared. Please check back shortly.
+
+
+    section.pricing-note
+        .public-container
+
+            h2
+                | About our pricing
+
+            p
+                | The price displayed for each service reflects the current
+                | NDUKA Investigation Type catalogue.
+
+            p
+                | If you select multiple investigation services, the total
+                | amount will be calculated according to the services selected
+                | in your investigation request.
+
+            a.btn.btn-primary(
+                href="/start-investigation"
+            )
+                | Start an Investigation

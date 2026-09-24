@@ -1,0 +1,82 @@
+extends layouts/layout.pug
+
+block content
+
+    section.page-hero
+        .public-container
+
+            span.eyebrow
+                | Investigation Services
+
+            h1
+                | Know what needs to be verified.
+
+            p
+                | NDUKA provides structured investigation and verification
+                | services designed to help you make informed decisions.
+
+
+    section.services-section
+        .public-container
+
+            if investigationTypes && investigationTypes.length
+
+                .service-preview-grid
+
+                    each investigationType in investigationTypes
+
+                        article.service-preview
+
+                            h2
+                                = investigationType.name
+
+                            if investigationType.description
+                                p
+                                    = investigationType.description
+
+                            else
+                                p
+                                    | Professional verification service
+                                    | provided through the NDUKA investigation
+                                    | process.
+
+                            if investigationType.service_price !== undefined && investigationType.service_price !== null
+                                p.service-price
+                                    | From #{investigationType.formattedPrice}
+
+                            a.btn.btn-primary(
+                                href="/start-investigation"
+                            )
+                                | Start Investigation
+
+            else
+
+                article.service-preview
+
+                    h2
+                        | Investigation Services
+
+                    p
+                        | NDUKA investigation services are currently being
+                        | prepared. Please check back shortly.
+
+
+    section.service-cta
+        .public-container
+
+            h2
+                | Ready to begin?
+
+            p
+                | Select the investigation services relevant to your
+                | needs and submit your request to NDUKA.
+
+            a.btn.btn-primary(
+                href="/start-investigation"
+            )
+                | Start an Investigation
+
+            a.btn.btn-secondary(
+                href="/pricing"
+            )
+                | View Pricing

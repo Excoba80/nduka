@@ -1,0 +1,169 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    | Client Management
+
+                p.text-muted.mb-0
+                    | Manage NDUKA clients and their records.
+
+            .mt-3.mt-md-0
+                if sessionUser && sessionUser.roles && (sessionUser.roles.includes('super_admin') || sessionUser.roles.includes('administrator'))
+                    a.btn.btn-primary(href="/clients/new")
+                        i.bi.bi-person-plus.me-2
+                        | Add Client
+
+        //- Client Table Card
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-body.p-0
+
+                .table-responsive
+
+                    table.table.table-hover.align-middle.mb-0
+
+                        thead.table-light
+
+                            tr
+                                th.ps-4(scope="col")
+                                    | #
+
+                                th(scope="col")
+                                    | Client
+
+                                th(scope="col")
+                                    | Type
+
+                                th(scope="col")
+                                    | Location
+
+                                th(scope="col")
+                                    | Contacts
+
+                                th(scope="col")
+                                    | Created
+
+                                th.pe-4.text-end(scope="col")
+                                    | Actions
+
+                        tbody
+
+                            if clients && clients.length
+
+                                each client, index in clients
+
+                                    tr
+
+                                        td.ps-4
+                                            | #{index + 1}
+
+                                        td
+
+                                            .fw-semibold
+                                                | #{client.name}
+
+                                            small.text-muted.d-block
+                                                | #{client.client_code}
+
+                                        td
+
+                                            if client.client_type_display
+                                                span.badge.text-bg-secondary
+                                                    | #{client.client_type_display}
+
+                                            else if client.client_type
+                                                span.badge.text-bg-secondary
+                                                    | #{client.client_type}
+
+                                            else
+                                                span.text-muted
+                                                    | Not specified
+
+                                        td
+
+                                            if client.city || client.state || client.country
+
+                                                if client.city
+                                                    div
+                                                        | #{client.city}
+
+                                                if client.state || client.country
+                                                    small.text-muted
+
+                                                        if client.state
+                                                            | #{client.state}
+
+                                                        if client.state && client.country
+                                                            | ,
+
+                                                        if client.country
+                                                            | #{client.country}
+
+                                            else
+                                                span.text-muted
+                                                    | Not specified
+
+                                        td
+
+                                            if client.contact_count
+                                                span.badge.text-bg-info
+                                                    | #{client.contact_count}
+
+                                            else
+                                                span.text-muted
+                                                    | 0
+
+                                        td
+
+                                            if client.created_at
+                                                small.text-muted
+                                                    | #{new Date(client.created_at).toLocaleDateString('en-GB')}
+
+                                            else
+                                                span.text-muted
+                                                    | —
+
+                                        td.pe-4.text-end
+
+                                            a.btn.btn-sm.btn-outline-primary(
+                                                href=`/clients/${client.id}`
+                                                title="View client"
+                                            )
+                                                i.bi.bi-eye
+
+                                            if sessionUser && sessionUser.roles && (sessionUser.roles.includes('super_admin') || sessionUser.roles.includes('administrator'))
+                                                a.btn.btn-sm.btn-outline-secondary.ms-1(
+                                                    href=`/clients/${client.id}/edit`
+                                                    title="Edit client"
+                                                )
+                                                    i.bi.bi-pencil
+
+                            else
+
+                                tr
+
+                                    td.text-center.py-5(
+                                        colspan="7"
+                                    )
+
+                                        i.bi.bi-building.display-5.text-muted
+
+                                        h5.mt-3.mb-1
+                                            | No Clients Found
+
+                                        p.text-muted.mb-3
+                                            | There are currently no clients to display.
+
+                                        if sessionUser && sessionUser.roles && (sessionUser.roles.includes('super_admin') || sessionUser.roles.includes('administrator'))
+                                            a.btn.btn-primary(
+                                                href="/clients/new"
+                                            )
+                                                i.bi.bi-plus-lg.me-2
+                                                | Add Client

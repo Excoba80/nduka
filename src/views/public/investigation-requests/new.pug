@@ -1,0 +1,835 @@
+extends ../layouts/layout.pug
+
+block content
+
+    section
+        .public-container
+
+            .section-heading
+
+                span.eyebrow
+                    | Start an Investigation
+
+                h1
+                    | Tell us what you need verified.
+
+                p
+                    | Provide the information below so that your
+                    | investigation request can be reviewed and
+                    | processed properly.
+
+
+            if error
+
+                .alert.alert-danger(
+                    role="alert"
+                )
+                    | #{error}
+
+
+            form(
+                action="/start-investigation"
+                method="POST"
+                id="investigation-request-form"
+            )
+
+                input(
+                    type="hidden"
+                    name="_csrf"
+                    value=csrfToken
+                )
+
+
+                //- ==========================================
+                //- Applicant / Client Information
+                //- ==========================================
+
+                .form-section
+
+                    h2
+                        | Applicant Information
+
+                    p
+                        | This information will be used for the
+                        | prospective Client record if your request
+                        | is accepted.
+
+
+                    .form-grid
+
+                        .form-group
+
+                            label(
+                                for="client_type_id"
+                            )
+                                | Client Type #[span.required-asterisk *]
+
+                            select(
+                                id="client_type_id"
+                                name="client_type_id"
+                                required
+                            )
+
+                                option(
+                                    value=""
+                                    selected=!formData.clientTypeId
+                                )
+                                    | Select client type
+
+                                each clientType in clientTypes
+
+                                    option(
+                                        value=clientType.id
+                                        selected=String(formData.clientTypeId || '') === String(clientType.id)
+                                    )
+                                        | #{clientType.display_name}
+
+
+                        .form-group
+
+                            label(
+                                for="applicant_name"
+                            )
+                                | Applicant Name #[span.required-asterisk *]
+
+                            input(
+                                type="text"
+                                id="applicant_name"
+                                name="applicant_name"
+                                value=formData.applicantName || ''
+                                maxlength="255"
+                                required
+                            )
+
+
+                        .form-group
+
+                            label(
+                                for="applicant_phone"
+                            )
+                                | Phone Number #[span.required-asterisk *]
+
+                            input(
+                                type="tel"
+                                id="applicant_phone"
+                                name="applicant_phone"
+                                value=formData.applicantPhone || ''
+                                maxlength="20"
+                                autocomplete="tel"
+                                inputmode="tel"
+                                placeholder="eg: +2348100000000"
+                                required
+                            )
+
+
+                        .form-group
+
+                            label(
+                                for="applicant_email"
+                            )
+                                | Email Address #[span.required-asterisk *]
+
+                            input(
+                                type="email"
+                                id="applicant_email"
+                                name="applicant_email"
+                                value=formData.applicantEmail || ''
+                                maxlength="255"
+                                autocomplete="email"
+                                required
+                            )
+
+
+                    h3
+                        | Address
+
+
+                    .form-grid
+
+                        .form-group.form-group-wide
+
+                            label(
+                                for="address_line_1"
+                            )
+                                | Address Line 1
+
+                            input(
+                                type="text"
+                                id="address_line_1"
+                                name="address_line_1"
+                                value=formData.addressLine1 || ''
+                                maxlength="255"
+                            )
+
+
+                        .form-group.form-group-wide
+
+                            label(
+                                for="address_line_2"
+                            )
+                                | Address Line 2
+
+                            input(
+                                type="text"
+                                id="address_line_2"
+                                name="address_line_2"
+                                value=formData.addressLine2 || ''
+                                maxlength="255"
+                            )
+
+
+                        .form-group
+
+                            label(
+                                for="city"
+                            )
+                                | City
+
+                            input(
+                                type="text"
+                                id="city"
+                                name="city"
+                                value=formData.city || ''
+                                maxlength="100"
+                            )
+
+
+                        .form-group
+
+                            label(
+                                for="state"
+                            )
+                                | State
+
+                            input(
+                                type="text"
+                                id="state"
+                                name="state"
+                                value=formData.state || ''
+                                maxlength="100"
+                            )
+
+
+                        .form-group
+
+                            label(
+                                for="country"
+                            )
+                                | Country
+
+                            input(
+                                type="text"
+                                id="country"
+                                name="country"
+                                value=formData.country || ''
+                                maxlength="100"
+                            )
+
+
+                        .form-group
+
+                            label(
+                                for="postal_code"
+                            )
+                                | Postal Code
+
+                            input(
+                                type="text"
+                                id="postal_code"
+                                name="postal_code"
+                                value=formData.postalCode || ''
+                                maxlength="20"
+                            )
+
+
+                //- ==========================================
+                //- Investigation Subject
+                //- ==========================================
+
+                .form-section
+
+                    h2
+                        | Investigation Subject
+
+                    p
+                        | Enter the information you currently have
+                        | about the person or matter to be investigated.
+
+
+                    .form-grid
+
+                        .form-group
+
+                            label(
+                                for="subject_name"
+                            )
+                                | Subject Name #[span.required-asterisk *]
+
+                            input(
+                                type="text"
+                                id="subject_name"
+                                name="subject_name"
+                                value=formData.subjectName || ''
+                                maxlength="255"
+                                required
+                            )
+
+
+                        .form-group
+
+                            label(
+                                for="subject_phone"
+                            )
+                                | Subject Phone
+
+                            input(
+                                type="tel"
+                                id="subject_phone"
+                                name="subject_phone"
+                                value=formData.subjectPhone || ''
+                                maxlength="20"
+                            )
+
+
+                        .form-group
+
+                            label(
+                                for="subject_email"
+                            )
+                                | Subject Email
+
+                            input(
+                                type="email"
+                                id="subject_email"
+                                name="subject_email"
+                                value=formData.subjectEmail || ''
+                                maxlength="255"
+                            )
+
+
+                //- ==========================================
+                //- Investigation Request
+                //- ==========================================
+
+                .form-section
+
+                    h2
+                        | Investigation Request
+
+
+                    .form-group
+
+                        label(
+                            for="case_title"
+                        )
+                            | Case Title #[span.required-asterisk *]
+
+                        input(
+                            type="text"
+                            id="case_title"
+                            name="case_title"
+                            value=formData.caseTitle || ''
+                            maxlength="255"
+                            required
+                            placeholder="e.g. Premarital Verification — John Doe"
+                        )
+
+
+                    .form-group
+
+                        label
+                            | Investigation Services #[span.required-asterisk *]
+
+                        p
+                            | Select all the areas you would like
+                            | NDUKA to investigate.
+
+
+                        //- Client-side validation message.
+                        //- JavaScript will display this when no
+                        //- Investigation Service has been selected.
+                        .alert.alert-danger(
+                            id="investigation-services-error"
+                            role="alert"
+                            hidden
+                        )
+                            | Please select at least one Investigation Service to continue.
+
+
+                        .service-selection
+
+                            each investigationType in investigationTypes
+
+                                - const isTypeSelected = !!(formData.investigationTypeIds && formData.investigationTypeIds.map(String).includes(String(investigationType.id)))
+
+                                .service-option-wrapper
+
+                                    label.service-option
+
+                                        input.service-checkbox(
+                                            type="checkbox"
+                                            name="investigation_type_ids"
+                                            value=investigationType.id
+                                            data-investigation-type-id=investigationType.id
+                                            data-investigation-type-code=investigationType.code
+                                            checked=isTypeSelected
+                                        )
+
+                                        span
+
+                                            strong
+                                                | #{investigationType.name}
+
+                                            if investigationType.description
+
+                                                small
+                                                    | #{investigationType.description}
+
+
+                                    if investigationType.fields && investigationType.fields.length
+
+                                        .investigation-type-fields(
+                                            data-fields-for=investigationType.id
+                                            hidden=!isTypeSelected
+                                        )
+
+                                            each field in investigationType.fields
+
+                                                - const submittedTypeFields = (formData.serviceFields && formData.serviceFields[investigationType.id]) || {}
+                                                - const submittedValue = submittedTypeFields[field.id]
+                                                - const fieldId = `service_field_${investigationType.id}_${field.id}`
+                                                - const fieldDisabled = !isTypeSelected
+
+                                                .form-group.dynamic-service-field
+
+                                                    label(
+                                                        for=fieldId
+                                                    )
+                                                        | #{field.field_label}
+
+                                                        if field.is_required
+                                                            |  #[span.required-asterisk *]
+
+
+                                                    if field.field_type === 'TEXT'
+
+                                                        input(
+                                                            type="text"
+                                                            id=fieldId
+                                                            name=`service_fields[type_${investigationType.id}][field_${field.id}]`
+                                                            value=Array.isArray(submittedValue) ? '' : (submittedValue || '')
+                                                            placeholder=field.placeholder || undefined
+                                                            required=!!field.is_required
+                                                            disabled=fieldDisabled
+                                                        )
+
+
+                                                    else if field.field_type === 'TEXTAREA'
+
+                                                        textarea(
+                                                            id=fieldId
+                                                            name=`service_fields[type_${investigationType.id}][field_${field.id}]`
+                                                            rows="4"
+                                                            placeholder=field.placeholder || undefined
+                                                            required=!!field.is_required
+                                                            disabled=fieldDisabled
+                                                        )= Array.isArray(submittedValue) ? '' : (submittedValue || '')
+
+
+                                                    else if field.field_type === 'NUMBER'
+
+                                                        input(
+                                                            type="number"
+                                                            id=fieldId
+                                                            name=`service_fields[type_${investigationType.id}][field_${field.id}]`
+                                                            value=Array.isArray(submittedValue) ? '' : (submittedValue || '')
+                                                            placeholder=field.placeholder || undefined
+                                                            required=!!field.is_required
+                                                            disabled=fieldDisabled
+                                                        )
+
+
+                                                    else if field.field_type === 'DATE'
+
+                                                        input(
+                                                            type="date"
+                                                            id=fieldId
+                                                            name=`service_fields[type_${investigationType.id}][field_${field.id}]`
+                                                            value=Array.isArray(submittedValue) ? '' : (submittedValue || '')
+                                                            required=!!field.is_required
+                                                            disabled=fieldDisabled
+                                                        )
+
+
+                                                    else if field.field_type === 'EMAIL'
+
+                                                        input(
+                                                            type="email"
+                                                            id=fieldId
+                                                            name=`service_fields[type_${investigationType.id}][field_${field.id}]`
+                                                            value=Array.isArray(submittedValue) ? '' : (submittedValue || '')
+                                                            placeholder=field.placeholder || undefined
+                                                            required=!!field.is_required
+                                                            disabled=fieldDisabled
+                                                        )
+
+
+                                                    else if field.field_type === 'PHONE'
+
+                                                        input(
+                                                            type="tel"
+                                                            id=fieldId
+                                                            name=`service_fields[type_${investigationType.id}][field_${field.id}]`
+                                                            value=Array.isArray(submittedValue) ? '' : (submittedValue || '')
+                                                            placeholder=field.placeholder || undefined
+                                                            required=!!field.is_required
+                                                            disabled=fieldDisabled
+                                                        )
+
+
+                                                    else if field.field_type === 'SELECT'
+
+                                                        select(
+                                                            id=fieldId
+                                                            name=`service_fields[type_${investigationType.id}][field_${field.id}]`
+                                                            required=!!field.is_required
+                                                            disabled=fieldDisabled
+                                                        )
+
+                                                            option(
+                                                                value=""
+                                                                selected=!submittedValue
+                                                            )
+                                                                | Select an option
+
+                                                            each optionValue in (field.options || [])
+
+                                                                option(
+                                                                    value=optionValue
+                                                                    selected=String(submittedValue || '') === String(optionValue)
+                                                                )
+                                                                    | #{optionValue}
+
+
+                                                    else if field.field_type === 'RADIO'
+
+                                                        .dynamic-radio-group
+
+                                                            each optionValue in (field.options || [])
+
+                                                                label.dynamic-choice
+
+                                                                    input(
+                                                                        type="radio"
+                                                                        name=`service_fields[type_${investigationType.id}][field_${field.id}]`
+                                                                        value=optionValue
+                                                                        checked=String(submittedValue || '') === String(optionValue)
+                                                                        required=!!field.is_required
+                                                                        disabled=fieldDisabled
+                                                                    )
+
+                                                                    span
+                                                                        | #{optionValue}
+
+
+                                                    else if field.field_type === 'CHECKBOX'
+
+                                                        .dynamic-checkbox-group
+
+                                                            - const selectedValues = Array.isArray(submittedValue) ? submittedValue.map(String) : []
+
+                                                            each optionValue in (field.options || [])
+
+                                                                label.dynamic-choice
+
+                                                                    input(
+                                                                        type="checkbox"
+                                                                        name=`service_fields[type_${investigationType.id}][field_${field.id}][]`
+                                                                        value=optionValue
+                                                                        checked=selectedValues.includes(String(optionValue))
+                                                                        disabled=fieldDisabled
+                                                                    )
+
+                                                                    span
+                                                                        | #{optionValue}
+
+
+                                                    if field.help_text
+
+                                                        small.form-text
+                                                            | #{field.help_text}
+
+
+                    .form-group
+
+                        label(
+                            for="investigation_purpose"
+                        )
+                            | Purpose of Investigation #[span.required-asterisk *]
+
+                        textarea(
+                            id="investigation_purpose"
+                            name="investigation_purpose"
+                            rows="5"
+                            maxlength="5000"
+                            required
+                            placeholder="Tell us why you are requesting this investigation."
+                        )= formData.investigationPurpose || ''
+
+
+                    .form-group
+
+                        label(
+                            for="additional_information"
+                        )
+                            | Additional Information
+
+                        textarea(
+                            id="additional_information"
+                            name="additional_information"
+                            rows="5"
+                            maxlength="5000"
+                            placeholder="Provide any other information that may assist the review of your request."
+                        )= formData.additionalInformation || ''
+
+
+                //- ==========================================
+                //- Consent
+                //- ==========================================
+
+                .form-section
+
+                    h2
+                        | Consent and Confirmation
+
+
+                    label.consent-option
+
+                        input(
+                            type="checkbox"
+                            name="consent_confirmed"
+                            value="1"
+                            required
+                            checked=formData.consentConfirmed
+                        )
+
+                        span
+                            | I confirm that the information supplied in
+                            | this request is accurate to the best of my
+                            | knowledge and I consent to NDUKA reviewing
+                            | and processing this investigation request.
+
+
+                //- ==========================================
+                //- Form Actions
+                //- ==========================================
+
+                .form-actions
+
+                    a.btn.btn-secondary(
+                        href="/"
+                    )
+                        | Cancel
+
+
+                    button.btn.btn-primary(
+                        type="submit"
+                        id="submit-investigation-request"
+                    )
+
+                        span.submit-button-text
+                            | Submit Investigation Request
+
+                        span.submit-button-progress(
+                            hidden
+                        )
+                            | Submitting...
+
+        //- ==========================================
+        //- End of Main Investigation Request Form
+        //- ==========================================
+
+    //- ==========================================
+    //- Recommendation Helper
+    //- ==========================================
+
+    details.form-section.investigation-recommendation
+
+        summary.investigation-recommendation-summary
+            | Not sure which investigation service you need?
+
+        .investigation-recommendation-content
+
+            p
+                | Tell us what you want to verify. NDUKA will match your
+                | objective to the relevant services already available.
+
+            if recommendationObjectives && recommendationObjectives.length
+
+                .recommendation-objectives
+
+                    each objective in recommendationObjectives
+
+                        label.recommendation-objective
+
+                            input.recommendation-objective-checkbox(
+                                type="checkbox"
+                                value=objective.key
+                                data-recommendation-codes=objective.codes.join(',')
+                            )
+
+                            span
+
+                                strong
+                                    | #{objective.label}
+
+                                if objective.description
+
+                                    small
+                                        | #{objective.description}
+
+                .investigation-recommendation-results(
+                    id="investigation-recommendation-results"
+                    hidden
+                    aria-live="polite"
+                )
+
+            else
+
+                .alert.alert-info
+                    | Investigation recommendations are currently unavailable.
+                    | You can select an Investigation Service above.
+
+            p.recommendation-note
+                | Selecting a suggestion will use the existing service above
+                | and open its existing service particulars. It will not create
+                | a separate investigation service.
+
+    //- ==========================================
+    //- Service Feedback
+    //- ==========================================
+
+    .form-section.service-feedback
+
+        h2
+            | None of these services meets your need?
+
+        p
+            | Tell us what you would like NDUKA to investigate.
+            | Your suggestion will be reviewed for possible inclusion
+            | in our investigation service catalogue.
+
+
+        if feedbackSuccess
+
+            .service-feedback-notice.service-feedback-notice-success(
+                role="status"
+                aria-live="polite"
+            )
+
+                strong
+                    | Service suggestion sent successfully
+
+                p
+                    | Your service suggestion has been sent to NDUKA successfully.
+                    | Thank you for helping us improve our investigation service catalogue.
+
+
+        if feedbackError
+
+            .service-feedback-notice.service-feedback-notice-error(
+                role="alert"
+            )
+
+                strong
+                    | Service suggestion could not be sent
+
+                p
+                    | Please complete all service suggestion fields correctly and try again.
+
+
+        form(
+            action="/investigation-service-feedback"
+            method="POST"
+            id="investigation-service-feedback-form"
+        )
+
+            input(
+                type="hidden"
+                name="_csrf"
+                value=csrfToken
+            )
+
+            .form-group
+
+                label(
+                    for="service_feedback_name"
+                )
+                    | Your Name #[span.required-asterisk *]
+
+                input.form-control(
+                    type="text"
+                    id="service_feedback_name"
+                    name="name"
+                    maxlength="255"
+                    required
+                    autocomplete="name"
+                    placeholder="Enter your name"
+                )
+
+            .form-group
+
+                label(
+                    for="service_feedback_email"
+                )
+                    | Email Address #[span.required-asterisk *]
+
+                input.form-control(
+                    type="email"
+                    id="service_feedback_email"
+                    name="email"
+                    maxlength="255"
+                    required
+                    autocomplete="email"
+                    placeholder="you@example.com"
+                )
+
+            .form-group
+
+                label(
+                    for="service_feedback_subject"
+                )
+                    | What would you like us to investigate? #[span.required-asterisk *]
+
+                input.form-control(
+                    type="text"
+                    id="service_feedback_subject"
+                    name="subject"
+                    maxlength="255"
+                    required
+                    placeholder="e.g. Verification of a business partner"
+                )
+
+            .form-group
+
+                label(
+                    for="service_feedback_message"
+                )
+                    | Describe the service you need #[span.required-asterisk *]
+
+                textarea.form-control(
+                    id="service_feedback_message"
+                    name="message"
+                    rows="6"
+                    maxlength="5000"
+                    required
+                    placeholder="Please describe what you would like NDUKA to investigate and any useful details."
+                )
+
+            .form-actions
+
+                button.btn.btn-primary.service-feedback-cta(
+                    type="submit"
+                    id="submit-service-feedback"
+                )
+                    | Send Service Suggestion

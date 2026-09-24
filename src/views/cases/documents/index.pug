@@ -1,0 +1,197 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.mb-1
+                    i.bi.bi-folder2-open.me-2
+                    | Case Documents
+
+                p.text-muted.mb-0
+                    | #{caseRecord.case_reference} — #{caseRecord.case_title}
+
+            div.mt-3.mt-md-0.d-flex.flex-wrap.gap-2
+
+                if hasPermission('create_case_document') && !caseRecord.status_is_terminal
+
+                    a.btn.btn-primary(
+                        href=`/cases/${caseRecord.id}/documents/new`
+                    )
+                        i.bi.bi-cloud-arrow-up.me-2
+                        | Upload Document
+
+                a.btn.btn-outline-secondary(
+                    href=`/cases/${caseRecord.id}`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Case
+
+
+        .card.shadow-sm
+
+            .card-header.bg-white.py-3
+
+                .d-flex.justify-content-between.align-items-center
+
+                    h5.mb-0
+                        i.bi.bi-files.me-2
+                        | Documents
+
+                    span.badge.bg-secondary
+                        | #{documents.length}
+
+
+            .card-body
+
+                if documents && documents.length > 0
+
+                    .table-responsive
+
+                        table.table.table-hover.align-middle.mb-0
+
+                            thead
+
+                                tr
+
+                                    th Document
+                                    th Type
+                                    th Investigation Service
+                                    th Size
+                                    th Uploaded By
+                                    th Uploaded
+                                    th Status
+                                    th.text-end Actions
+
+
+                            tbody
+
+                                each document in documents
+
+                                    tr
+
+                                        td
+
+                                            div.fw-semibold
+                                                | #{document.original_filename}
+
+                                            if document.file_hash
+                                                div.text-muted.small.mt-1
+                                                    i.bi.bi-shield-check.me-1
+                                                    | SHA-256:
+                                                    code.ms-1 #{document.file_hash}
+
+                                            if document.is_private
+
+                                                span.badge.bg-warning.text-dark.mt-1
+                                                    i.bi.bi-lock-fill.me-1
+                                                    | Private
+
+
+                                        td
+
+                                            span.fw-semibold
+                                                | #{document.document_type_name}
+
+
+                                        td
+
+                                            if document.investigation_type_name
+
+                                                | #{document.investigation_type_name}
+
+                                            else
+
+                                                span.text-muted
+                                                    | General Case Document
+
+
+                                        td
+
+                                            - const sizeInMb = (Number(document.file_size) / (1024 * 1024)).toFixed(2)
+
+                                            | #{sizeInMb} MB
+
+
+                                        td
+
+                                            if document.created_by_first_name || document.created_by_last_name
+
+                                                | #{document.created_by_first_name || ''} #{document.created_by_middle_name || ''} #{document.created_by_last_name || ''}
+
+                                            else
+
+                                                | #{document.created_by_username}
+
+
+                                        td
+
+                                            | #{new Date(document.created_at).toLocaleString()}
+
+
+                                        td
+
+                                            if document.expiry_date
+
+                                                - const expiry = new Date(document.expiry_date)
+                                                - const today = new Date()
+                                                - today.setHours(0, 0, 0, 0)
+
+                                                if expiry < today
+
+                                                    span.badge.bg-danger
+                                                        | Expired
+
+                                                else
+
+                                                    span.badge.bg-success
+                                                        | Valid
+
+                                            else
+
+                                                span.badge.bg-secondary
+                                                    | No Expiry
+
+
+                                        td.text-end
+
+                                            .d-flex.justify-content-end.gap-1
+
+                                                a.btn.btn-sm.btn-outline-primary(
+                                                    href=`/cases/${caseRecord.id}/documents/${document.id}/download`
+                                                    title="Download document"
+                                                )
+                                                    i.bi.bi-download
+
+                                                if hasPermission('update_case_document') && !caseRecord.status_is_terminal
+
+                                                    a.btn.btn-sm.btn-outline-secondary(
+                                                        href=`/cases/${caseRecord.id}/documents/${document.id}/edit`
+                                                        title="Edit document metadata"
+                                                    )
+                                                        i.bi.bi-pencil
+
+
+                else
+
+                    .text-center.py-5
+
+                        i.bi.bi-folder-x.display-4.text-muted
+
+                        h5.mt-3
+                            | No Case Documents
+
+                        p.text-muted.mb-4
+                            | No documents have been uploaded to this Case yet.
+
+                        if hasPermission('create_case_document') && !caseRecord.status_is_terminal
+
+                            a.btn.btn-primary(
+                                href=`/cases/${caseRecord.id}/documents/new`
+                            )
+                                i.bi.bi-cloud-arrow-up.me-2
+                                | Upload First Document

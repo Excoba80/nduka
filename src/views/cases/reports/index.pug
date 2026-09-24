@@ -1,0 +1,294 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.mb-1
+                    i.bi.bi-file-earmark-text.me-2
+                    | Case Reports
+
+                p.text-muted.mb-0
+                    | #{caseRecord.case_reference} — #{caseRecord.case_title}
+
+            div.mt-3.mt-md-0.d-flex.flex-wrap.gap-2
+
+                a.btn.btn-outline-secondary(
+                    href=`/cases/${caseRecord.id}`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Case
+
+                if hasPermission('create_case_report') && !caseRecord.status_is_terminal
+                    a.btn.btn-primary(
+                        href=`/cases/${caseRecord.id}/reports/new`
+                    )
+                        i.bi.bi-plus-circle.me-2
+                        | Create Case Report
+
+
+        //- Case Information
+        .card.shadow-sm.mb-4
+
+            .card-header.bg-white.py-3
+
+                .d-flex.justify-content-between.align-items-center
+
+                    h5.mb-0
+                        i.bi.bi-folder2-open.me-2
+                        | Case Information
+
+                    if caseRecord.status_is_terminal
+                        span.badge.bg-secondary
+                            | #{caseRecord.status_name}
+                    else
+                        span.badge.bg-primary
+                            | #{caseRecord.status_name}
+
+            .card-body
+
+                .row.g-3
+
+                    .col-12.col-md-4
+
+                        .text-muted.small.mb-1
+                            | Case Reference
+
+                        .fw-semibold
+                            | #{caseRecord.case_reference}
+
+                    .col-12.col-md-4
+
+                        .text-muted.small.mb-1
+                            | Client
+
+                        .fw-semibold
+                            | #{caseRecord.client_name}
+
+                        if caseRecord.client_code
+                            .small.text-muted
+                                | #{caseRecord.client_code}
+
+                    .col-12.col-md-4
+
+                        .text-muted.small.mb-1
+                            | Case Status
+
+                        .fw-semibold
+                            | #{caseRecord.status_name}
+
+
+        //- Reports
+        .card.shadow-sm
+
+            .card-header.bg-white.py-3
+
+                .d-flex.justify-content-between.align-items-center
+
+                    h5.mb-0
+                        i.bi.bi-file-earmark-text.me-2
+                        | Reports
+
+                    span.badge.bg-primary
+                        | #{reports ? reports.length : 0}
+
+            .card-body
+
+                if reports && reports.length > 0
+
+                    each report in reports
+
+                        .border.rounded.p-3.mb-3
+
+                            .d-flex.flex-column.flex-lg-row.justify-content-between.align-items-lg-start.gap-3
+
+                                div
+
+                                    .d-flex.flex-wrap.align-items-center.gap-2
+
+                                        h6.fw-semibold.mb-0
+                                            | #{report.report_title}
+
+                                        if report.report_status_code === 'DRAFT'
+                                            span.badge.bg-secondary
+                                                | #{report.report_status_name}
+                                        else if report.report_status_code === 'SUBMITTED'
+                                            span.badge.bg-warning.text-dark
+                                                | #{report.report_status_name}
+                                        else if report.report_status_code === 'APPROVED'
+                                            span.badge.bg-success
+                                                | #{report.report_status_name}
+                                        else if report.report_status_code === 'REJECTED'
+                                            span.badge.bg-danger
+                                                | #{report.report_status_name}
+                                        else
+                                            span.badge.bg-secondary
+                                                | #{report.report_status_name}
+
+                                    .small.text-muted.mt-2
+
+                                        span.fw-semibold
+                                            | #{report.report_number}
+
+                                        |  · #{report.report_type}
+
+                                        if report.created_by_first_name || report.created_by_last_name
+                                            |  · Created by #{report.created_by_first_name || ''} #{report.created_by_middle_name || ''} #{report.created_by_last_name || ''}
+                                        else if report.created_by_username
+                                            |  · Created by @#{report.created_by_username}
+
+                                        |  · #{report.created_at}
+
+
+                                if !caseRecord.status_is_terminal
+
+                                    .d-flex.flex-wrap.gap-2
+
+                                        if hasPermission('update_case_report') && (report.report_status_code === 'DRAFT' || report.report_status_code === 'REJECTED')
+
+                                            a.btn.btn-sm.btn-outline-primary(
+                                                href=`/cases/${caseRecord.id}/reports/${report.id}/edit`
+                                            )
+                                                i.bi.bi-pencil.me-1
+                                                | Edit
+
+                                        if hasPermission('submit_case_report') && (report.report_status_code === 'DRAFT' || report.report_status_code === 'REJECTED')
+
+                                            form(
+                                                action=`/cases/${caseRecord.id}/reports/${report.id}/submit`
+                                                method="POST"
+                                            )
+                                                input(
+                                                    type="hidden"
+                                                    name="_csrf"
+                                                    value=csrfToken
+                                                )
+
+                                                button.btn.btn-sm.btn-primary(
+                                                    type="submit"
+                                                )
+                                                    i.bi.bi-send.me-1
+                                                    | Submit
+
+                                        if hasPermission('approve_case_report') && report.report_status_code === 'SUBMITTED'
+
+                                            form(
+                                                action=`/cases/${caseRecord.id}/reports/${report.id}/approve`
+                                                method="POST"
+                                            )
+                                                input(
+                                                    type="hidden"
+                                                    name="_csrf"
+                                                    value=csrfToken
+                                                )
+
+                                                button.btn.btn-sm.btn-success(
+                                                    type="submit"
+                                                )
+                                                    i.bi.bi-check-circle.me-1
+                                                    | Approve
+
+                                        if hasPermission('reject_case_report') && report.report_status_code === 'SUBMITTED'
+
+                                            form(
+                                                action=`/cases/${caseRecord.id}/reports/${report.id}/reject`
+                                                method="POST"
+                                            )
+                                                input(
+                                                    type="hidden"
+                                                    name="_csrf"
+                                                    value=csrfToken
+                                                )
+
+                                                button.btn.btn-sm.btn-danger(
+                                                    type="submit"
+                                                )
+                                                    i.bi.bi-x-circle.me-1
+                                                    | Reject
+
+
+                            if report.executive_summary
+
+                                .mt-3
+
+                                    .text-muted.small.fw-semibold.mb-1
+                                        | Executive Summary
+
+                                    .bg-light.rounded.p-3
+                                        | #{report.executive_summary}
+
+
+                            if report.findings
+
+                                .mt-3
+
+                                    .text-muted.small.fw-semibold.mb-1
+                                        | Findings
+
+                                    .bg-light.rounded.p-3
+                                        | #{report.findings}
+
+
+                            if report.conclusion
+
+                                .mt-3
+
+                                    .text-muted.small.fw-semibold.mb-1
+                                        | Conclusion
+
+                                    .bg-light.rounded.p-3
+                                        | #{report.conclusion}
+
+
+                            if report.recommendations
+
+                                .mt-3
+
+                                    .text-muted.small.fw-semibold.mb-1
+                                        | Recommendations
+
+                                    .bg-light.rounded.p-3
+                                        | #{report.recommendations}
+
+
+                            if report.approved_by_username
+
+                                .small.text-muted.mt-3
+
+                                    i.bi.bi-check-circle.me-1
+                                    | Approved by @#{report.approved_by_username}
+
+                                    if report.approved_at
+                                        |  · #{report.approved_at}
+
+
+                            if report.updated_at && report.updated_at != report.created_at
+
+                                .small.text-muted.mt-2
+
+                                    i.bi.bi-clock-history.me-1
+                                    | Updated #{report.updated_at}
+
+                else
+
+                    .text-center.py-5
+
+                        i.bi.bi-file-earmark-x.fs-1.text-muted
+
+                        h5.mt-3
+                            | No Case Reports
+
+                        p.text-muted.mb-3
+                            | No reports have been created for this Case yet.
+
+                        if hasPermission('create_case_report') && !caseRecord.status_is_terminal
+
+                            a.btn.btn-primary(
+                                href=`/cases/${caseRecord.id}/reports/new`
+                            )
+                                i.bi.bi-plus-circle.me-2
+                                | Create First Case Report

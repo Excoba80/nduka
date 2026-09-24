@@ -1,0 +1,246 @@
+extends ../../../layouts/main
+
+block content
+
+    .container-fluid.py-4
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    i.bi.bi-ui-checks-grid.me-2
+                    | Investigation Type Fields
+
+                p.text-muted.mb-0
+                    | Manage the fields collected for this Investigation Type.
+
+            .mt-3.mt-md-0.d-flex.gap-2
+
+                a.btn.btn-outline-secondary(
+                    href="/investigations/types"
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Investigation Types
+
+                if investigationType.is_active
+                    if hasPermission('create_investigation_type_field')
+                        a.btn.btn-primary(
+                            href=`/investigations/types/${investigationType.id}/fields/new`
+                        )
+                            i.bi.bi-plus-lg.me-2
+                            | New Field
+
+
+        //- Investigation Type summary
+        .card.shadow-sm.border-0.rounded-4.mb-4
+
+            .card-body.p-4
+
+                .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center
+
+                    div
+
+                        h5.fw-bold.mb-1
+                            i.bi.bi-search.me-2.text-primary
+                            | #{investigationType.name}
+
+                        if investigationType.code
+                            p.mb-0
+                                code
+                                    | #{investigationType.code}
+
+                    div.mt-3.mt-md-0
+
+                        if investigationType.is_active
+                            span.badge.bg-success
+                                | Active
+                        else
+                            span.badge.bg-secondary
+                                | Inactive
+
+
+        //- Investigation Type Fields
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-header.bg-white.border-0.pt-4.px-4
+
+                .d-flex.justify-content-between.align-items-center
+
+                    div
+                        h5.fw-bold.mb-1
+                            | Configured Fields
+
+                        p.text-muted.mb-0
+                            | Fields displayed to visitors when this Investigation Service is selected.
+
+                    span.badge.bg-primary
+                        | #{fields ? fields.length : 0}
+
+
+            .card-body.p-0
+
+                if fields && fields.length > 0
+
+                    .table-responsive
+
+                        table.table.table-hover.align-middle.mb-0
+
+                            thead.table-light
+
+                                tr
+                                    th(scope="col") #
+                                    th(scope="col") Field Key
+                                    th(scope="col") Field Label
+                                    th(scope="col") Type
+                                    th(scope="col").text-center Required
+                                    th(scope="col").text-center Status
+                                    th(scope="col").text-center Order
+                                    th(scope="col").text-end Actions
+
+                            tbody
+
+                                each field, index in fields
+
+                                    tr
+
+                                        td
+                                            | #{index + 1}
+
+                                        td
+                                            code
+                                                | #{field.field_key}
+
+                                        td
+
+                                            .fw-semibold
+                                                | #{field.field_label}
+
+                                            if field.help_text
+                                                .small.text-muted.mt-1
+                                                    | #{field.help_text}
+
+                                        td
+
+                                            span.badge.bg-light.text-dark.border
+                                                | #{field.field_type}
+
+                                        td.text-center
+
+                                            if field.is_required
+
+                                                span.badge.bg-danger
+                                                    | Required
+
+                                            else
+
+                                                span.badge.bg-secondary
+                                                    | Optional
+
+                                        td.text-center
+
+                                            if field.is_active
+
+                                                span.badge.bg-success
+                                                    | Active
+
+                                            else
+
+                                                span.badge.bg-secondary
+                                                    | Inactive
+
+                                        td.text-center
+                                            | #{field.display_order}
+
+                                        td.text-end
+
+                                            if hasPermission('update_investigation_type_field')
+
+                                                a.btn.btn-sm.btn-outline-primary.me-1(
+                                                    href=`/investigations/types/${investigationType.id}/fields/${field.id}/edit`
+                                                )
+                                                    i.bi.bi-pencil-square.me-1
+                                                    | Edit
+
+
+                                            if hasPermission('toggle_investigation_type_field')
+
+                                                if field.is_active
+
+                                                    form.d-inline(
+                                                        action=`/investigations/types/${investigationType.id}/fields/${field.id}/toggle`
+                                                        method="POST"
+                                                    )
+
+                                                        input(
+                                                            type="hidden"
+                                                            name="_csrf"
+                                                            value=csrfToken
+                                                        )
+
+                                                        button.btn.btn-sm.btn-outline-warning(
+                                                            type="submit"
+                                                        )
+                                                            i.bi.bi-pause-circle.me-1
+                                                            | Deactivate
+
+                                                else
+
+                                                    form.d-inline(
+                                                        action=`/investigations/types/${investigationType.id}/fields/${field.id}/toggle`
+                                                        method="POST"
+                                                    )
+
+                                                        input(
+                                                            type="hidden"
+                                                            name="_csrf"
+                                                            value=csrfToken
+                                                        )
+
+                                                        button.btn.btn-sm.btn-outline-success(
+                                                            type="submit"
+                                                        )
+                                                            i.bi.bi-play-circle.me-1
+                                                            | Activate
+
+
+                                            if hasPermission('update_investigation_type_field')
+
+                                                form.d-inline(
+                                                    action=`/investigations/types/${investigationType.id}/fields/${field.id}/delete`
+                                                    method="POST"
+                                                    data-confirm-delete="Delete this Investigation Type Field? This action cannot be undone."
+                                                )
+
+                                                    input(
+                                                        type="hidden"
+                                                        name="_csrf"
+                                                        value=csrfToken
+                                                    )
+
+                                                    button.btn.btn-sm.btn-outline-danger(
+                                                        type="submit"
+                                                    )
+                                                        i.bi.bi-trash.me-1
+                                                        | Delete
+
+                else
+
+                    .text-center.py-5
+
+                        i.bi.bi-ui-checks.display-4.text-muted
+
+                        h5.mt-3
+                            | No Investigation Type Fields
+
+                        p.text-muted.mb-3
+                            | No fields have been configured for this Investigation Type yet.
+
+                        if investigationType.is_active
+
+                            if hasPermission('create_investigation_type_field')
+
+                                a.btn.btn-primary(
+                                    href=`/investigations/types/${investigationType.id}/fields/new`
+                                )
+                                    i.bi.bi-plus-lg.me-2
+                                    | Create First Field

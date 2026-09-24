@@ -1,0 +1,160 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+
+                h1.h3.mb-1
+                    i.bi.bi-journal-plus.me-2
+                    | Add Case Note
+
+                p.text-muted.mb-0
+                    | #{caseRecord.case_reference} — #{caseRecord.case_title}
+
+            div.mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href=`/cases/${caseRecord.id}/notes`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Case Notes
+
+
+        .row.justify-content-center
+
+            .col-12.col-xl-8
+
+                .card.shadow-sm
+
+                    .card-header.bg-white.py-3
+
+                        h5.mb-0
+                            i.bi.bi-journal-text.me-2
+                            | Note Details
+
+                    .card-body
+
+                        if error
+
+                            .alert.alert-danger
+
+                                i.bi.bi-exclamation-triangle.me-2
+                                | #{error}
+
+
+                        form(
+                            method="POST"
+                            action=`/cases/${caseRecord.id}/notes`
+                        )
+
+                            input(
+                                type="hidden"
+                                name="_csrf"
+                                value=csrfToken
+                            )
+
+
+                            .mb-3
+
+                                label.form-label.fw-semibold(
+                                    for="case_investigation_service_id"
+                                )
+                                    | Investigation Service
+
+                                select.form-select(
+                                    id="case_investigation_service_id"
+                                    name="case_investigation_service_id"
+                                )
+
+                                    option(
+                                        value=""
+                                        selected=!formData.case_investigation_service_id
+                                    )
+                                        | General Case Note
+
+                                    if investigationServices && investigationServices.length > 0
+
+                                        each service in investigationServices
+
+                                            option(
+                                                value=service.id
+                                                selected=String(formData.case_investigation_service_id || '') === String(service.id)
+                                            )
+                                                | #{service.investigation_type_name} — #{service.service_status_name}
+
+                                .form-text
+                                    | Leave this as General Case Note unless the note relates specifically to an investigation service.
+
+
+                            .mb-3
+
+                                label.form-label.fw-semibold(
+                                    for="note_title"
+                                )
+                                    | Note Title
+
+                                input.form-control(
+                                    type="text"
+                                    id="note_title"
+                                    name="note_title"
+                                    maxlength="200"
+                                    value=formData.note_title || ''
+                                    placeholder="Optional note title"
+                                )
+
+                                .form-text
+                                    | Maximum 200 characters.
+
+
+                            .mb-3
+
+                                label.form-label.fw-semibold(
+                                    for="note_content"
+                                )
+                                    | Note Content
+
+                                textarea.form-control(
+                                    id="note_content"
+                                    name="note_content"
+                                    rows="10"
+                                    required
+                                    placeholder="Enter the Case Note..."
+                                )= formData.note_content || ''
+
+
+                            .form-check.mb-4
+
+                                input.form-check-input(
+                                    type="checkbox"
+                                    id="is_private"
+                                    name="is_private"
+                                    value="1"
+                                    checked=formData.is_private === '1' || formData.is_private === true
+                                )
+
+                                label.form-check-label.fw-semibold(
+                                    for="is_private"
+                                )
+                                    i.bi.bi-lock-fill.me-1
+                                    | Private Note
+
+                                .form-text
+                                    | Private notes are internal investigation records.
+
+
+                            .d-flex.flex-column.flex-sm-row.justify-content-end.gap-2
+
+                                a.btn.btn-outline-secondary(
+                                    href=`/cases/${caseRecord.id}/notes`
+                                )
+                                    | Cancel
+
+                                button.btn.btn-primary(
+                                    type="submit"
+                                )
+                                    i.bi.bi-save.me-2
+                                    | Save Note

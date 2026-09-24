@@ -1,0 +1,90 @@
+extends ../../layouts/main
+
+block content
+
+    .d-flex.justify-content-between.align-items-center.mb-4
+        div
+            h1.mb-1 Investigation Requests
+            p.text-muted.mb-0
+                | Public Investigation Requests submitted for administrative review.
+
+        a.btn.btn-outline-secondary(href="/investigations")
+            i.bi.bi-arrow-left.me-1
+            | Back to Investigations
+
+
+    .card.shadow-sm
+        .card-header.d-flex.justify-content-between.align-items-center
+            div
+                h5.mb-0 Investigation Requests
+                small.text-muted
+                    | #{requests.length} request#{requests.length === 1 ? '' : 's'}
+
+        .card-body.p-0
+
+            if requests.length
+
+                .table-responsive
+                    table.table.table-hover.align-middle.mb-0
+                        thead.table-light
+                            tr
+                                th Reference
+                                th Applicant
+                                th Subject
+                                th Case Title
+                                th Client Type
+                                th Status
+                                th Submitted
+                                th.text-end Actions
+
+                        tbody
+                            each request in requests
+                                tr
+                                    td
+                                        strong= request.request_reference
+
+                                    td
+                                        div= request.applicant_name
+                                        if request.applicant_phone
+                                            small.text-muted.d-block
+                                                = request.applicant_phone
+
+                                    td
+                                        div= request.subject_name
+
+                                    td
+                                        = request.case_title
+
+                                    td
+                                        = request.client_type_name
+
+                                    td
+                                        if request.status === 'PENDING'
+                                            span.badge.text-bg-warning Pending
+                                        else if request.status === 'ACCEPTED'
+                                            span.badge.text-bg-success Accepted
+                                        else if request.status === 'REJECTED'
+                                            span.badge.text-bg-danger Rejected
+                                        else
+                                            span.badge.text-bg-secondary= request.status
+
+                                    td
+                                        if request.created_at
+                                            = new Date(request.created_at).toLocaleString()
+
+                                    td.text-end
+                                        a.btn.btn-sm.btn-outline-primary(
+                                            href=`/investigation-requests/${request.id}`
+                                        )
+                                            i.bi.bi-eye.me-1
+                                            | View
+
+            else
+
+                .p-5.text-center
+                    i.bi.bi-inbox.fs-1.text-muted
+
+                    h5.mt-3 No Investigation Requests
+
+                    p.text-muted.mb-0
+                        | There are currently no Investigation Requests to review.

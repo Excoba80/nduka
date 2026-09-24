@@ -1,0 +1,166 @@
+extends ../../layouts/main
+
+block content
+
+    .container-fluid.py-4
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    i.bi.bi-plus-circle.me-2
+                    | Create Investigation Type
+
+                p.text-muted.mb-0
+                    | Add a new investigation type that can be used when creating Investigation Services.
+
+            .mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href="/investigations/types"
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Investigation Types
+
+
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-header.bg-white.border-0.pt-4.px-4
+
+                h5.fw-bold.mb-1
+                    i.bi.bi-search.me-2.text-primary
+                    | Investigation Type Information
+
+                p.text-muted.mb-0
+                    | Enter the details for the new Investigation Type.
+
+            .card-body.p-4
+
+                form(
+                    action="/investigations/types"
+                    method="POST"
+                )
+
+                    input(
+                        type="hidden"
+                        name="_csrf"
+                        value=csrfToken
+                    )
+
+
+                    .row.g-3
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="code"
+                            )
+                                | Code
+                                span.text-danger
+                                    |  *
+
+                            input.form-control(
+                                type="text"
+                                id="code"
+                                name="code"
+                                required
+                                maxlength="50"
+                                autocomplete="off"
+                                placeholder="e.g. IDENTITY_VERIFICATION"
+                            )
+
+                            .form-text
+                                | Use a short, unique code for this Investigation Type.
+
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="name"
+                            )
+                                | Name
+                                span.text-danger
+                                    |  *
+
+                            input.form-control(
+                                type="text"
+                                id="name"
+                                name="name"
+                                required
+                                maxlength="255"
+                                placeholder="e.g. Identity Verification"
+                            )
+
+
+                        .col-12
+
+                            label.form-label(
+                                for="description"
+                            )
+                                | Description
+
+                            textarea.form-control(
+                                id="description"
+                                name="description"
+                                rows="4"
+                                maxlength="1000"
+                                placeholder="Describe the purpose and scope of this investigation type."
+                            )
+
+
+                        .col-12.col-md-4
+
+                            label.form-label(
+                                for="service_price"
+                            )
+                                | Service Price (NGN)
+                                span.text-danger
+                                    |  *
+
+                            input.form-control(
+                                type="number"
+                                id="service_price"
+                                name="service_price"
+                                min="0.01"
+                                step="0.01"
+                                value="0.00"
+                                required
+                            )
+
+                            .form-text
+                                | Current price charged for this Investigation Service.
+
+
+                        .col-12.col-md-4
+
+                            label.form-label(
+                                for="display_order"
+                            )
+                                | Display Order
+
+                            input.form-control(
+                                type="number"
+                                id="display_order"
+                                name="display_order"
+                                min="0"
+                                value="0"
+                            )
+
+                            .form-text
+                                | Lower numbers appear first.
+
+
+                    hr.my-4
+
+                    .d-flex.justify-content-end.gap-2
+
+                        a.btn.btn-outline-secondary(
+                            href="/investigations/types"
+                        )
+                            | Cancel
+
+                        button.btn.btn-primary(
+                            type="submit"
+                        )
+                            i.bi.bi-check-lg.me-2
+                            | Create Investigation Type

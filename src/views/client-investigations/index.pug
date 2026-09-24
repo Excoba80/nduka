@@ -1,0 +1,111 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.mb-1
+                    i.bi.bi-search.me-2
+                    | My Investigations
+
+                p.text-muted.mb-0
+                    | Monitor the progress of your investigation requests.
+
+
+        //- Investigation List
+        .card.shadow-sm
+
+            .card-header.bg-white.py-3
+
+                .d-flex.justify-content-between.align-items-center
+
+                    h5.mb-0
+                        i.bi.bi-folder2-open.me-2
+                        | Your Cases
+
+                    if investigations && investigations.length
+                        span.badge.bg-secondary
+                            | #{investigations.length} #{investigations.length === 1 ? 'Case' : 'Cases'}
+
+            .card-body.p-0
+
+                if investigations && investigations.length
+
+                    .table-responsive
+
+                        table.table.table-hover.align-middle.mb-0
+
+                            thead.table-light
+
+                                tr
+                                    th Case Reference
+                                    th Request Reference
+                                    th Status
+                                    th Opened
+                                    th.text-end Action
+
+                            tbody
+
+                                each investigation in investigations
+
+                                    tr
+
+                                        td
+                                            a.fw-semibold(
+                                                href=`/my-investigations/${investigation.id}`
+                                            )
+                                                | #{investigation.case_reference}
+
+                                        td
+                                            if investigation.request_reference
+                                                | #{investigation.request_reference}
+                                            else
+                                                span.text-muted
+                                                    | —
+
+                                        td
+
+                                            if investigation.status_name
+
+                                                if investigation.status_is_terminal
+                                                    span.badge.bg-secondary
+                                                        | #{investigation.status_name}
+                                                else
+                                                    span.badge.bg-primary
+                                                        | #{investigation.status_name}
+
+                                            else
+                                                span.text-muted
+                                                    | —
+
+                                        td
+
+                                            if investigation.opened_at
+                                                | #{new Date(investigation.opened_at).toLocaleDateString('en-NG')}
+                                            else
+                                                span.text-muted
+                                                    | —
+
+                                        td.text-end
+
+                                            a.btn.btn-sm.btn-outline-primary(
+                                                href=`/my-investigations/${investigation.id}`
+                                            )
+                                                i.bi.bi-eye.me-1
+                                                | View Progress
+
+                else
+
+                    .text-center.py-5.px-3
+
+                        i.bi.bi-search.fs-1.text-muted
+
+                        h5.mt-3
+                            | No Investigations Found
+
+                        p.text-muted.mb-0
+                            | You currently have no investigation cases available to monitor.

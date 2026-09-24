@@ -1,0 +1,144 @@
+extends layouts/layout.pug
+
+block content
+
+    section.page-hero
+        .public-container
+            span.eyebrow
+                | How It Works
+            h1
+                | A structured process from request to report.
+            p
+                | NDUKA takes you through a defined investigation process,
+                | from submitting your request to receiving the outcome of
+                | the investigation.
+
+    section.process-section
+        .public-container
+            .process-grid
+
+                article.process-step
+                    span.step-number
+                        | 01
+                    h3
+                        | Submit an Investigation Request
+                    p
+                        | Provide the applicant and subject information,
+                        | explain the purpose of the request, select one or
+                        | more investigation services, and provide the
+                        | particulars required for those services. You do
+                        | not need to create an account before submitting
+                        | your request.
+
+                article.process-step
+                    span.step-number
+                        | 02
+                    h3
+                        | Receive Your Request Reference
+                    p
+                        | After submission, NDUKA provides a request
+                        | reference that can be used to check the status of
+                        | your investigation request through the public
+                        | Check Status service.
+
+                article.process-step
+                    span.step-number
+                        | 03
+                    h3
+                        | Request Review
+                    p
+                        | NDUKA reviews the submitted request and the
+                        | investigation services requested. The request may
+                        | be accepted or rejected. Where a request is
+                        | rejected, the applicable rejection reason is
+                        | recorded and made available through the request
+                        | status process.
+
+                article.process-step
+                    span.step-number
+                        | 04
+                    h3
+                        | Acceptance & Payment Preparation
+                    p
+                        | When a request is accepted, NDUKA prepares the
+                        | requested investigation services and the applicable
+                        | charges. The visitor is notified when the request
+                        | reaches the payment-ready stage.
+
+                article.process-step
+                    span.step-number
+                        | 05
+                    h3
+                        | Payment Confirmation
+                    p
+                        | The current NDUKA payment workflow records and
+                        | processes payment intent and confirmation within
+                        | NDUKA. It is not presented here as a live external
+                        | payment gateway. Once payment is successfully
+                        | confirmed, the accepted request can proceed into
+                        | the investigation workflow.
+
+                article.process-step
+                    span.step-number
+                        | 06
+                    h3
+                        | Investigation & Report
+                    p
+                        | NDUKA carries out the requested investigation
+                        | services through its investigation workflow.
+                        | Progress is managed through the case process, and
+                        | an approved report can be made available to the
+                        | authorised client account where applicable.
+
+    section.intro-section
+        .public-container
+            .feature-grid
+
+                article.feature-card
+                    h3
+                        | Stay informed
+                    p
+                        | Important request updates may be communicated
+                        | using the email address and phone details supplied
+                        | with your request, including acceptance, rejection,
+                        | payment readiness, and relevant account activation
+                        | information where a client account is created.
+
+                article.feature-card
+                    h3
+                        | Check your status
+                    p
+                        | Your request reference allows you to return to
+                        | NDUKA and check the current status of your
+                        | investigation request without needing access to
+                        | the staff investigation workspace.
+
+                article.feature-card
+                    h3
+                        | Structured investigation
+                    p
+                        | Each accepted request is connected to the
+                        | appropriate client, case, and investigation
+                        | services so that the work can be managed through
+                        | a defined operational process.
+
+    section.cta-section
+        .public-container
+            .cta-content
+                div
+                    span.eyebrow
+                        | Get Started
+                    h2
+                        | Ready to submit an investigation request?
+                    p
+                        | Start by providing the information required for
+                        | NDUKA to review your request.
+                div
+                    a.btn.btn-primary(
+                        href="/start-investigation"
+                    )
+                        | Start an Investigation
+                    a.btn.btn-secondary(
+                        href="/investigation-request-status"
+                    )
+                        | Check Status

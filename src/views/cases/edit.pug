@@ -1,0 +1,251 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.mb-1
+                    i.bi.bi-pencil-square.me-2
+                    | Edit Case
+
+                p.text-muted.mb-0
+                    | #{caseRecord.case_reference}
+
+            div.mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href=`/cases/${caseRecord.id}`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Case
+
+
+        //- Edit Form
+        .row
+
+            .col-12.col-xl-8
+
+                .card.shadow-sm
+
+                    .card-header.bg-white.py-3
+
+                        h5.mb-0
+                            i.bi.bi-pencil.me-2
+                            | Case Information
+
+                    .card-body
+
+                        //- Error Message
+                        if error
+
+                            .alert.alert-danger(
+                                role="alert"
+                            )
+                                i.bi.bi-exclamation-triangle.me-2
+                                | #{error}
+
+
+                        form(
+                            method="POST"
+                            action=`/cases/${caseRecord.id}`
+                        )
+
+                            input(
+                                type="hidden"
+                                name="_csrf"
+                                value=csrfToken
+                            )
+
+
+                            //- Client
+                            .mb-4
+
+                                label.form-label.fw-semibold(
+                                    for="client_id"
+                                )
+                                    | Client
+                                    span.text-danger.ms-1
+                                        | *
+
+                                select.form-select(
+                                    id="client_id"
+                                    name="client_id"
+                                    required
+                                )
+
+                                    option(
+                                        value=""
+                                        selected=!caseRecord.client_id
+                                    )
+                                        | Select a client
+
+                                    each client in clients
+
+                                        option(
+                                            value=client.id
+                                            selected=String(caseRecord.client_id || '') === String(client.id)
+                                        )
+                                            | #{client.client_code} — #{client.name}
+
+                                .form-text
+                                    | Select the client associated with this Case.
+
+
+                            //- Case Title
+                            .mb-4
+
+                                label.form-label.fw-semibold(
+                                    for="case_title"
+                                )
+                                    | Case Title
+                                    span.text-danger.ms-1
+                                        | *
+
+                                input.form-control(
+                                    type="text"
+                                    id="case_title"
+                                    name="case_title"
+                                    value=caseRecord.case_title || ''
+                                    maxlength="200"
+                                    required
+                                    autocomplete="off"
+                                )
+
+                                .form-text
+                                    | Enter a concise title that identifies the investigation matter.
+
+
+                            //- Request Summary
+                            .mb-4
+
+                                label.form-label.fw-semibold(
+                                    for="request_summary"
+                                )
+                                    | Request Summary
+                                    span.text-danger.ms-1
+                                        | *
+
+                                textarea.form-control(
+                                    id="request_summary"
+                                    name="request_summary"
+                                    rows="7"
+                                    required
+                                )= caseRecord.request_summary || ''
+
+                                .form-text
+                                    | Provide a clear summary of the client's investigation request.
+
+
+                            //- Read-only Case Status
+                            .mb-4
+
+                                label.form-label.fw-semibold
+                                    | Current Status
+
+                                .form-control-plaintext
+
+                                    if caseRecord.status_name
+
+                                        if caseRecord.status_is_terminal
+                                            span.badge.bg-secondary
+                                                | #{caseRecord.status_name}
+                                        else
+                                            span.badge.bg-primary
+                                                | #{caseRecord.status_name}
+
+                                    else
+                                        span.text-muted
+                                            | No status available
+
+                                .form-text
+                                    | Case status is managed separately from basic Case information.
+
+
+                            //- Read-only Priority
+                            .mb-4
+
+                                label.form-label.fw-semibold
+                                    | Current Priority
+
+                                .form-control-plaintext
+
+                                    if caseRecord.priority_name
+                                        span.fw-semibold
+                                            | #{caseRecord.priority_name}
+                                    else
+                                        span.text-muted
+                                            | No priority assigned
+
+                                .form-text
+                                    | Case priority is managed separately from basic Case information.
+
+
+                            //- Actions
+                            .d-flex.flex-column.flex-sm-row.justify-content-end.gap-2.mt-4
+
+                                a.btn.btn-outline-secondary(
+                                    href=`/cases/${caseRecord.id}`
+                                )
+                                    i.bi.bi-x-circle.me-2
+                                    | Cancel
+
+                                button.btn.btn-primary(
+                                    type="submit"
+                                )
+                                    i.bi.bi-check-circle.me-2
+                                    | Save Changes
+
+
+            //- Sidebar
+            .col-12.col-xl-4.mt-4.mt-xl-0
+
+                .card.shadow-sm.mb-4
+
+                    .card-header.bg-white.py-3
+
+                        h5.mb-0
+                            i.bi.bi-shield-check.me-2
+                            | Case Protection
+
+                    .card-body
+
+                        p.text-muted.small.mb-0
+                            | Assignment, status, and priority are controlled through their dedicated Case management operations.
+
+
+                if caseRecord.assigned_to_username
+
+                    .card.shadow-sm
+
+                        .card-header.bg-white.py-3
+
+                            h5.mb-0
+                                i.bi.bi-person-badge.me-2
+                                | Assigned Investigator
+
+                        .card-body
+
+                            .fw-semibold
+                                | #{caseRecord.assigned_to_first_name || ''} #{caseRecord.assigned_to_middle_name || ''} #{caseRecord.assigned_to_last_name || ''}
+
+                            .small.text-muted
+                                | @#{caseRecord.assigned_to_username}
+
+                else
+
+                    .card.shadow-sm
+
+                        .card-header.bg-white.py-3
+
+                            h5.mb-0
+                                i.bi.bi-person-x.me-2
+                                | Assignment
+
+                        .card-body
+
+                            p.text-muted.small.mb-0
+                                | This Case is currently unassigned.

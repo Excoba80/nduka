@@ -1,0 +1,189 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        //- Page Header
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.mb-1
+                    i.bi.bi-folder-plus.me-2
+                    | Create New Case
+
+                p.text-muted.mb-0
+                    | Open a new investigation case.
+
+            div.mt-3.mt-md-0
+                a.btn.btn-outline-secondary(href="/cases")
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Cases
+
+
+        //- Validation Error
+        if error
+            .alert.alert-danger.alert-dismissible.fade.show(
+                role="alert"
+            )
+                i.bi.bi-exclamation-triangle-fill.me-2
+                | #{error}
+
+                button.btn-close(
+                    type="button"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                )
+
+
+        //- Create Case Form
+        .row.justify-content-center
+
+            .col-12.col-xl-9
+
+                .card.shadow-sm
+
+                    .card-header.bg-white.py-3
+
+                        h5.mb-0
+                            i.bi.bi-folder-plus.me-2
+                            | Case Information
+
+                    .card-body
+
+                        form(
+                            method="POST"
+                            action="/cases"
+                        )
+
+                            input(
+                                type="hidden"
+                                name="_csrf"
+                                value=csrfToken
+                            )
+
+
+                            //- Client
+                            .mb-4
+
+                                label.form-label.fw-semibold(
+                                    for="client_id"
+                                )
+                                    | Client
+                                    span.text-danger.ms-1
+                                        | *
+
+                                select.form-select(
+                                    id="client_id"
+                                    name="client_id"
+                                    required
+                                )
+
+                                    option(
+                                        value=""
+                                        selected=!formData.client_id
+                                    )
+                                        | Select a client
+
+                                    each client in clients
+
+                                        option(
+                                            value=client.id
+                                            selected=String(formData.client_id || '') === String(client.id)
+                                        )
+                                            | #{client.client_code} — #{client.name}
+
+                                .form-text
+                                    | Select the client for whom this case is being opened.
+
+
+                            //- Case Title
+                            .mb-4
+
+                                label.form-label.fw-semibold(
+                                    for="case_title"
+                                )
+                                    | Case Title
+                                    span.text-danger.ms-1
+                                        | *
+
+                                input.form-control(
+                                    type="text"
+                                    id="case_title"
+                                    name="case_title"
+                                    value=formData.case_title || ''
+                                    maxlength="200"
+                                    required
+                                    autocomplete="off"
+                                )
+
+                                .form-text
+                                    | Enter a concise title that identifies the investigation matter.
+
+
+                            //- Request Summary
+                            .mb-4
+
+                                label.form-label.fw-semibold(
+                                    for="request_summary"
+                                )
+                                    | Request Summary
+                                    span.text-danger.ms-1
+                                        | *
+
+                                textarea.form-control(
+                                    id="request_summary"
+                                    name="request_summary"
+                                    rows="6"
+                                    required
+                                )= formData.request_summary || ''
+
+                                .form-text
+                                    | Provide a clear summary of the client's investigation request.
+
+
+                            //- Priority
+                            .mb-4
+
+                                label.form-label.fw-semibold(
+                                    for="priority_level_id"
+                                )
+                                    | Priority
+
+                                select.form-select(
+                                    id="priority_level_id"
+                                    name="priority_level_id"
+                                )
+
+                                    option(
+                                        value=""
+                                        selected=!formData.priority_level_id
+                                    )
+                                        | Use default priority
+
+                                    each priority in priorityLevels
+
+                                        option(
+                                            value=priority.id
+                                            selected=String(formData.priority_level_id || '') === String(priority.id)
+                                        )
+                                            | #{priority.name}
+
+                                .form-text
+                                    | Leave this unchanged to use the configured default priority.
+
+
+                            //- Actions
+                            .d-flex.flex-column.flex-sm-row.justify-content-end.gap-2.mt-4
+
+                                a.btn.btn-outline-secondary(
+                                    href="/cases"
+                                )
+                                    i.bi.bi-x-circle.me-2
+                                    | Cancel
+
+                                button.btn.btn-primary(
+                                    type="submit"
+                                )
+                                    i.bi.bi-check-circle.me-2
+                                    | Create Case

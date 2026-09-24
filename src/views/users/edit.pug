@@ -1,0 +1,183 @@
+extends ../layouts/main
+
+block content
+
+    .container-fluid
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    | Edit User
+
+                p.text-muted.mb-0
+                    | Update account information and role.
+
+            .mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href="/users/#{user.id}"
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to User
+
+
+        .row.justify-content-center
+
+            .col-12.col-xl-9
+
+                .card.shadow-sm.border-0.rounded-4
+
+                    .card-body.p-4.p-md-5
+
+                        if error
+                            .alert.alert-danger(role="alert")
+                                i.bi.bi-exclamation-triangle-fill.me-2
+                                | #{error}
+
+
+                        form(
+                            action="/users/"+ user.id
+                            method="POST"
+                            novalidate
+                        )
+
+                            input(
+                                type="hidden"
+                                name="_csrf"
+                                value=csrfToken
+                            )
+
+                            h5.fw-bold.mb-4
+                                | Personal Information
+
+                            .row.g-3
+
+                                .col-12.col-md-6
+
+                                    label.form-label(for="first_name")
+                                        | First Name
+
+                                    input.form-control(
+                                        id="first_name"
+                                        name="first_name"
+                                        type="text"
+                                        value=user.first_name || ''
+                                        required
+                                        autocomplete="given-name"
+                                    )
+
+
+                                .col-12.col-md-6
+
+                                    label.form-label(for="last_name")
+                                        | Last Name
+
+                                    input.form-control(
+                                        id="last_name"
+                                        name="last_name"
+                                        type="text"
+                                        value=user.last_name || ''
+                                        required
+                                        autocomplete="family-name"
+                                    )
+
+
+                                .col-12.col-md-6
+
+                                    label.form-label(for="email")
+                                        | Email
+
+                                    input.form-control(
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        value=user.email || ''
+                                        required
+                                        autocomplete="email"
+                                    )
+
+
+                                .col-12.col-md-6
+
+                                    label.form-label(for="phone")
+                                        | Phone
+
+                                    input.form-control(
+                                        id="phone"
+                                        name="phone"
+                                        type="text"
+                                        value=user.phone || ''
+                                        required
+                                        autocomplete="tel"
+                                    )
+
+
+                            hr.my-4
+
+
+                            h5.fw-bold.mb-4
+                                | Account Information
+
+                            .row.g-3
+
+                                .col-12.col-md-6
+
+                                    label.form-label(for="username")
+                                        | Username
+
+                                    input.form-control(
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        value=user.username || ''
+                                        required
+                                        autocomplete="username"
+                                    )
+
+
+                                .col-12.col-md-6
+
+                                    label.form-label(for="role_id")
+                                        | Role
+
+                                    select.form-select(
+                                        id="role_id"
+                                        name="role_id"
+                                        required
+                                    )
+
+                                        option(
+                                            value=""
+                                            disabled
+                                        )
+                                            | Select a role
+
+                                        each role in roles
+
+                                            option(
+                                                value=role.id
+                                                selected=String(role.id) === String(user.role_id)
+                                            )
+                                                | #{role.name}
+
+
+                            .alert.alert-info.mt-4.mb-0(role="alert")
+
+                                i.bi.bi-info-circle-fill.me-2
+
+                                | Password changes are handled separately.
+
+
+                            .d-flex.justify-content-end.gap-2.mt-4
+
+                                a.btn.btn-outline-secondary(
+                                    href="/users/#{user.id}"
+                                )
+                                    | Cancel
+
+                                button.btn.btn-primary(
+                                    type="submit"
+                                )
+                                    i.bi.bi-check-lg.me-2
+                                    | Save Changes

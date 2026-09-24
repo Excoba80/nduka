@@ -1,0 +1,243 @@
+extends layouts/layout.pug
+
+block content
+
+    section.page-hero
+        .public-container
+            span.eyebrow
+                | Frequently Asked Questions
+            h1
+                | Questions about NDUKA?
+            p
+                | Find answers to common questions about our investigation
+                | services, requests, payment, reports, privacy, and communication.
+
+
+    section.faq-section
+        .public-container
+
+            .faq-group
+                .section-heading
+                    span.eyebrow
+                        | About NDUKA
+                    h2
+                        | Understanding NDUKA.
+
+                .faq-list
+
+                    details.faq-item
+                        summary
+                            | What is NDUKA?
+                        .faq-answer
+                            p
+                                | NDUKA provides marriage intelligence and
+                                | verification services designed to help
+                                | individuals obtain relevant information before
+                                | making important relationship decisions.
+
+                    details.faq-item
+                        summary
+                            | What does an NDUKA investigation involve?
+                        .faq-answer
+                            p
+                                | An investigation involves reviewing the
+                                | information and investigation services selected
+                                | in your request and carrying out the applicable
+                                | verification work through the NDUKA
+                                | investigation process.
+
+                    details.faq-item
+                        summary
+                            | Who can request an investigation?
+                        .faq-answer
+                            p
+                                | Individuals who require an NDUKA investigation
+                                | service may submit a request. The request will
+                                | be reviewed before it is accepted for
+                                | investigation.
+
+
+            .faq-group
+                .section-heading
+                    span.eyebrow
+                        | Investigation Requests
+                    h2
+                        | Starting and managing a request.
+
+                .faq-list
+
+                    details.faq-item
+                        summary
+                            | What information do I need to provide?
+                        .faq-answer
+                            p
+                                | You will be asked to provide information about
+                                | yourself, the subject of the investigation,
+                                | the purpose of the request, and the particular
+                                | investigation services you select. Some services
+                                | may require additional service-specific
+                                | particulars.
+
+                    details.faq-item
+                        summary
+                            | Can I request more than one investigation service?
+                        .faq-answer
+                            p
+                                | Yes. You can select multiple active investigation
+                                | services when submitting your request. The
+                                | applicable services and their current prices
+                                | will be reflected in the request process.
+
+                    details.faq-item
+                        summary
+                            | What happens after I submit my request?
+                        .faq-answer
+                            p
+                                | Your request is assigned a request reference
+                                | and reviewed by NDUKA. You will be able to use
+                                | your request reference to check the status of
+                                | your request.
+
+
+            .faq-group
+                .section-heading
+                    span.eyebrow
+                        | Payment
+                    h2
+                        | Understanding the current payment process.
+
+                .faq-list
+
+                    details.faq-item
+                        summary
+                            | How much does an investigation service cost?
+                        .faq-answer
+                            p
+                                | The price displayed for each active
+                                | investigation service comes from the current
+                                | NDUKA investigation service catalogue. If you
+                                | select multiple services, the applicable
+                                | service prices are combined for the request.
+
+                    details.faq-item
+                        summary
+                            | Is NDUKA currently using a live online payment gateway?
+                        .faq-answer
+                            p
+                                | No. The current NDUKA payment workflow records
+                                | payment preparation and payment intent within
+                                | the system. It is not a live external payment
+                                | gateway.
+
+                    details.faq-item
+                        summary
+                            | What happens when payment is ready?
+                        .faq-answer
+                            p
+                                | After an accepted request has been prepared
+                                | for payment, NDUKA can notify you that the
+                                | payment stage is ready. The applicable payment
+                                | status is also reflected in the request
+                                | workflow.
+
+
+            .faq-group
+                .section-heading
+                    span.eyebrow
+                        | Reports & Status
+                    h2
+                        | Following your investigation.
+
+                .faq-list
+
+                    details.faq-item
+                        summary
+                            | How can I check the status of my request?
+                        .faq-answer
+                            p
+                                | Use the Check Status option on the NDUKA public
+                                | website and provide your investigation request
+                                | reference to view the available status
+                                | information.
+
+                    details.faq-item
+                        summary
+                            | How will I know whether my request was accepted or rejected?
+                        .faq-answer
+                            p
+                                | NDUKA can communicate important request updates
+                                | through the contact details provided with your
+                                | request. This includes acceptance or rejection
+                                | of the request.
+
+                    details.faq-item
+                        summary
+                            | Can I access an approved investigation report?
+                        .faq-answer
+                            p
+                                | Where a client account has been created and
+                                | an investigation report has been approved,
+                                | the approved report can be made available
+                                | through the client area.
+
+
+            .faq-group
+                .section-heading
+                    span.eyebrow
+                        | Privacy & Communication
+                    h2
+                        | Information and communication.
+
+                .faq-list
+
+                    details.faq-item
+                        summary
+                            | How will NDUKA communicate with me?
+                        .faq-answer
+                            p
+                                | NDUKA can use the email address and phone number
+                                | provided with your investigation request to
+                                | communicate important updates, including
+                                | request acceptance, rejection, and payment
+                                | preparation. Where applicable, client account
+                                | activation information may also be sent.
+
+                    details.faq-item
+                        summary
+                            | Should I send sensitive information through a general enquiry?
+                        .faq-answer
+                            p
+                                | Please avoid sending sensitive personal
+                                | information through a general enquiry unless
+                                | it is specifically requested. Use the formal
+                                | investigation request process when submitting
+                                | particulars required for an investigation.
+
+                    details.faq-item
+                        summary
+                            | How can I contact NDUKA?
+                        .faq-answer
+                            p
+                                | You can contact NDUKA by phone on
+                                | 07076451442 or by email at
+                                a(href="mailto:ndukaverify@gmail.com")
+                                    | ndukaverify@gmail.com
+
+
+    section.cta-section
+        .public-container
+            .cta-content
+                div
+                    span.eyebrow
+                        | NDUKA
+                    h2
+                        | Ready to begin an investigation?
+                    p
+                        | Review the available services and submit your request
+                        | when you are ready.
+
+                div
+                    a.btn.btn-primary(
+                        href="/start-investigation"
+                    )
+                        | Start an Investigation

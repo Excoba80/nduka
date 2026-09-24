@@ -1,0 +1,370 @@
+extends ../../../layouts/main
+
+block content
+
+    .container-fluid.py-4
+
+        .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.mb-4
+
+            div
+                h1.h3.fw-bold.mb-1
+                    i.bi.bi-pencil-square.me-2
+                    | Edit Investigation Type Field
+
+                p.text-muted.mb-0
+                    | Update the configuration of this Investigation Type Field.
+
+            .mt-3.mt-md-0
+
+                a.btn.btn-outline-secondary(
+                    href=`/investigations/types/${investigationType.id}/fields`
+                )
+                    i.bi.bi-arrow-left.me-2
+                    | Back to Fields
+
+
+        .card.shadow-sm.border-0.rounded-4
+
+            .card-header.bg-white.border-0.pt-4.px-4
+
+                h5.fw-bold.mb-1
+                    i.bi.bi-ui-checks.me-2.text-primary
+                    | Field Information
+
+                p.text-muted.mb-0
+                    | Update the field details below.
+
+            .card-body.p-4
+
+                form(
+                    action=`/investigations/types/${investigationType.id}/fields/${field.id}`
+                    method="POST"
+                )
+
+                    input(
+                        type="hidden"
+                        name="_csrf"
+                        value=csrfToken
+                    )
+
+
+                    .row.g-3
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="fieldKey"
+                            )
+                                | Field Key
+                                span.text-danger
+                                    |  *
+
+                            input.form-control(
+                                type="text"
+                                id="fieldKey"
+                                name="fieldKey"
+                                value=field.field_key || ''
+                                required
+                                maxlength="100"
+                                pattern="[a-zA-Z][a-zA-Z0-9_]*"
+                                autocomplete="off"
+                            )
+
+                            .form-text
+                                | Use letters, numbers and underscores. The key must begin with a letter.
+
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="fieldLabel"
+                            )
+                                | Field Label
+                                span.text-danger
+                                    |  *
+
+                            input.form-control(
+                                type="text"
+                                id="fieldLabel"
+                                name="fieldLabel"
+                                value=field.field_label || ''
+                                required
+                                maxlength="255"
+                            )
+
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="fieldType"
+                            )
+                                | Field Type
+                                span.text-danger
+                                    |  *
+
+                            select.form-select(
+                                id="fieldType"
+                                name="fieldType"
+                                required
+                            )
+
+                                option(
+                                    value="TEXT"
+                                    selected=field.field_type === 'TEXT'
+                                )
+                                    | Text
+
+                                option(
+                                    value="TEXTAREA"
+                                    selected=field.field_type === 'TEXTAREA'
+                                )
+                                    | Text Area
+
+                                option(
+                                    value="NUMBER"
+                                    selected=field.field_type === 'NUMBER'
+                                )
+                                    | Number
+
+                                option(
+                                    value="DATE"
+                                    selected=field.field_type === 'DATE'
+                                )
+                                    | Date
+
+                                option(
+                                    value="EMAIL"
+                                    selected=field.field_type === 'EMAIL'
+                                )
+                                    | Email
+
+                                option(
+                                    value="PHONE"
+                                    selected=field.field_type === 'PHONE'
+                                )
+                                    | Phone
+
+                                option(
+                                    value="SELECT"
+                                    selected=field.field_type === 'SELECT'
+                                )
+                                    | Select
+
+                                option(
+                                    value="RADIO"
+                                    selected=field.field_type === 'RADIO'
+                                )
+                                    | Radio
+
+                                option(
+                                    value="CHECKBOX"
+                                    selected=field.field_type === 'CHECKBOX'
+                                )
+                                    | Checkbox
+
+
+                        .col-12.col-md-6
+
+                            label.form-label(
+                                for="displayOrder"
+                            )
+                                | Display Order
+
+                            input.form-control(
+                                type="number"
+                                id="displayOrder"
+                                name="displayOrder"
+                                min="1"
+                                value=field.display_order
+                            )
+
+                            .form-text
+                                | Lower numbers appear first.
+
+
+                        .col-12
+
+                            label.form-label(
+                                for="placeholder"
+                            )
+                                | Placeholder
+
+                            input.form-control(
+                                type="text"
+                                id="placeholder"
+                                name="placeholder"
+                                maxlength="255"
+                                value=field.placeholder || ''
+                            )
+
+
+                        .col-12
+
+                            label.form-label(
+                                for="helpText"
+                            )
+                                | Help Text
+
+                            textarea.form-control(
+                                id="helpText"
+                                name="helpText"
+                                rows="3"
+                                maxlength="1000"
+                            )= field.help_text || ''
+
+
+                        .col-12#options-section
+
+                            label.form-label(
+                                for="options"
+                            )
+                                | Options
+                                span.text-danger#options-required-mark
+                                    |  *
+
+                            textarea.form-control(
+                                id="options"
+                                name="options"
+                                rows="5"
+                                placeholder="Enter one option per line."
+                            )= field.options ? (Array.isArray(field.options) ? field.options.join('\n') : field.options) : ''
+
+                            .form-text
+                                | Required for Select, Radio and Checkbox fields. Enter at least two options, one option per line.
+
+
+                        .col-12
+
+                            hr.my-2
+
+
+                        .col-12.col-md-6
+
+                            .form-check.form-switch
+
+                                input.form-check-input(
+                                    type="checkbox"
+                                    id="isRequired"
+                                    name="isRequired"
+                                    value="1"
+                                    checked=Boolean(field.is_required)
+                                )
+
+                                label.form-check-label(
+                                    for="isRequired"
+                                )
+                                    | Required Field
+
+                            .form-text
+                                | Visitors must provide a value before submitting the Investigation Request.
+
+
+                        .col-12.col-md-6
+
+                            .form-check.form-switch
+
+                                input.form-check-input(
+                                    type="checkbox"
+                                    id="isActive"
+                                    name="isActive"
+                                    value="1"
+                                    checked=Boolean(field.is_active)
+                                )
+
+                                label.form-check-label(
+                                    for="isActive"
+                                )
+                                    | Active Field
+
+                            .form-text
+                                | Active fields are available for use in the public Investigation Request form.
+
+
+                    hr.my-4
+
+                    .d-flex.justify-content-between.align-items-center
+
+                        div
+
+                            if field.is_active
+
+                                span.badge.bg-success
+                                    | Active
+
+                            else
+
+                                span.badge.bg-secondary
+                                    | Inactive
+
+                        .d-flex.gap-2
+
+                            a.btn.btn-outline-secondary(
+                                href=`/investigations/types/${investigationType.id}/fields`
+                            )
+                                | Cancel
+
+                            button.btn.btn-primary(
+                                type="submit"
+                            )
+                                i.bi.bi-check-lg.me-2
+                                | Save Changes
+
+
+    script.
+        document.addEventListener('DOMContentLoaded', function () {
+            const fieldType = document.getElementById('fieldType');
+            const optionsSection = document.getElementById('options-section');
+            const options = document.getElementById('options');
+            const optionsRequiredMark = document.getElementById('options-required-mark');
+
+            function updateOptionsVisibility() {
+                const optionTypes = ['SELECT', 'RADIO', 'CHECKBOX'];
+                const requiresOptions = optionTypes.includes(fieldType.value);
+
+                optionsSection.classList.toggle('d-none', !requiresOptions);
+                options.required = requiresOptions;
+                optionsRequiredMark.classList.toggle('d-none', !requiresOptions);
+
+                if (!requiresOptions) {
+                    options.value = '';
+                }
+            }
+
+            fieldType.addEventListener('change', updateOptionsVisibility);
+
+            const form = fieldType.closest('form');
+
+            form.addEventListener('submit', function (event) {
+                const optionTypes = ['SELECT', 'RADIO', 'CHECKBOX'];
+
+                if (!optionTypes.includes(fieldType.value)) {
+                    options.setCustomValidity('');
+                    return;
+                }
+
+                const values = options.value
+                    .split(/\r?\n/)
+                    .map((option) => option.trim())
+                    .filter(Boolean);
+
+                if (values.length < 2) {
+                    event.preventDefault();
+
+                    options.setCustomValidity(
+                        'Please enter at least two different options for this field.'
+                    );
+
+                    options.reportValidity();
+                    return;
+                }
+
+                options.setCustomValidity('');
+                options.value = JSON.stringify(values);
+            });
+
+            options.addEventListener('input', function () {
+                options.setCustomValidity('');
+            });
+
+            updateOptionsVisibility();
+        });
